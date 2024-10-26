@@ -3,21 +3,24 @@ from .models import DailyDisplayAssignment, DailyDisplayMenuItem, MenuItem, Disp
 
 class DailyDisplayMenuItemInline(admin.TabularInline):
     model = DailyDisplayMenuItem
-    extra = 1  # Adjust the number of blank rows to display by default
+    extra = 1
     fields = ('menu_item', 'quantity', 'quantity_type')
+    autocomplete_fields = ['menu_item']  # Enable searchable dropdown
+
+@admin.register(MenuItem)
+class MenuItemAdmin(admin.ModelAdmin):
+    search_fields = ['title']  # Fields for searching within `MenuItem`
 
 @admin.register(DailyDisplayAssignment)
 class DailyDisplayAssignmentAdmin(admin.ModelAdmin):
     inlines = [DailyDisplayMenuItemInline]
-    list_display = ('date', 'meal_period', 'display_section', 'get_menu_items')  # Adjusted list_display
+    list_display = ('date', 'meal_period', 'display_section', 'get_menu_items')
 
     def get_menu_items(self, obj):
-        # Custom method to display menu items in list view
         return ", ".join([
             f"{item.menu_item.title} ({item.quantity} {item.get_quantity_type_display()})"
             for item in obj.menu_items.all()
         ])
-    get_menu_items.short_description = 'Menu Items'  # Header in the admin list display
+    get_menu_items.short_description = 'Menu Items'
 
-admin.site.register(MenuItem)
 admin.site.register(DisplaySection)
