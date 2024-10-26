@@ -1,27 +1,23 @@
-# menu/admin.py
-
 from django.contrib import admin
-from .models import MenuItem, Ingredient, DisplaySection, DailyDisplayAssignment
+from .models import DailyDisplayAssignment, DailyDisplayMenuItem, MenuItem, DisplaySection
 
-@admin.register(MenuItem)
-class MenuItemAdmin(admin.ModelAdmin):
-    list_display = ('title', 'name')
-    search_fields = ('title', 'name')
-
-@admin.register(Ingredient)
-class IngredientAdmin(admin.ModelAdmin):
-    list_display = ('title', 'name')
-    search_fields = ('title', 'name')
-
-@admin.register(DisplaySection)
-class DisplaySectionAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    list_filter = ('name',)
-    search_fields = ('name',)  # Add this line to enable search functionality
+class DailyDisplayMenuItemInline(admin.TabularInline):
+    model = DailyDisplayMenuItem
+    extra = 1  # Adjust the number of blank rows to display by default
+    fields = ('menu_item', 'quantity', 'quantity_type')
 
 @admin.register(DailyDisplayAssignment)
 class DailyDisplayAssignmentAdmin(admin.ModelAdmin):
-    list_display = ('date', 'meal_period', 'display_section', 'menu_item', 'quantity', 'quantity_type')
-    list_filter = ('date', 'meal_period', 'display_section')
-    search_fields = ('menu_item__name', 'display_section__name')
-    autocomplete_fields = ['menu_item', 'display_section']
+    inlines = [DailyDisplayMenuItemInline]
+    list_display = ('date', 'meal_period', 'display_section', 'get_menu_items')  # Adjusted list_display
+
+    def get_menu_items(self, obj):
+        # Custom method to display menu items in list view
+        return ", ".join([
+            f"{item.menu_item.title} ({item.quantity} {item.get_quantity_type_display()})"
+            for item in obj.menu_items.all()
+        ])
+    get_menu_items.short_description = 'Menu Items'  # Header in the admin list display
+
+admin.site.register(MenuItem)
+admin.site.register(DisplaySection)
