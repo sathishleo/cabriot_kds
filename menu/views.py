@@ -19,7 +19,7 @@ def bread_display(request):
     # # current_date = datetime.now()
     # current_time = datetime.now()
     # print(items)
-    return render(request, 'main.html',{})
+    return render(request, 'Main.html',{})
 
 @csrf_exempt
 def display_menu_view(request, display_section):
