@@ -10,20 +10,20 @@ from .models import DailyDisplayAssignment, DailyDisplayMenuItem, DisplaySection
 from .utlis.utlis import Displaysection
 
 
-@csrf_exempt
-def bread_display(request):
-    # Mock data; replace this with your actual data source
-    items =DailyDisplayMenuItem.objects.all()
-
-    # Get current time
-    # current_date = datetime.now()
-    current_time = datetime.now()
-    print(items)
-    return render(request, 'main.html', {
-        'items': items,
-        'current_date': current_time,
-        'current_time': current_time,
-    })
+# @csrf_exempt
+# def bread_display(request):
+#     # Mock data; replace this with your actual data source
+#     items =DailyDisplayMenuItem.objects.all()
+#
+#     # Get current time
+#     # current_date = datetime.now()
+#     current_time = datetime.now()
+#     print(items)
+#     return render(request, 'main.html', {
+#         'items': items,
+#         'current_date': current_time,
+#         'current_time': current_time,
+#     })
 
 @csrf_exempt
 def display_menu_view(request, display_section):
