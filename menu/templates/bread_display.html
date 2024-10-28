@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cabriot Eat Display</title>
+    <style>
+        /* General styling */
+        body {
+            background-color: #222;
+            color: #f5c518; /* Text color for section and meal */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header styling */
+        .header {
+            background-color: #f7c800;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-item {
+            color: #000;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .header-item strong {
+            display: block;
+            font-size: 20px;
+            color: #000;
+        }
+
+        .header-item span {
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .header-item:first-child {
+            text-align: left;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .header-item:not(:first-child) {
+            border-left: 2px solid #000;
+            padding-left: 20px;
+        }
+
+        .header-item:last-child {
+            text-align: right;
+        }
+        .header-item strong {
+            display: block;
+            font-size: 20px;
+            color: #000;
+        }
+
+        .header-item img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        /* Meal section styling */
+        .meal-section {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        /* Card styling */
+        .meal-card {
+            background-color: #333;
+            color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .meal-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .meal-card .meal-name {
+            font-size: 18px;
+            padding: 10px;
+        }
+
+        .meal-card .meal-count {
+            background-color: #d4a130;
+            color: #000;
+            font-size: 24px;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header section -->
+     <div class="header">
+        <div class="header-item">
+            <img src="path_to_logo.png" alt="Cabriot Eat Logo">
+            <strong>Cabriot Eat</strong>
+        </div>
+        <div class="header-item">
+            <strong>SECTION</strong>
+            <select id="sectionSelect">
+                <option value="Vegetable ">Vegetable</option>
+                <option value="Main ">Main</option>
+                <option value="Bread ">Bread</option>
+            </select>
+        </div>
+        <div class="header-item">
+            <strong>MEAL</strong>
+            <span>DINNER</span>
+        </div>
+        <div class="header-item">
+            <strong>{{ current_date|date:"l, F d" }}</strong>
+            <br>
+            <span>{{ current_date|date:"h:i:s A" }}</span>
+        </div>
+    </div>
+    <!-- Meal cards section -->
+    <div class="meal-section">
+        {% for item in items %}
+        <div class="meal-card">
+            <img src="{{ item.menu_item.image.url }}" alt="{{ item.menu_item.item_name }}">
+            <div class="meal-name">{{ item.menu_item.item_name }}</div>
+            <div class="meal-count">{{ item.quantity }} Nos.</div>
+        </div>
+        {% endfor %}
+    </div>
+<script>
+        document.getElementById('sectionSelect').addEventListener('change', function() {
+            const selectedSection = this.value;
+            updateMeals(selectedSection);
+        });
+
+        function updateMeals(section) {
+            const apiUrl = `/api/get-meals?section=${encodeURIComponent(section)}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const mealSection = document.getElementById('mealSection');
+                    mealSection.innerHTML = ''; // Clear existing content
+
+                    data.items.forEach(item => {
+                        const mealCard = document.createElement('div');
+                        mealCard.classList.add('meal-card');
+
+                        const img = document.createElement('img');
+                        img.src = item.image_url;
+                        img.alt = item.name;
+
+                        const mealName = document.createElement('div');
+                        mealName.classList.add('meal-name');
+                        mealName.textContent = item.name;
+
+                        const mealCount = document.createElement('div');
+                        mealCount.classList.add('meal-count');
+                        mealCount.textContent = `${item.quantity} Nos.`;
+
+                        mealCard.appendChild(img);
+                        mealCard.appendChild(mealName);
+                        mealCard.appendChild(mealCount);
+
+                        mealSection.appendChild(mealCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching meal data:', error);
+                });
+        }
+
+        // Load initial section data on page load
+        window.addEventListener('load', () => {
+            const initialSection = document.getElementById('sectionSelect').value;
+            updateMeals(initialSection);
+        });
+    </script>
+</body>
+</html>

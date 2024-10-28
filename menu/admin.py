@@ -5,11 +5,11 @@ class DailyDisplayMenuItemInline(admin.TabularInline):
     model = DailyDisplayMenuItem
     extra = 1
     fields = ('menu_item', 'quantity', 'quantity_type')
-    autocomplete_fields = ['menu_item']  # Enable searchable dropdown
+    autocomplete_fields = ['menu_item']
 
 @admin.register(MenuItem)
 class MenuItemAdmin(admin.ModelAdmin):
-    search_fields = ['title']  # Fields for searching within `MenuItem`
+    search_fields = ['item_name']  # Updated to match the field name in `MenuItem`
 
 @admin.register(DailyDisplayAssignment)
 class DailyDisplayAssignmentAdmin(admin.ModelAdmin):
@@ -18,7 +18,7 @@ class DailyDisplayAssignmentAdmin(admin.ModelAdmin):
 
     def get_menu_items(self, obj):
         return ", ".join([
-            f"{item.menu_item.title} ({item.quantity} {item.get_quantity_type_display()})"
+            f"{item.menu_item.item_name} ({item.quantity} {item.get_quantity_type_display()})"
             for item in obj.menu_items.all()
         ])
     get_menu_items.short_description = 'Menu Items'
