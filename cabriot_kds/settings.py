@@ -121,7 +121,7 @@ ALLOWED_HOSTS = ['your-render-app-name.onrender.com', 'localhost', '127.0.0.1']
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    BASE_DIR / "cabriot_kds/static",  # Ensure you import BASE_DIR if it's not already defined
+    BASE_DIR / "static",  # Ensure you import BASE_DIR if it's not already defined
 ]
 
 
