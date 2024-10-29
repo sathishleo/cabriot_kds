@@ -334,43 +334,24 @@
 
 
 
-    <div class="px-4 mx-auto "
-
-        style="max-width: 100%; padding: 0; background-color:#231F20;height: 85vh; display:flex; align-items:center ">
-
-        <div class="row" style="margin-top: 1rem;">
-            {% for item in menu_items %}
-
-            <div id="card1" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">
-
-                <div class="card h-100 ">
-
-                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20"
-
-                        class="card-body d-flex align-items-center ">
-
-                        <img id="card-image1" class="rounded-circle " src="{{ item.menu_item.image.url }}" alt="{{ item.menu_item.item_name }}" width="25%"
-
-                            height="auto">
-
-                        <h3 id="card-title1" class="card-title px-3">{{ item.menu_item.item_name }}</h3>
-
-                    </div>
-
-                    <div style="color: #231F20; font-size:2rem;" class="card-footer">
-
-                        <div style="display: flex; align-items: baseline; padding-left:6rem">
-
-                            <span id="card-value1" class="cardhead" >{{ item.quantity }}</span>
-
-                            <span id="card-parameter1" class="unit" style=" margin-left: 10px;">{{ item.quantity_type }}</span>
-
+     <div class="px-4 mx-auto " style="max-width: 100%; padding: 0; background-color:#231F20;height: 85vh; display:flex; align-items:center ">
+        <div class="px-4 mx-auto" style="max-width: 100%; padding: 0; background-color: #231F20; height: 85vh; display: flex; align-items: center;">
+            <div class="row" style="margin-top: 1rem;">
+                {% for item in menu_items %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">
+                        <div class="card h-100">
+                            <div class="card-body d-flex align-items-center" style="color: white; border: 2.5px solid white; border-bottom: none; border-radius: 8px; background-color: #231F20;">
+                                <img class="rounded-circle" src="{{ item.menu_item.image.url }}" alt="{{ item.menu_item.item_name }}" width="25%" height="auto">
+                                <h3 class="card-title px-3">{{ item.menu_item.item_name }}</h3>
+                            </div>
+                            <div class="card-footer" style="color: #231F20; font-size: 2rem;">
+                                <div style="display: flex; align-items: baseline; padding-left: 6rem;">
+                                    <span class="cardhead">{{ item.quantity }}</span>
+                                    <span class="unit" style="margin-left: 10px;">{{ item.quantity_type }}</span>
+                                </div>
+                            </div>
                         </div>
-
-
                     </div>
-
-                </div>
                 {% endfor %}
             </div>
         </div>
@@ -701,134 +682,138 @@
 
 
 
-        function adjustCardLayout() {
-
+    function adjustCardLayout() {
             const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
-
             const cardCount = cards.length;
 
-
-
             // Reset row centering
-
             const row = document.querySelector('.row');
-
             if (cardCount == 1) {
-
                 row.style.justifyContent = 'center';
-
                 row.style.width = '100%';
-
             }
-
             else if (cardCount == 2) {
-
                 //row.style.justifyContent = 'center';
-
                 //row.style.display = 'flex';
-
                 row.style.justifyContent = 'center';
-
                 row.style.width = '100%';
-
                 cards.forEach(card => {
-
                     card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-
                     card.classList.add('col-lg-4', 'col-md-6');
-
                 });
-
             } else if (cardCount <= 4) {
-
                 row.style.display = 'flex';
-
                 row.style.justifyContent = 'center';
-
                 //row.style.justifyContent = 'center';
-
                 row.style.alignItems = 'center';
-
                 // Each row should have 2 cards and centered
 
-
-
                 row.style.marginTop = '1px';
-
                 cards.forEach(card => {
-
                     card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-
                     card.classList.add('col-lg-6', 'col-md-6');
 
-
-
                 });
-
             } else if (cardCount <= 6) {
-
                 row.style.display = 'flex';
-
                 row.style.justifyContent = 'center';
-
                 //row.style.justifyContent = 'center';
-
                 row.style.alignItems = 'center';
-
                 // Each row should have 3 cards
-
                 cards.forEach(card => {
-
                     card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-
                     card.classList.add('col-lg-4', 'col-md-6');
-
                 });
-
             } else if (cardCount <= 9) {
-
                 // Each row should have 4 cards
-
                 row.style.display = 'flex';
-
                 row.style.justifyContent = 'center';
-
                 //row.style.justifyContent = 'center';
-
                 row.style.alignItems = 'center';
 
-                
-
                 cards.forEach((card, index) => {
-
                     card.classList.remove('col-lg-6', 'col-md-6');
-
                     card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
-
-                    
-
                 });
-
             } else {
-
                 // More than 9 cards, keep the default layout
-
                 cards.forEach((card, index) => {
-
                     card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');
-
                     card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
 
-                    
-
                 });
-
             }
-
         }
+
         // Call the function when the page loads
         document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
+<!--##########################-->
+<!--        function adjustCardLayout() {-->
+<!--                    const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');-->
+<!--                    const cardCount = cards.length;-->
+
+<!--                    // Reset row centering-->
+<!--                    const row = document.querySelector('.row');-->
+<!--                    if (cardCount == 1) {-->
+<!--                        row.style.justifyContent = 'center';-->
+<!--                        row.style.width = '100%';-->
+<!--                    }-->
+<!--                    else if (cardCount == 2) {-->
+<!--                        //row.style.justifyContent = 'center';-->
+<!--                        //row.style.display = 'flex';-->
+<!--                        row.style.justifyContent = 'center';-->
+<!--                        row.style.width = '100%';-->
+<!--                        cards.forEach(card => {-->
+<!--                            card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');-->
+<!--                            card.classList.add('col-lg-4', 'col-md-6');-->
+<!--                        });-->
+<!--                    } else if (cardCount <= 4) {-->
+<!--                        row.style.display = 'flex';-->
+<!--                        row.style.justifyContent = 'center';-->
+<!--                        //row.style.justifyContent = 'center';-->
+<!--                        row.style.alignItems = 'center';-->
+<!--                        // Each row should have 2 cards and centered-->
+
+<!--                        row.style.marginTop = '1px';-->
+<!--                        cards.forEach(card => {-->
+<!--                            card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');-->
+<!--                            card.classList.add('col-lg-6', 'col-md-6');-->
+
+<!--                        });-->
+<!--                    } else if (cardCount <= 6) {-->
+<!--                        row.style.display = 'flex';-->
+<!--                        row.style.justifyContent = 'center';-->
+<!--                        //row.style.justifyContent = 'center';-->
+<!--                        row.style.alignItems = 'center';-->
+<!--                        // Each row should have 3 cards-->
+<!--                        cards.forEach(card => {-->
+<!--                            card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');-->
+<!--                            card.classList.add('col-lg-4', 'col-md-6');-->
+<!--                        });-->
+<!--                    } else if (cardCount <= 9) {-->
+<!--                        // Each row should have 4 cards-->
+<!--                        row.style.display = 'flex';-->
+<!--                        row.style.justifyContent = 'center';-->
+<!--                        //row.style.justifyContent = 'center';-->
+<!--                        row.style.alignItems = 'center';-->
+
+<!--                        cards.forEach((card, index) => {-->
+<!--                            card.classList.remove('col-lg-6', 'col-md-6');-->
+<!--                            card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');-->
+<!--                        });-->
+<!--                    } else {-->
+<!--                        // More than 9 cards, keep the default layout-->
+<!--                        cards.forEach((card, index) => {-->
+<!--                            card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');-->
+<!--                            card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');-->
+
+<!--                        });-->
+<!--                    }-->
+<!--                }-->
+
+<!--                // Call the function when the page loads-->
+<!--                document.addEventListener('DOMContentLoaded', adjustCardLayout);-->
 
         // Get the date and time elements
         const dateElement = document.getElementById('date');
