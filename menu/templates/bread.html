@@ -183,6 +183,7 @@
                             </div>
                             <div class="card-footer" style="color: #231F20; font-size: 2rem;">
                                 <div style="display: flex; align-items: baseline; padding-left: 6rem;">
+                                    {% load custom_filters %}
                                     <span class="cardhead">
                                         {% if item.quantity %}
                                             {% if item.quantity_type == "Numbers" %}
