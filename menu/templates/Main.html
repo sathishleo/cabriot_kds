@@ -165,8 +165,7 @@
     </nav>
 
     <!-- Page Content -->
-
-    <div class="px-4 mx-auto " style="max-width: 100%; padding: 0; background-color:#231F20;height: 85vh; display:flex; align-items:center ">
+<div class="px-4 mx-auto " style="max-width: 100%; padding: 0; background-color:#231F20;height: 85vh; display:flex; align-items:center ">
         <div class="px-4 mx-auto" style="max-width: 100%; padding: 0; background-color: #231F20; height: 85vh; display: flex; align-items: center;">
             <div class="row" style="margin-top: 1rem;">
                 {% for item in menu_items %}
@@ -176,9 +175,9 @@
                                 {% if item.menu_item.image %}
                                     <img class="rounded-circle" src="{{ item.menu_item.image.url }}" alt="{{ item.menu_item.item_name }}" width="25%" height="auto">
                                 {% else %}
-                                    <img class="rounded-circle" src="/path/to/default/image.jpg" alt="{{ item.menu_item.display_name }}" width="25%" height="auto">
+                                    <img class="rounded-circle" src="{% static 'images/default_image.jpg' %}" alt="Default Image" width="25%" height="auto">
                                 {% endif %}
-                                <h3 class="card-title px-3">{{ item.menu_item.item_name }}</h3>
+                                <h3 class="card-title px-3">{{ item.menu_item.display_name }}</h3>
                             </div>
                             <div class="card-footer" style="color: #231F20; font-size: 2rem;">
                                 <div style="display: flex; align-items: baseline; padding-left: 6rem;">
@@ -198,12 +197,332 @@
             </div>
         </div>
     </div>
+<!--            <div id="card2" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1 ">-->
+
+<!--                <div class="card h-100">-->
+
+<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20"-->
+
+<!--                        class="card-body d-flex align-items-center ">-->
+
+<!--                        <img id="card-image2" class="rounded-circle " src="../assets/img/potato.webp" alt="Tomato" width="25%"-->
+
+<!--                            height="auto">-->
+
+<!--                        <h3 id="card-title2" class="card-title px-3">ഉരുളക്കിഴങ്ങ്</h3>-->
+
+<!--                    </div>-->
+
+<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
+
+<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
+
+<!--                            <span id="card-value2" class="cardhead" >10</span>-->
+
+<!--                            <span id="card-parameter2" class="unit" style=" margin-left: 10px;">Kilogram</span>-->
+
+<!--                        </div>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+
+<!--             <div id="card1" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
+
+<!--                <div class="card h-100 ">-->
+
+<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20"-->
+
+<!--                        class="card-body d-flex align-items-center ">-->
+
+<!--                        <img id="card-image1" class="rounded-circle " src="../assets/img/onion.jpg" alt="Tomato" width="25%"-->
+
+<!--                            height="auto">-->
+
+<!--                        <h3 id="card-title1" class="card-title px-3">ഉള്ളി - ബിരിയാണി</h3>-->
+
+<!--                    </div>-->
+
+<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
+
+<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
+
+<!--                            <span id="card-value1" class="cardhead" >10</span>-->
+
+<!--                            <span id="card-parameter1" class="unit" style=" margin-left: 10px;">Kilogram</span>-->
+
+<!--                        </div>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+
+<!--            <div id="card4" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
+
+<!--                <div class="card h-100">-->
+
+<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
+
+<!--                        <img id="card-image4" class="rounded-circle " src="../assets/img/chilly.webp" alt="Tomato" width="25%" height="auto">-->
+
+<!--                        <h3 id="card-title4" class="card-title px-3">പച്ച മുളക് </h3>-->
+
+<!--                    </div>-->
+
+<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
+
+<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
+
+<!--                            <span id="card-value4" class="cardhead" >500</span>-->
+
+<!--                            <span id="card-parameter4" class="unit" style=" margin-left: 10px;">Grams</span>-->
+
+<!--                        </div>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--            </div> -->
+
+<!--            <div id="card5" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
+
+<!--                <div class="card h-100">-->
+
+<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
+
+<!--                        <img id="card-image5" class="rounded-circle " src="../assets/img/garlic.webp" alt="Chena" width="25%" height="auto">-->
+
+<!--                        <h3 id="card-title5" class="card-title px-3">വെളുത്തുള്ളി</h3>-->
+
+<!--                    </div>-->
+
+<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
+
+<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
+
+<!--                            <span id="card-value5" class="cardhead" >500</span>-->
+
+<!--                            <span id="card-parameter5" class="unit" style=" margin-left: 10px;">grams</span>-->
+
+<!--                        </div>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+
+<!--            <div id="card6" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
+
+<!--                <div class="card h-100">-->
+
+<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20"class="card-body d-flex align-items-center  ">-->
+
+<!--                        <img id="card-image6" class="rounded-circle " src="../assets/img/ginger.webp" alt="Tomato" width="25%" height="auto">-->
+
+<!--                        <h3 id="card-title6" class="card-title px-3">ഇഞ്ചി</h3>-->
+
+<!--                    </div>-->
+
+<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
+
+<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
+
+<!--                            <span id="card-value6" class="cardhead" >500</span>-->
+
+<!--                            <span id="card-parameter6" class="unit" style=" margin-left: 10px;">grams</span>-->
+
+<!--                        </div>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--            </div> -->
+<!--			<div id="card7" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
+
+<!--                <div class="card h-100">-->
+
+<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
+
+<!--                        <img id="card-image7" class="rounded-circle " src="../assets/img/" alt="Tomato" width="25%" height="auto">-->
+
+<!--                        <h3 id="card-title7" class="card-title px-3">കായ തോട്</h3>-->
+
+<!--                    </div>-->
+
+<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
+
+<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
+
+<!--                            <span id="card-value7" class="cardhead" ></span>-->
+
+<!--                            <span id="card-parameter7" class="unit" style=" margin-left: 10px;">Nos.</span>-->
+
+<!--                        </div>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+
+<!--             <div id="card7" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
+
+<!--                <div class="card h-100">-->
+
+<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
+
+<!--                        <img id="card-image7" class="rounded-circle " src="../assets/img/" alt="Tomato" width="25%" height="auto">-->
+
+<!--                        <h3 id="card-title7" class="card-title px-3">തേങ്ങ</h3>-->
+
+<!--                    </div>-->
+
+<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
+
+<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
+
+<!--                            <span id="card-value7" class="cardhead" >25</span>-->
+
+<!--                            <span id="card-parameter7" class="unit" style=" margin-left: 10px;">Nos.</span>-->
+
+<!--                        </div>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+<!--			-->
+<!--			<div id="card7" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
+
+<!--                <div class="card h-100">-->
+
+<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
+
+<!--                        <img id="card-image7" class="rounded-circle " src="../assets/img/pachakhaaya.jpg" alt="Tomato" width="25%" height="auto">-->
+
+<!--                        <h3 id="card-title7" class="card-title px-3">പച്ചക്കായ</h3>-->
+
+<!--                    </div>-->
+
+<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
+
+<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
+
+<!--                            <span id="card-value7" class="cardhead" ></span>-->
+
+<!--                            <span id="card-parameter7" class="unit" style=" margin-left: 10px;"></span>-->
+
+<!--                        </div>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+<!--			-->
+<!--			<div id="card7" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
+
+<!--                <div class="card h-100">-->
+
+<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
+
+<!--                        <img id="card-image7" class="rounded-circle " src="../assets/img/chena.jpg" alt="Tomato" width="25%" height="auto">-->
+
+<!--                        <h3 id="card-title7" class="card-title px-3">ചേന</h3>-->
+
+<!--                    </div>-->
+
+<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
+
+<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
+
+<!--                            <span id="card-value7" class="cardhead" ></span>-->
+
+<!--                            <span id="card-parameter7" class="unit" style=" margin-left: 10px;"></span>-->
+
+<!--                        </div>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+<!--			<div id="card7" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
+
+<!--                <div class="card h-100">-->
+
+<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
+
+<!--                        <img id="card-image7" class="rounded-circle " src="../assets/img/" alt="Tomato" width="25%" height="auto">-->
+
+<!--                        <h3 id="card-title7" class="card-title px-3">ചൗ ചൗ </h3>-->
+
+<!--                    </div>-->
+
+<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
+
+<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
+
+<!--                            <span id="card-value7" class="cardhead" ></span>-->
+
+<!--                            <span id="card-parameter7" class="unit" style=" margin-left: 10px;"></span>-->
+
+<!--                        </div>-->
+
+<!--                    </div>-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+
+<!--             -->
+
+<!--             -->
+
+<!--               -->
+
+<!--             -->
+
+<!--             -->
+
+<!--    </div>-->
+
+<!--    </div>-->
+
+<!--    &lt;!&ndash; /.row &ndash;&gt;-->
+
+
+
+<!--    &lt;!&ndash; Section Heading &ndash;&gt;-->
+
+
+
+
+
+<!--    &lt;!&ndash; Pagination &ndash;&gt;-->
+
+<!--    </div>-->
+
+
+
     <!-- /.container -->
+
+
+
 
 
     <script>
 
-        function adjustCardLayout() {
+
+    function adjustCardLayout() {
             const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
             const cardCount = cards.length;
 
@@ -251,7 +570,6 @@
                 row.style.justifyContent = 'center';
                 //row.style.justifyContent = 'center';
                 row.style.alignItems = 'center';
-
                 cards.forEach((card, index) => {
                     card.classList.remove('col-lg-6', 'col-md-6');
                     card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
@@ -269,6 +587,73 @@
         // Call the function when the page loads
         document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
+
+<!--##########################-->
+<!--        function adjustCardLayout() {-->
+<!--                    const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');-->
+<!--                    const cardCount = cards.length;-->
+
+<!--                    // Reset row centering-->
+<!--                    const row = document.querySelector('.row');-->
+<!--                    if (cardCount == 1) {-->
+<!--                        row.style.justifyContent = 'center';-->
+<!--                        row.style.width = '100%';-->
+<!--                    }-->
+<!--                    else if (cardCount == 2) {-->
+<!--                        //row.style.justifyContent = 'center';-->
+<!--                        //row.style.display = 'flex';-->
+<!--                        row.style.justifyContent = 'center';-->
+<!--                        row.style.width = '100%';-->
+<!--                        cards.forEach(card => {-->
+<!--                            card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');-->
+<!--                            card.classList.add('col-lg-4', 'col-md-6');-->
+<!--                        });-->
+<!--                    } else if (cardCount <= 4) {-->
+<!--                        row.style.display = 'flex';-->
+<!--                        row.style.justifyContent = 'center';-->
+<!--                        //row.style.justifyContent = 'center';-->
+<!--                        row.style.alignItems = 'center';-->
+<!--                        // Each row should have 2 cards and centered-->
+
+<!--                        row.style.marginTop = '1px';-->
+<!--                        cards.forEach(card => {-->
+<!--                            card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');-->
+<!--                            card.classList.add('col-lg-6', 'col-md-6');-->
+
+<!--                        });-->
+<!--                    } else if (cardCount <= 6) {-->
+<!--                        row.style.display = 'flex';-->
+<!--                        row.style.justifyContent = 'center';-->
+<!--                        //row.style.justifyContent = 'center';-->
+<!--                        row.style.alignItems = 'center';-->
+<!--                        // Each row should have 3 cards-->
+<!--                        cards.forEach(card => {-->
+<!--                            card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');-->
+<!--                            card.classList.add('col-lg-4', 'col-md-6');-->
+<!--                        });-->
+<!--                    } else if (cardCount <= 9) {-->
+<!--                        // Each row should have 4 cards-->
+<!--                        row.style.display = 'flex';-->
+<!--                        row.style.justifyContent = 'center';-->
+<!--                        //row.style.justifyContent = 'center';-->
+<!--                        row.style.alignItems = 'center';-->
+
+<!--                        cards.forEach((card, index) => {-->
+<!--                            card.classList.remove('col-lg-6', 'col-md-6');-->
+<!--                            card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');-->
+<!--                        });-->
+<!--                    } else {-->
+<!--                        // More than 9 cards, keep the default layout-->
+<!--                        cards.forEach((card, index) => {-->
+<!--                            card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');-->
+<!--                            card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');-->
+
+<!--                        });-->
+<!--                    }-->
+<!--                }-->
+
+<!--                // Call the function when the page loads-->
+<!--                document.addEventListener('DOMContentLoaded', adjustCardLayout);-->
 
         // Get the date and time elements
         const dateElement = document.getElementById('date');
@@ -297,14 +682,15 @@
             const head = document.getElementById('heading')
 
 
-    // Update content based on time
-     if (hours >= 13 && hours < 24) {
+
+ // Update content based on time
+     if (hours => 22 && hours <= 12) {
 <!--        document.getElementById('card8').style.display = 'none';-->
 <!--        document.getElementById('card9').style.display = 'none';-->
 <!--        document.getElementById('card10').style.display = 'none';-->
 <!--        document.getElementById('card11').style.display = 'none';-->
 <!--        document.getElementById('card12').style.display = 'none';-->
-        head.textContent = "DINNER"
+        head.textContent = "BREAKFAST / LUNCH"
 <!--        document.getElementById('card-title1').textContent = 'Porotta';-->
 <!--        document.getElementById('card-image1').src = '../assets/img/Porotta2.jpg'; // replace with new image path-->
 <!--        document.getElementById('card-value1').textContent = '1100';-->
@@ -340,7 +726,7 @@
 <!--        document.getElementById('card10').style.display = 'none';-->
 <!--        document.getElementById('card11').style.display = 'none';-->
 <!--        document.getElementById('card12').style.display = 'none';-->
-        head.textContent = "BREAK FAST/LUNCH"
+        head.textContent = "DINNER"
 <!--        document.getElementById('card-title1').textContent = 'Porotta';-->
 <!--        document.getElementById('card-image1').src = '../assets/img/Porotta2.jpg'; // replace with new image path-->
 <!--        document.getElementById('card-value1').textContent = '0';-->

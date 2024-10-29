@@ -344,9 +344,9 @@
                                 {% if item.menu_item.image %}
                                     <img class="rounded-circle" src="{{ item.menu_item.image.url }}" alt="{{ item.menu_item.item_name }}" width="25%" height="auto">
                                 {% else %}
-                                    <img class="rounded-circle" src="/path/to/default/image.jpg" alt="{{ item.menu_item.display_name }}" width="25%" height="auto">
+                                    <img class="rounded-circle" src="{% static 'images/default_image.jpg' %}" alt="Default Image" width="25%" height="auto">
                                 {% endif %}
-                                <h3 class="card-title px-3">{{ item.menu_item.item_name }}</h3>
+                                <h3 class="card-title px-3">{{ item.menu_item.display_name }}</h3>
                             </div>
                             <div class="card-footer" style="color: #231F20; font-size: 2rem;">
                                 <div style="display: flex; align-items: baseline; padding-left: 6rem;">
@@ -853,13 +853,13 @@
 
 
  // Update content based on time
-     if (hours >= 12 && hours <= 24) {
+     if (hours => 22 && hours <= 12) {
 <!--        document.getElementById('card8').style.display = 'none';-->
 <!--        document.getElementById('card9').style.display = 'none';-->
 <!--        document.getElementById('card10').style.display = 'none';-->
 <!--        document.getElementById('card11').style.display = 'none';-->
 <!--        document.getElementById('card12').style.display = 'none';-->
-        head.textContent = "DINNER"
+        head.textContent = "BREAKFAST / LUNCH"
 <!--        document.getElementById('card-title1').textContent = 'Porotta';-->
 <!--        document.getElementById('card-image1').src = '../assets/img/Porotta2.jpg'; // replace with new image path-->
 <!--        document.getElementById('card-value1').textContent = '1100';-->
@@ -895,7 +895,7 @@
 <!--        document.getElementById('card10').style.display = 'none';-->
 <!--        document.getElementById('card11').style.display = 'none';-->
 <!--        document.getElementById('card12').style.display = 'none';-->
-        head.textContent = "BREAK FAST/LUNCH"
+        head.textContent = "DINNER"
 <!--        document.getElementById('card-title1').textContent = 'Porotta';-->
 <!--        document.getElementById('card-image1').src = '../assets/img/Porotta2.jpg'; // replace with new image path-->
 <!--        document.getElementById('card-value1').textContent = '0';-->
