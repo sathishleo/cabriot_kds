@@ -2,8 +2,8 @@ from django.db import models
 
 class MenuItem(models.Model):
     item_name = models.CharField(max_length=100)
-    display_name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='menu_items/')
+    display_name = models.CharField(max_length=100,null=True)
+    image = models.ImageField(upload_to='menu_items/',null=True)
 
     def __str__(self):
         return self.item_name
