@@ -5,8 +5,11 @@ class MenuItem(models.Model):
     display_name = models.CharField(max_length=100,null=True,blank=True)
     image = models.ImageField(upload_to='menu_items/',null=True,blank=True)
 
+    # def __str__(self):
+    #      return self.item_name
     def __str__(self):
-        return self.item_name
+        display_name = self.display_name if self.display_name else self.item_name
+        return f"{self.display_name} - {self.display_name}"
 
 class DisplaySection(models.Model):
     VEGETABLE = 'vegetable'
@@ -46,4 +49,6 @@ class DailyDisplayMenuItem(models.Model):
     ])
 
     def __str__(self):
-        return f"{self.menu_item.item_name} - {self.quantity} {self.get_quantity_type_display()}"
+        display_name = self.menu_item.display_name if self.menu_item.display_name else self.menu_item.item_name
+        return f"{display_name} - {self.quantity} {self.get_quantity_type_display()}"
+
