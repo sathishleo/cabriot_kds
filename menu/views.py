@@ -46,4 +46,14 @@ def display_menu_view(request, display_section):
         'menu_items': menu_items,
         'current_date': selected_date,
     }
-    return render(request, "Main.html", context)
+    if display_section.lower() == display_cls.BREAD:
+        template = "bread.html"
+    elif display_section.lower() == display_cls.VEGETABLE:
+        template = "display.html"
+    elif display_section.lower() == display_cls.MAIN:
+        template = "Main.html"
+    else:
+        template = "Main.html"  # Fallback template
+    print(template)
+    return render(request, template, context)
+    # return render(request, "Main.html", context)
