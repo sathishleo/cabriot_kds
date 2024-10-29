@@ -18,9 +18,7 @@ def format_quantity(item):
         # Default: show with 2 decimal places for other quantity types
         return f"{item.quantity:.2f} {item.quantity_type}"
 
-from django import template
 
-register = template.Library()
 
 @register.filter
 def grams_to_kilograms(value):
