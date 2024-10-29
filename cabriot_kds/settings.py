@@ -119,10 +119,12 @@ ALLOWED_HOSTS = ['your-render-app-name.onrender.com', 'localhost', '127.0.0.1']
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Use this for collected static files only
+
 STATICFILES_DIRS = [
-    BASE_DIR / "static",  # Ensure you import BASE_DIR if it's not already defined
+    os.path.join(BASE_DIR, 'cabriot_kds', 'static'),  # Use this for development static files
 ]
+
 
 
 
