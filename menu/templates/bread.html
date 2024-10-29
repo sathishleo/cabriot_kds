@@ -177,14 +177,26 @@
                                 {% if item.menu_item.image %}
                                     <img class="rounded-circle" src="{{ item.menu_item.image.url }}" alt="{{ item.menu_item.item_name }}" width="25%" height="auto">
                                 {% else %}
-                                    <img class="rounded-circle" src="{% static 'image/cabriot-default.png' %}" alt="Default Image" width="25%" height="auto">
+                                    <img class="rounded-circle" src="{% static 'image/cabriot-default1.png' %}" alt="Default Image" width="25%" height="auto">
                                 {% endif %}
                                 <h3 class="card-title px-3">{{ item.menu_item.display_name }}</h3>
                             </div>
                             <div class="card-footer" style="color: #231F20; font-size: 2rem;">
                                 <div style="display: flex; align-items: baseline; padding-left: 6rem;">
                                     <span class="cardhead">
-                                        {{ item.quantity }}
+                                        {% if item.quantity %}
+                                            {% if item.quantity_type == "Numbers" %}
+                                                {{ item.quantity|floatformat:0 }}  <!-- Display as whole number -->
+                                            {% elif item.quantity_type == "Grams" %}
+                                                {{ item.quantity|grams_to_kilograms|floatformat:1 }}  <!-- Convert grams to kilograms and format to 1 decimal -->
+                                            {% elif item.quantity_type == "Kilograms" %}
+                                                {{ item.quantity|divide_by_100|floatformat:1 }}   <!-- Display kilograms with 1 decimal -->
+                                            {% else %}
+                                                {{ item.quantity|floatformat:2 }}  <!-- For other types, display with 2 decimal places -->
+                                            {% endif %}
+                                        {% else %}
+                                            N/A  <!-- Fallback if quantity is not available -->
+                                        {% endif %}
                                     </span>
                                     <span class="unit" style="margin-left: 10px;">{{ item.quantity_type }}</span>
                                 </div>
