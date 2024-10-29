@@ -47,12 +47,11 @@ class Displaysection:
             elif item.quantity_type == "Kilograms":
                 formatted_quantity = f"{item.quantity:.2f} Kilograms"  # 2 decimal places for kilograms
             elif item.quantity_type == "Numbers":
-                formatted_quantity = f"{item.quantity:.2f} Numbers"  # 2 decimal places for numbers
+                formatted_quantity = int(item.quantity)
             else:
-                formatted_quantity = f"{item.quantity} {item.quantity_type}"  # Default format
+                formatted_quantity = f"{item.quantity}"  # Default format
 
             formatted_items.append({
-                'menu_item': item,
                 'quantity': formatted_quantity,  # Add formatted quantity
                 'quantity_type': item.quantity_type
             })

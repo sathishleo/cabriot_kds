@@ -173,12 +173,22 @@
                     <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">
                         <div class="card h-100">
                             <div class="card-body d-flex align-items-center" style="color: white; border: 2.5px solid white; border-bottom: none; border-radius: 8px; background-color: #231F20;">
-                                <img class="rounded-circle" src="{{ item.menu_item.image.url }}" alt="{{ item.menu_item.item_name }}" width="25%" height="auto">
+                                {% if item.menu_item.image %}
+                                    <img class="rounded-circle" src="{{ item.menu_item.image.url }}" alt="{{ item.menu_item.item_name }}" width="25%" height="auto">
+                                {% else %}
+                                    <img class="rounded-circle" src="/path/to/default/image.jpg" alt="{{ item.menu_item.display_name }}" width="25%" height="auto">
+                                {% endif %}
                                 <h3 class="card-title px-3">{{ item.menu_item.item_name }}</h3>
                             </div>
                             <div class="card-footer" style="color: #231F20; font-size: 2rem;">
                                 <div style="display: flex; align-items: baseline; padding-left: 6rem;">
-                                    <span class="cardhead">{{ item.quantity }}</span>
+                                    <span class="cardhead">
+                                        {% if item.quantity_type == "Numbers" %}
+                                            {{ item.quantity|floatformat:0 }}
+                                        {% else %}
+                                            {{ item.quantity|floatformat:2 }}
+                                        {% endif %}
+                                    </span>
                                     <span class="unit" style="margin-left: 10px;">{{ item.quantity_type }}</span>
                                 </div>
                             </div>
@@ -241,7 +251,7 @@
                 row.style.justifyContent = 'center';
                 //row.style.justifyContent = 'center';
                 row.style.alignItems = 'center';
-                
+
                 cards.forEach((card, index) => {
                     card.classList.remove('col-lg-6', 'col-md-6');
                     card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
@@ -251,7 +261,7 @@
                 cards.forEach((card, index) => {
                     card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');
                     card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
-                    
+
                 });
             }
         }
@@ -285,8 +295,8 @@
             const formattedTime = now.toLocaleTimeString();
             timeElement.textContent = formattedTime;
             const head = document.getElementById('heading')
-    
-    
+
+
     // Update content based on time
      if (hours >= 13 && hours < 24) {
 <!--        document.getElementById('card8').style.display = 'none';-->
@@ -360,7 +370,7 @@
 <!--        document.getElementById('card-value7').textContent = '0';-->
 <!--        document.getElementById('card-parameter7').textContent = 'Nos.';-->
     }
-            
+
         }
 
         // Update the date and time initially and then every second
@@ -377,11 +387,11 @@
         function adjustCardLayout() {
             const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
             const cardCount = cards.length;
-        
+
             // Reset row centering
             const row = document.querySelector('.row');
             row.style.justifyContent = 'c';
-        
+
             if (cardCount <= 2) {
                 // Each row should have 1 card and centered
                 row.style.justifyContent = 'center';
@@ -417,15 +427,15 @@
                 });
             }
         }
-        
+
         // Call the function when the page loads
         document.addEventListener('DOMContentLoaded', adjustCardLayout);
-        
+
         // Call the function when the page loads
         document.addEventListener('DOMContentLoaded', adjustCardLayout);
         function setupObserver() {
             const row = document.querySelector('.row');
-        
+
             if (row) {
                 const observer = new MutationObserver((mutationsList) => {
                     for (const mutation of mutationsList) {
@@ -434,7 +444,7 @@
                         }
                     }
                 });
-        
+
                 observer.observe(row, { childList: true });
             } else {
                 console.warn('.row element not found.');
@@ -444,7 +454,7 @@
             adjustCardLayout();
             setupObserver();
         });
-        
+
         // Call the function when the page loads
         document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
