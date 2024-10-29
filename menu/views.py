@@ -19,7 +19,7 @@ def bread_display(request):
     # # current_date = datetime.now()
     # current_time = datetime.now()
     # print(items)
-    return render(request, 'Main.html',{})
+    return render(request, 'welcome.html',{})
 
 @csrf_exempt
 def display_menu_view(request, display_section):
@@ -28,7 +28,6 @@ def display_menu_view(request, display_section):
 
     # Determine the current meal period (e.g., Breakfast or Lunch/Dinner)
     current_hour = now().hour
-    meal_period = 'BL' if 3 >= current_hour < 15 else 'DN'  # Adjust timing as necessary
 
     # Fetch the display section object and menu items for the selected date, section, and meal period
     # section = get_object_or_404(DisplaySection, name=display_section)
@@ -39,12 +38,11 @@ def display_menu_view(request, display_section):
     print(menu_items)
     display_cls=Displaysection()
     section_item=display_cls.get_displaysection(display_section)
+    menu_values=display_cls.get_formatted_menu_items(menu_items)
 
     context = {
         'section': section_item,
-        'meal_period': 'BREAKFAST/LUNCH' if meal_period == 'BL' else 'DINNER',
-        'menu_items': menu_items,
-        'current_date': selected_date,
+        'menu_items': menu_values,
     }
     if display_section.lower() == display_cls.BREAD:
         template = "bread.html"

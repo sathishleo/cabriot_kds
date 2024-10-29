@@ -681,7 +681,6 @@
     <script>
 
 
-
     function adjustCardLayout() {
             const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
             const cardCount = cards.length;
@@ -730,7 +729,6 @@
                 row.style.justifyContent = 'center';
                 //row.style.justifyContent = 'center';
                 row.style.alignItems = 'center';
-
                 cards.forEach((card, index) => {
                     card.classList.remove('col-lg-6', 'col-md-6');
                     card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
@@ -747,6 +745,7 @@
 
         // Call the function when the page loads
         document.addEventListener('DOMContentLoaded', adjustCardLayout);
+
 
 <!--##########################-->
 <!--        function adjustCardLayout() {-->
@@ -844,7 +843,7 @@
 
 
  // Update content based on time
-     if (hours >= 13 && hours < 24) {
+     if (hours >= 12 && hours <= 24) {
 <!--        document.getElementById('card8').style.display = 'none';-->
 <!--        document.getElementById('card9').style.display = 'none';-->
 <!--        document.getElementById('card10').style.display = 'none';-->

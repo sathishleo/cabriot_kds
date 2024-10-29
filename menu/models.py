@@ -45,7 +45,7 @@ class DailyDisplayMenuItem(models.Model):
     menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
     quantity = models.FloatField()
     quantity_type = models.CharField(max_length=20, choices=[
-        ('G', 'Grams'), ('Kg', 'Kilograms'), ('No', 'Numbers')
+        ('Grams', 'Grams'), ('Kilograms', 'Kilograms'), ('Numbers', 'Numbers')
     ])
 
     def __str__(self):
