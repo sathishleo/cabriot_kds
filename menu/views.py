@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
@@ -35,8 +35,10 @@ def display_menu_view(request, display_section):
     print(hour)
     print(minute)
     meal=""
-    if (hour == 22 and minute <= 0) or (hour == 12 and minute <= 0):
-        meal = "BL"
+    if (hour >= 22 and minute >= 0) or (hour <= 12 and minute >= 0):
+       meal = "BL"
+       if (hour >= 22 and minute >= 0):
+            selected_date += timedelta(days=1)
     else:
         meal = "D"
 
