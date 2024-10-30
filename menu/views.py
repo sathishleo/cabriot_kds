@@ -53,15 +53,14 @@ def display_menu_view(request, display_section):
     print(menu_items)
     display_cls=Displaysection()
     section_item=display_cls.get_displaysection(display_section)
-    menu_values=display_cls.get_formatted_menu_items(menu_items)
-    print(menu_values)
+    # menu_values=display_cls.get_formatted_menu_items(menu_items)
+    # print(menu_values)
     # for item in menu_values.get("menu_item"):
     #     print(item.image.url)
 
     context = {
         "menu_items":menu_items,
-        'section': section_item,
-        'menu_values': menu_values,
+        'section': section_item
     }
     if display_section.lower() == display_cls.BREAD:
         template = "bread.html"

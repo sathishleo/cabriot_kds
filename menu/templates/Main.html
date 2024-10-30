@@ -188,15 +188,7 @@
                                 <div style="display: flex; align-items: baseline; padding-left: 6rem;">
                                     {% load custom_filters %}
                                     <span class="cardhead">
-                                        {% if item.quantity %}
-                                            {% if item.quantity_type == "Numbers" %}
-                                                {{ item.quantity|floatformat:0 }}
-                                            {% else %}
-                                                {{ item.quantity|floatformat:2 }}  <!-- For other types, display with 2 decimal places -->
-                                            {% endif %}
-                                        {% else %}
-                                            N/A  <!-- Fallback if quantity is not available -->
-                                        {% endif %}
+                                        {{ item.quantity }}
                                     </span>
 
                                     <span class="unit" style="margin-left: 10px;">{{ item.quantity_type }}</span>

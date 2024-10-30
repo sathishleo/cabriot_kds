@@ -40,7 +40,7 @@ class DailyDisplayAssignment(models.Model):
 class DailyDisplayMenuItem(models.Model):
     assignment = models.ForeignKey(DailyDisplayAssignment, on_delete=models.CASCADE, related_name="menu_items")
     menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
-    quantity = models.FloatField()
+    quantity = models.TextField(max_length=10)
     quantity_type = models.CharField(max_length=20, choices=[
         ('Grams', 'Grams'), ('Kilograms', 'Kilograms'), ('Numbers', 'Numbers')
     ])
