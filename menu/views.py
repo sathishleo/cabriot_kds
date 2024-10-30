@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.utils.timezone import now
 from django.views.decorators.csrf import  csrf_exempt
@@ -41,7 +42,11 @@ def display_menu_view(request, display_section):
 
     # Fetch the display section object and menu items for the selected date, section, and meal period
     # section = get_object_or_404(DisplaySection, name=display_section)
-    ids=DailyDisplayAssignment.objects.filter(date=selected_date,display_section__name__icontains=display_section,meal_period__icontains=meal)
+    ids = DailyDisplayAssignment.objects.filter(
+        Q(date=selected_date) &
+        Q(display_section__name__icontains=display_section) &
+        Q(meal_period__icontains=meal)
+    )
     menu_items = DailyDisplayMenuItem.objects.filter(
         assignment__in=list(ids)
     ).select_related('menu_item')
