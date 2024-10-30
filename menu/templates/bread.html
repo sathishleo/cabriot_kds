@@ -142,7 +142,7 @@
     <nav class="container d-flex justify-content-between navbar navbar-expand-lg navbar static-top"
         style="background-color: #FFC331; height: 15vh; max-width: 100% ">
         <a style="height: 90%; " class="navbar-brand px-4" href="#">
-            <img src="{% static 'image/cabriot_eat.svg' %}" alt="..." >
+            <img src="{% static 'image/cabriot_eat1.svg' %}" alt="..." >
         </a>
         <div class="d-flex">
             <div class="navhead d-flex flex-column align-items-bottom">
@@ -688,6 +688,7 @@
         function updateTime() {
             const now = new Date();
             const hours = now.getHours();
+            const minutes = now.getMinutes();
             const formattedTime = now.toLocaleTimeString();
             timeElement.textContent = formattedTime;
             const head = document.getElementById('heading')
@@ -695,7 +696,7 @@
 
 
  // Update content based on time
-     if (hours => 22 && hours <= 12) {
+          if ((hours === 22 && minutes  <= 0) || (hours === 12 && minutes <= 0))  {
 <!--        document.getElementById('card8').style.display = 'none';-->
 <!--        document.getElementById('card9').style.display = 'none';-->
 <!--        document.getElementById('card10').style.display = 'none';-->
