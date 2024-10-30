@@ -179,7 +179,12 @@
                                 {% else %}
                                     <img class="rounded-circle" src="{% static 'image/cabriot-default1.png' %}" alt="Default Image" width="25%" height="auto">
                                 {% endif %}
-                                <h3 class="card-title px-3">{{ item.menu_item.display_name }}</h3>
+                                <h3 class="card-title px-3">
+                                    {% if item.menu_item.display_name %}
+                                        {{ item.menu_item.display_name }}
+                                    {% else %}
+                                        {{ item.menu_item.item_name }}
+                                    {% endif %}</h3>
                             </div>
                             <div class="card-footer" style="color: #231F20; font-size: 2rem;">
                                 <div style="display: flex; align-items: baseline; padding-left: 6rem;">

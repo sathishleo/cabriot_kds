@@ -27,11 +27,21 @@ def display_menu_view(request, display_section):
     selected_date = datetime.now().date()
 
     # Determine the current meal period (e.g., Breakfast or Lunch/Dinner)
-    current_hour = now().hour
+
+    now = datetime.now()
+    hour = now.hour
+    minute = now.minute
+    print(hour)
+    print(minute)
+    meal=""
+    if (hour == 22 and minute <= 0) or (hour == 12 and minute <= 0):
+        meal = "BL"
+    else:
+        meal = "D"
 
     # Fetch the display section object and menu items for the selected date, section, and meal period
     # section = get_object_or_404(DisplaySection, name=display_section)
-    ids=DailyDisplayAssignment.objects.filter(date=selected_date,display_section__name__icontains=display_section)
+    ids=DailyDisplayAssignment.objects.filter(date=selected_date,display_section__name__icontains=display_section,meal_period__icontains=meal)
     menu_items = DailyDisplayMenuItem.objects.filter(
         assignment__in=list(ids)
     ).select_related('menu_item')
