@@ -190,11 +190,7 @@
                                     <span class="cardhead">
                                         {% if item.quantity %}
                                             {% if item.quantity_type == "Numbers" %}
-                                                {{ item.quantity|floatformat:0 }}  <!-- Display as whole number -->
-                                            {% elif item.quantity_type == "Grams" %}
-                                                {{ item.quantity|grams_to_kilograms|floatformat:1 }}  <!-- Convert grams to kilograms and format to 1 decimal -->
-                                            {% elif item.quantity_type == "Kilograms" %}
-                                                {{ item.quantity|divide_by_100|floatformat:1 }}   <!-- Display kilograms with 1 decimal -->
+                                                {{ item.quantity|floatformat:0 }}
                                             {% else %}
                                                 {{ item.quantity|floatformat:2 }}  <!-- For other types, display with 2 decimal places -->
                                             {% endif %}
