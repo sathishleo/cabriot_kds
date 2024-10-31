@@ -689,13 +689,13 @@
 
 
  // Update content based on time
-          if ((hours === 22 && minutes  <= 0) || (hours === 12 && minutes <= 0))  {
+        if ((hours >= 22 && minutes  >= 0) && (hours <= 12 && minutes >= 0))  {
 <!--        document.getElementById('card8').style.display = 'none';-->
 <!--        document.getElementById('card9').style.display = 'none';-->
 <!--        document.getElementById('card10').style.display = 'none';-->
 <!--        document.getElementById('card11').style.display = 'none';-->
 <!--        document.getElementById('card12').style.display = 'none';-->
-        head.textContent = "BREAKFAST / LUNCH"
+            head.textContent = "BREAKFAST / LUNCH"
 <!--        document.getElementById('card-title1').textContent = 'Porotta';-->
 <!--        document.getElementById('card-image1').src = '../assets/img/Porotta2.jpg'; // replace with new image path-->
 <!--        document.getElementById('card-value1').textContent = '1100';-->

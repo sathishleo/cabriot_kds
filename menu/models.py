@@ -6,7 +6,10 @@ class MenuItem(models.Model):
     image = models.ImageField(upload_to='menu_items/',null=True,blank=True)
 
     def __str__(self):
-        return f"{self.item_name} - {self.display_name}"
+        if self.display_name != None:
+            return f"{self.item_name} - {self.display_name}"
+        else:
+            return self.item_name
 
 class DisplaySection(models.Model):
     VEGETABLE = 'vegetable'
@@ -40,7 +43,7 @@ class DailyDisplayAssignment(models.Model):
 class DailyDisplayMenuItem(models.Model):
     assignment = models.ForeignKey(DailyDisplayAssignment, on_delete=models.CASCADE, related_name="menu_items")
     menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
-    quantity = models.TextField(max_length=10)
+    quantity = models.CharField(max_length=10)
     quantity_type = models.CharField(max_length=20, choices=[
         ('Grams', 'Grams'), ('Kilograms', 'Kilograms'), ('Numbers', 'Numbers')
     ])

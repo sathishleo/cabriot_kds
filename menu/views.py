@@ -43,7 +43,6 @@ def display_menu_view(request, display_section):
         meal = "D"
 
     # Fetch the display section object and menu items for the selected date, section, and meal period
-    # section = get_object_or_404(DisplaySection, name=display_section)
     ids = DailyDisplayAssignment.objects.filter(
         Q(date=selected_date) &
         Q(display_section__name__icontains=display_section) &
