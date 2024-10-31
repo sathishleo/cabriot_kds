@@ -468,7 +468,7 @@
 
 
  // Update content based on time
-     if ((hours >= 22 && minutes  >= 0) && (hours <= 12 && minutes >= 0))  {
+     if ((hours >= 22 && minutes  >= 0) || (hours <= 12 && minutes >= 0))  {
         head.textContent = "BREAKFAST / LUNCH"
     }
      else {
