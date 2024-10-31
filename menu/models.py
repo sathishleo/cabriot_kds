@@ -50,5 +50,9 @@ class DailyDisplayMenuItem(models.Model):
 
     def __str__(self):
         display_name = self.menu_item.display_name if self.menu_item.display_name else self.menu_item.item_name
-        return f"{display_name} - {self.quantity} {self.get_quantity_type_display()}"
+        if self.quantity is None or self.quantity_type is None:
+            return display_name
+        else:
+            return f"{display_name} ({self.quantity} {self.quantity_type})"
+
 
