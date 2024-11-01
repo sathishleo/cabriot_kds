@@ -24,8 +24,20 @@ def bread_display(request):
 
 @csrf_exempt
 def display_menu_view(request, display_section):
+    import pytz
+
+    # Get the current time in UTC
+    utc_now = datetime.now(pytz.utc)
+    print(utc_now)
+    ist = pytz.timezone("Asia/Kolkata")
+    ist_now = utc_now.astimezone(ist)
+    print(ist_now)
+    formatted_time = ist_now.strftime("%I:%M %p")
+    print("formatted_time",formatted_time)
+
     # Convert date string to a date object
     selected_date = datetime.now().date()
+    formatted_date = selected_date.strftime("%A %B %d")
 
     # Determine the current meal period (e.g., Breakfast or Lunch/Dinner)
 
@@ -36,11 +48,13 @@ def display_menu_view(request, display_section):
     print(minute)
     meal=""
     if (hour >= 22 and minute >= 0) or (hour <= 12 and minute >= 0):
+       textContent = "BREAKFAST / LUNCH"
        meal = "BL"
        if (hour >= 22 and minute >= 0):
             selected_date += timedelta(days=1)
     else:
         meal = "D"
+        textContent = "DINNER"
 
     # Fetch the display section object and menu items for the selected date, section, and meal period
     ids = DailyDisplayAssignment.objects.filter(
@@ -54,6 +68,7 @@ def display_menu_view(request, display_section):
     print(menu_items)
     display_cls=Displaysection()
     section_item=display_cls.get_displaysection(display_section)
+    print(textContent)
     # menu_values=display_cls.get_formatted_menu_items(menu_items)
     # print(menu_values)
     # for item in menu_values.get("menu_item"):
@@ -61,7 +76,10 @@ def display_menu_view(request, display_section):
 
     context = {
         "menu_items":menu_items,
-        'section': section_item
+        'section': section_item,
+        'formated_date': formatted_date,
+        "formated_time":formatted_time,
+        "meal":textContent
     }
     if display_section.lower() == display_cls.BREAD:
         template = "bread.html"
