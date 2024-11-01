@@ -275,71 +275,6 @@
         document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
 
-<!--##########################-->
-<!--        function adjustCardLayout() {-->
-<!--                    const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');-->
-<!--                    const cardCount = cards.length;-->
-
-<!--                    // Reset row centering-->
-<!--                    const row = document.querySelector('.row');-->
-<!--                    if (cardCount == 1) {-->
-<!--                        row.style.justifyContent = 'center';-->
-<!--                        row.style.width = '100%';-->
-<!--                    }-->
-<!--                    else if (cardCount == 2) {-->
-<!--                        //row.style.justifyContent = 'center';-->
-<!--                        //row.style.display = 'flex';-->
-<!--                        row.style.justifyContent = 'center';-->
-<!--                        row.style.width = '100%';-->
-<!--                        cards.forEach(card => {-->
-<!--                            card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');-->
-<!--                            card.classList.add('col-lg-4', 'col-md-6');-->
-<!--                        });-->
-<!--                    } else if (cardCount <= 4) {-->
-<!--                        row.style.display = 'flex';-->
-<!--                        row.style.justifyContent = 'center';-->
-<!--                        //row.style.justifyContent = 'center';-->
-<!--                        row.style.alignItems = 'center';-->
-<!--                        // Each row should have 2 cards and centered-->
-
-<!--                        row.style.marginTop = '1px';-->
-<!--                        cards.forEach(card => {-->
-<!--                            card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');-->
-<!--                            card.classList.add('col-lg-6', 'col-md-6');-->
-
-<!--                        });-->
-<!--                    } else if (cardCount <= 6) {-->
-<!--                        row.style.display = 'flex';-->
-<!--                        row.style.justifyContent = 'center';-->
-<!--                        //row.style.justifyContent = 'center';-->
-<!--                        row.style.alignItems = 'center';-->
-<!--                        // Each row should have 3 cards-->
-<!--                        cards.forEach(card => {-->
-<!--                            card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');-->
-<!--                            card.classList.add('col-lg-4', 'col-md-6');-->
-<!--                        });-->
-<!--                    } else if (cardCount <= 9) {-->
-<!--                        // Each row should have 4 cards-->
-<!--                        row.style.display = 'flex';-->
-<!--                        row.style.justifyContent = 'center';-->
-<!--                        //row.style.justifyContent = 'center';-->
-<!--                        row.style.alignItems = 'center';-->
-
-<!--                        cards.forEach((card, index) => {-->
-<!--                            card.classList.remove('col-lg-6', 'col-md-6');-->
-<!--                            card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');-->
-<!--                        });-->
-<!--                    } else {-->
-<!--                        // More than 9 cards, keep the default layout-->
-<!--                        cards.forEach((card, index) => {-->
-<!--                            card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');-->
-<!--                            card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');-->
-
-<!--                        });-->
-<!--                    }-->
-<!--                }-->
-
-
         function updateDate() {
             const now = new Date();
             const options = { weekday: 'long', month: 'long', day: 'numeric' };
@@ -353,84 +288,16 @@
             const hours = now.getHours();
             const head = document.getElementById('heading');
 
- // Update content based on time
-        if ((hours >= 22 && minutes  >= 0) || (hours <= 12 && minutes >= 0))  {
-<!--        document.getElementById('card8').style.display = 'none';-->
-<!--        document.getElementById('card9').style.display = 'none';-->
-<!--        document.getElementById('card10').style.display = 'none';-->
-<!--        document.getElementById('card11').style.display = 'none';-->
-<!--        document.getElementById('card12').style.display = 'none';-->
-            head.textContent = "BREAKFAST / LUNCH"
-<!--        document.getElementById('card-title1').textContent = 'Porotta';-->
-<!--        document.getElementById('card-image1').src = '../assets/img/Porotta2.jpg'; // replace with new image path-->
-<!--        document.getElementById('card-value1').textContent = '1100';-->
-<!--        document.getElementById('card-parameter1').textContent = 'Nos.';-->
-<!--        document.getElementById('card-title2').textContent = 'Chappathi';-->
-<!--        document.getElementById('card-image2').src = '../assets/img/Chappathi.webp'; // replace with new image path-->
-<!--        document.getElementById('card-value2').textContent = '800';-->
-<!--        document.getElementById('card-parameter2').textContent = 'Nos.';-->
-<!--        document.getElementById('card-title3').textContent = 'Poori';-->
-<!--        document.getElementById('card-image3').src = '../assets/img/Poori22.jpg'; // replace with new image path-->
-<!--        document.getElementById('card-value3').textContent = '0';-->
-<!--        document.getElementById('card-parameter3').textContent = 'Nos.';-->
-<!--        document.getElementById('card-title4').textContent = 'Dosa Normal';-->
-<!--        document.getElementById('card-image4').src = '../assets/img/Dosaan.jpg'; // replace with new image path-->
-<!--        document.getElementById('card-value4').textContent = '0';-->
-<!--        document.getElementById('card-parameter4').textContent = 'Nos.';-->
-<!--        document.getElementById('card-title5').textContent = 'Thattu Dosa';-->
-<!--        document.getElementById('card-image5').src = '../assets/img/thatu dosa.webp'; // replace with new image path-->
-<!--        document.getElementById('card-value5').textContent = '650';-->
-<!--        document.getElementById('card-parameter5').textContent = 'Nos.';-->
-<!--        document.getElementById('card-title6').textContent = 'Neer Dosa';-->
-<!--        document.getElementById('card-image6').src = '../assets/img/neerdosa.jpg'; // replace with new image path-->
-<!--        document.getElementById('card-value6').textContent = '470';-->
-<!--        document.getElementById('card-parameter6').textContent = 'Nos.';-->
-<!--        document.getElementById('card-title7').textContent = 'Ari Dosa';-->
-<!--        document.getElementById('card-image7').src = '../assets/img/aridosa3.jpeg'; // replace with new image path-->
-<!--        document.getElementById('card-value7').textContent = '0';-->
-<!--        document.getElementById('card-parameter7').textContent = 'Nos.';-->
-    }
-     else {
-<!--        document.getElementById('card8').style.display = 'none';-->
-<!--        document.getElementById('card9').style.display = 'none';-->
-<!--        document.getElementById('card10').style.display = 'none';-->
-<!--        document.getElementById('card11').style.display = 'none';-->
-<!--        document.getElementById('card12').style.display = 'none';-->
-        head.textContent = "DINNER"
-<!--        document.getElementById('card-title1').textContent = 'Porotta';-->
-<!--        document.getElementById('card-image1').src = '../assets/img/Porotta2.jpg'; // replace with new image path-->
-<!--        document.getElementById('card-value1').textContent = '0';-->
-<!--        document.getElementById('card-parameter1').textContent = 'Nos.';-->
-<!--        document.getElementById('card-title2').textContent = 'Chappathi';-->
-<!--        document.getElementById('card-image2').src = '../assets/img/Chappathi.webp'; // replace with new image path-->
-<!--        document.getElementById('card-value2').textContent = '220';-->
-<!--        document.getElementById('card-parameter2').textContent = 'Nos.';-->
-<!--        document.getElementById('card-title3').textContent = 'Poori';-->
-<!--        document.getElementById('card-image3').src = '../assets/img/Poori22.jpg'; // replace with new image path-->
-<!--        document.getElementById('card-value3').textContent = '0';-->
-<!--        document.getElementById('card-parameter3').textContent = 'Nos.';-->
-<!--        document.getElementById('card-title4').textContent = 'Dosa Normal';-->
-<!--        document.getElementById('card-image4').src = '../assets/img/Dosaan.jpg'; // replace with new image path-->
-<!--        document.getElementById('card-value4').textContent = '0';-->
-<!--        document.getElementById('card-parameter4').textContent = 'Nos.';-->
-<!--        document.getElementById('card-title5').textContent = 'Thattu Dosa';-->
-<!--        document.getElementById('card-image5').src = '../assets/img/thatu dosa.webp'; // replace with new image path-->
-<!--        document.getElementById('card-value5').textContent = '0';-->
-<!--        document.getElementById('card-parameter5').textContent = 'Nos.';-->
-<!--        document.getElementById('card-title6').textContent = 'Neer Dosa';-->
-<!--        document.getElementById('card-image6').src = '../assets/img/neerdosa.jpg'; // replace with new image path-->
-<!--        document.getElementById('card-value6').textContent = '0';-->
-<!--        document.getElementById('card-parameter6').textContent = 'Nos.';-->
-<!--        document.getElementById('card-title7').textContent = 'Ari Dosa';-->
-<!--        document.getElementById('card-image7').src = '../assets/img/aridosa3.jpeg'; // replace with new image path-->
-<!--        document.getElementById('card-value7').textContent = '0';-->
-<!--        document.getElementById('card-parameter7').textContent = 'Nos.';-->
-    }
 
-        }
-        window.setTimeout(function () {
-            location.href = "/main/";
-        }, 60000); // refresh/redirect after 5 seconds.
+        let timePassed = 0;
+        const interval = setInterval(function () {
+            timePassed += 1000; // Increment by 1 second
+            if (timePassed >= 60000) { // Check if 1 minute has passed
+                clearInterval(interval); // Stop the interval
+                location.href = "/main/"; // Redirect
+            }
+        }, 1000); // Check every second
+
 
         updateDate();
         setInterval(updateTime, 1000);

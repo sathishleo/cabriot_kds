@@ -708,9 +708,14 @@
             const head = document.getElementById('heading')
 
 
-        window.setTimeout(function () {
-            location.href = "/main/";
-        }, 60000); // refresh/redirect after 5 seconds.
+        let timePassed = 0;
+        const interval = setInterval(function () {
+            timePassed += 1000; // Increment by 1 second
+            if (timePassed >= 60000) { // Check if 1 minute has passed
+                clearInterval(interval); // Stop the interval
+                location.href = "/main/"; // Redirect
+            }
+        }, 1000); // Check every second
 
         // Update the date and time initially and then every second
         updateDate();
