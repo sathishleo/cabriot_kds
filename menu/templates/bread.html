@@ -33,10 +33,12 @@
              width:100%
         }
         .tod{
-            font-size: 2rem;
+            font-size: 1.4rem;
+            text-align:center;
         }
         .dot{
             font-size: 1.5rem;
+            text-align:center;
         }
         .cardhead{
             font-size: 2.7rem;
@@ -133,6 +135,26 @@
             margin-left: 20px;
             /* Adjust the margin as needed */
         }
+        .d-flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .navhead {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px; /* Adjust padding as needed for spacing */
+        }
+
+        .vertical-line {
+            border-left: 1px solid #000; /* Vertical line */
+            padding: 0 15px;
+            margin: 0 15px;
+        }
+
+
         }
     </style>
 </head>
@@ -145,162 +167,145 @@
             <img src="{% static 'image/cabriot_eat1.svg' %}" alt="..." >
         </a>
         <div class="d-flex">
-            <div class="vertical-line">
             <div class="navhead d-flex flex-column align-items-bottom ">
-
-                <h3 class="mb-1 dot">DATE</h3>
-
-                <h2 class="tod" style="color: white;">{{formated_date}}</h2>
-
+                <h3 class="dot">DATE</h3>
+                <h2 id="date" class="tod" style="color: white;"></h2>
             </div>
             </div>
             <div class="vertical-line">
             <div class="navhead d-flex flex-column align-items-bottom ">
-
-                <h3 class="mb-1 dot">SECTION</h3>
-
+                <h3 class="dot">SECTION</h3>
                 <h2 class="tod" style="color: white;">{{section}}</h2>
             </div>
             </div>
             <div class="vertical-line">
             <div class="navhead d-flex flex-column align-items-bottom ">
-
-                <h3 class="mb-1 dot">MEAL</h3>
-
+                <h3 class="dot">MEAL</h3>
                 <h2 class="tod" style="color: white;">{{meal}}</h2>
-
             </div>
             </div>
             <div class="vertical-line">
-            <div class="navhead d-flex flex-column align-items-bottom ">
-
-                <h3 class="mb-1 dot">CURRENT TIME</h3>
-
-                <h2 class="tod" style="color: white;">{{formated_time}}</h2>
-
+                <div class="navhead d-flex flex-column align-items-bottom ">
+                    <h3 class="dot">CURRENT TIME</h3>
+                    <h2 class="tod" style="color: white;" id="heading"></h2>
+                </div>
             </div>
-            </div>
-        </div>
     </nav>
 
     <!-- Page Content -->
-
+<div class="px-4 mx-auto" style="max-width: 100%; padding: 0; background-color: #231F20; height: 85vh; display: flex; align-items: center;">
     <div class="px-4 mx-auto" style="max-width: 100%; padding: 0; background-color: #231F20; height: 85vh; display: flex; align-items: center;">
-    <div id="menu-items" class="row" style="margin-top: 1rem;">
-        {% for item in menu_items %}
-            <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">
-                <div class="card h-100">
-                    <div class="card-body d-flex align-items-center" style="color: white; border: 2.5px solid white; border-bottom: none; border-radius: 8px; background-color: #231F20;">
-                        <img class="rounded-circle" src="{{ item.menu_item.image.url|default:'static/image/cabriot-default1.png' }}" alt="{{ item.menu_item.item_name }}" width="25%" height="auto">
-                        <h3 class="card-title px-3">{{ item.menu_item.display_name|default:item.menu_item.item_name }}</h3>
-                    </div>
-                    {% if item.quantity %}
-                    <div class="card-footer" style="color: #231F20; font-size: 2rem;">
-                        <div style="display: flex; align-items: baseline; padding-left: 6rem;">
-                            <span class="cardhead">{{ item.quantity }}</span>
-                            <span class="unit" style="margin-left: 10px;">{{ item.quantity_type }}</span>
+        <div class="row" style="margin-top: 1rem;">
+            {% for item in menu_items %}
+                <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">
+                    <div class="card h-100 d-flex flex-column">
+                        <div class="card-body d-flex align-items-center" style="color: white; border: 2.5px solid white; border-bottom: none; border-radius: 8px; background-color: #231F20;">
+                            {% if item.menu_item.image %}
+                                <img class="rounded-circle" src="{{ item.menu_item.image.url }}" alt="{{ item.menu_item.item_name }}" width="25%" height="auto">
+                            {% else %}
+                                <img class="rounded-circle" src="{% static 'image/cabriot-default1.png' %}" alt="Default Image" width="25%" height="auto">
+                            {% endif %}
+                            <h3 class="card-title px-3">
+                                {% if item.menu_item.display_name %}
+                                    {{ item.menu_item.display_name }}
+                                {% else %}
+                                    {{ item.menu_item.item_name }}
+                                {% endif %}
+                            </h3>
+                        </div>
+                        <div class="card-footer mt-auto" style="font-size: 2rem; background-color: #2ECC71; display: flex; align-items: center; padding: 1rem;">
+                            <div style="flex-grow: 1; text-align: center;">
+                                {% if item.quantity %}
+                                    <span class="cardhead">{{ item.quantity }}</span>
+                                    <span class="unit">{{ item.quantity_type }}</span>
+                                {% else %}
+                                    <span class="cardhead" style="color: #ffffff;"></span>
+                                    <span class="unit" style="color: #ffffff;"></span>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                    {% endif %}
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 </div>
-
 <script>
-        function adjustCardLayout() {
-            const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
-            const cardCount = cards.length;
+    function adjustCardLayout() {
+        const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
+        const cardCount = cards.length;
 
-            // Reset row centering
-            const row = document.querySelector('.row');
-            if (cardCount == 1) {
-                row.style.justifyContent = 'center';
-                row.style.width = '100%';
-            }
-            else if (cardCount == 2) {
-                //row.style.justifyContent = 'center';
-                //row.style.display = 'flex';
-                row.style.justifyContent = 'center';
-                row.style.width = '100%';
-                cards.forEach(card => {
-                    card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-                    card.classList.add('col-lg-4', 'col-md-6');
-                });
-            } else if (cardCount <= 4) {
-                row.style.display = 'flex';
-                row.style.justifyContent = 'center';
-                //row.style.justifyContent = 'center';
-                row.style.alignItems = 'center';
-                // Each row should have 2 cards and centered
+        // Reset row centering
+        const row = document.querySelector('.row');
+        row.style.justifyContent = 'center';
 
-                row.style.marginTop = '1px';
-                cards.forEach(card => {
-                    card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-                    card.classList.add('col-lg-6', 'col-md-6');
-
-                });
-            } else if (cardCount <= 6) {
-                row.style.display = 'flex';
-                row.style.justifyContent = 'center';
-                //row.style.justifyContent = 'center';
-                row.style.alignItems = 'center';
-                // Each row should have 3 cards
-                cards.forEach(card => {
-                    card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-                    card.classList.add('col-lg-4', 'col-md-6');
-                });
-            } else if (cardCount <= 9) {
-                // Each row should have 4 cards
-                row.style.display = 'flex';
-                row.style.justifyContent = 'center';
-                //row.style.justifyContent = 'center';
-                row.style.alignItems = 'center';
-                cards.forEach((card, index) => {
-                    card.classList.remove('col-lg-6', 'col-md-6');
-                    card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
-                });
-            } else {
-                // More than 9 cards, keep the default layout
-                cards.forEach((card, index) => {
-                    card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');
-                    card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
-
-                });
-            }
+        if (cardCount <= 2) {
+            // 1 card per row, centered
+            cards.forEach(card => {
+                card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
+                card.classList.add('col-lg-6', 'col-md-6');
+            });
+        } else if (cardCount <= 4) {
+            // 2 cards per row, centered
+            cards.forEach(card => {
+                card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
+                card.classList.add('col-lg-6', 'col-md-6');
+            });
+        } else if (cardCount <= 6) {
+            // 3 cards per row
+            cards.forEach(card => {
+                card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
+                card.classList.add('col-lg-4', 'col-md-6');
+            });
+        } else if (cardCount <= 9) {
+            // 4 cards per row
+            cards.forEach(card => {
+                card.classList.remove('col-lg-6', 'col-md-6');
+                card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
+            });
+        } else {
+            // Default layout for more than 9 cards
+            cards.forEach(card => {
+                card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');
+                card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
+            });
         }
-
-        // Call the function when the page loads
-        document.addEventListener('DOMContentLoaded', adjustCardLayout);
+    }
 
 
-        function updateDate() {
-            const now = new Date();
-            const options = { weekday: 'long', month: 'long', day: 'numeric' };
-            const formattedDate = now.toLocaleDateString(undefined, options).toUpperCase();
-            document.getElementById('date').textContent = formattedDate;
-        }
+    // Get the date and time elements
+    const heading = document.getElementById('heading');
+    const dateElement = document.getElementById('date');
 
-        function updateTime() {
-            const now = new Date();
-            document.getElementById('time').textContent = now.toLocaleTimeString();
-            const hours = now.getHours();
-            const head = document.getElementById('heading');
+    function updateDate() {
+        const now = new Date();
+        const options = { weekday: 'long', month: 'long', day: 'numeric' };
+        const formattedDate = now.toLocaleDateString(undefined, options).toUpperCase();
+        dateElement.textContent = formattedDate;
+    }
 
+    function updateTime() {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const formattedTime = `${String(hours % 12 || 12).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
+        heading.textContent = formattedTime;
 
-        let timePassed = 0;
-        const interval = setInterval(function () {
-            timePassed += 1000; // Increment by 1 second
-            if (timePassed >= 60000) { // Check if 1 minute has passed
-                clearInterval(interval); // Stop the interval
-                location.href = "/main/"; // Redirect
-            }
-        }, 1000); // Check every second
+    }
 
+    // Redirect after 60 seconds
+    setTimeout(() => {
+        location.href = "/bread/";
+    }, 60000);
+    document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
-        updateDate();
-        setInterval(updateTime, 1000);
+    // Update date and time on load and then every second
+    updateTime();
+    updateDate();
+    setInterval(updateDate, 1000);
+    setInterval(updateTime, 1000);
 </script>
 
 </body>

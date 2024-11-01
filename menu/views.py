@@ -32,12 +32,12 @@ def display_menu_view(request, display_section):
     ist = pytz.timezone("Asia/Kolkata")
     ist_now = utc_now.astimezone(ist)
     print(ist_now)
-    formatted_time = ist_now.strftime("%I:%M %p")
+    formatted_time = ist_now.strftime("%I:%M:%S %p")
     print("formatted_time",formatted_time)
 
     # Convert date string to a date object
     selected_date = datetime.now().date()
-    formatted_date = selected_date.strftime("%A %B %d").upper()
+    formatted_date = selected_date.strftime("%A, %B %d").upper()
 
     # Determine the current meal period (e.g., Breakfast or Lunch/Dinner)
 

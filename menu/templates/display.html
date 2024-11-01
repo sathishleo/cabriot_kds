@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 
 
@@ -65,15 +65,12 @@
         }
 
         .tod{
-
-            font-size: 1.5rem;
-
+            font-size: 1.4rem;
+            text-align:center;
         }
-
         .dot{
-
             font-size: 1.5rem;
-
+            text-align:center;
         }
 
         .cardhead{
@@ -265,6 +262,25 @@
             /* Adjust the margin as needed */
 
         }
+        .d-flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .navhead {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px; /* Adjust padding as needed for spacing */
+        }
+
+        .vertical-line {
+            border-left: 1px solid #000; /* Vertical line */
+            padding: 0 15px;
+            margin: 0 15px;
+        }
+
 
         }
 
@@ -289,70 +305,29 @@
         </a>
 
         <div class="d-flex">
-            <div class="vertical-line">
             <div class="navhead d-flex flex-column align-items-bottom ">
-
-                <h3 class="mb-1 dot">DATE</h3>
-
-                <h2 class="tod" style="color: white;">{{formated_date}}</h2>
-
+                <h3 class="dot">DATE</h3>
+                <h2 id="date" class="tod" style="color: white;"></h2>
             </div>
             </div>
             <div class="vertical-line">
             <div class="navhead d-flex flex-column align-items-bottom ">
-
-                <h3 class="mb-1 dot">SECTION</h3>
-
+                <h3 class="dot">SECTION</h3>
                 <h2 class="tod" style="color: white;">{{section}}</h2>
             </div>
             </div>
             <div class="vertical-line">
             <div class="navhead d-flex flex-column align-items-bottom ">
-
-                <h3 class="mb-1 dot">MEAL</h3>
-
+                <h3 class="dot">MEAL</h3>
                 <h2 class="tod" style="color: white;">{{meal}}</h2>
-
             </div>
             </div>
             <div class="vertical-line">
-            <div class="navhead d-flex flex-column align-items-bottom ">
-
-                <h3 class="mb-1 dot">CURRENT TIME</h3>
-
-                <h2 class="tod" style="color: white;">{{formated_time}}</h2>
-
+                <div class="navhead d-flex flex-column align-items-bottom ">
+                    <h3 class="dot">CURRENT TIME</h3>
+                    <h2 class="tod" style="color: white;" id="heading"></h2>
+                </div>
             </div>
-            </div>
-
-<!--            <div class="vertical-line">-->
-
-<!--                <div class="navhead d-flex flex-column align-items-bottom">-->
-
-<!--                    <h3 class="mb-1 dot">MEAL</h3>-->
-
-<!--                    <h2 class="tod" style="color: white;" id="heading"></h2>-->
-
-<!--                </div>-->
-
-<!--            </div>-->
-
-<!--            <div class="vertical-line">-->
-
-<!--                <div class="navhead2 d-flex flex-column align-items-center">-->
-
-<!--                    <span class="fw-semibold dot" style=" color:#231F20" id="date"></span>-->
-
-<!--                    <span class="fw-bold tod" style=" color:white" id="time"></span>-->
-
-<!--                </div>-->
-
-<!--            </div>-->
-
-
-
-        </div>
-
     </nav>
 
 
@@ -366,7 +341,7 @@
         <div class="row" style="margin-top: 1rem;">
             {% for item in menu_items %}
                 <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">
-                    <div class="card h-100">
+                    <div class="card h-100 d-flex flex-column">
                         <div class="card-body d-flex align-items-center" style="color: white; border: 2.5px solid white; border-bottom: none; border-radius: 8px; background-color: #231F20;">
                             {% if item.menu_item.image %}
                                 <img class="rounded-circle" src="{{ item.menu_item.image.url }}" alt="{{ item.menu_item.item_name }}" width="25%" height="auto">
@@ -381,19 +356,19 @@
                                 {% endif %}
                             </h3>
                         </div>
-                        <div class="card-footer" style="font-size: 2rem;">
-                            <div style="display: flex; align-items: baseline; padding-left: 6rem;background-color: #2ECC71;">
+                        <div class="card-footer mt-auto" style="font-size: 2rem; background-color: #2ECC71; display: flex; align-items: center; padding: 1rem;">
+                            <div style="flex-grow: 1; text-align: center;">
                                 {% if item.quantity %}
                                     <span class="cardhead">{{ item.quantity }}</span>
                                     <span class="unit">{{ item.quantity_type }}</span>
                                 {% else %}
-                                    <span class="cardhead" style="color: #2ECC71;"></span>
-                                    <span class="unit" style="color: #2ECC71;"></span>
+                                    <span class="cardhead" style="color: #ffffff;"></span>
+                                    <span class="unit" style="color: #ffffff;"></span>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
-                </div> <!-- Close col-lg-3 col-md-4 col-sm-6 -->
+                </div>
             {% endfor %}
         </div>
     </div>
@@ -401,165 +376,84 @@
 
 
 
-
-
-
-    <script>
-
-
+<script>
     function adjustCardLayout() {
+        const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
+        const cardCount = cards.length;
 
-            const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
+        // Reset row centering
+        const row = document.querySelector('.row');
+        row.style.justifyContent = 'center';
 
-            const cardCount = cards.length;
-
-
-
-            // Reset row centering
-
-            const row = document.querySelector('.row');
-
-            row.style.justifyContent = 'c';
-
-
-
-            if (cardCount <= 2) {
-
-                // Each row should have 1 card and centered
-
-                row.style.justifyContent = 'center';
-
-                cards.forEach(card => {
-
-                    card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-
-                    card.classList.add('col-lg-6', 'col-md-6');
-
-                });
-
-            } else if (cardCount <= 4) {
-
-                // Each row should have 2 cards and centered
-
-                row.style.justifyContent = 'center';
-
-                row.style.marginTop = '1px';;
-
-                cards.forEach(card => {
-
-                    card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-
-                    card.classList.add('col-lg-6', 'col-md-6');
-
-                });
-
-            } else if (cardCount <= 6) {
-
-                // Each row should have 3 cards
-
-                cards.forEach(card => {
-
-                    card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-
-                    card.classList.add('col-lg-4', 'col-md-6');
-
-                });
-
-            } else if (cardCount <= 9) {
-
-                // Each row should have 4 cards
-
-                cards.forEach(card => {
-
-                    card.classList.remove('col-lg-6', 'col-md-6');
-
-                    card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
-
-                });
-
-            } else {
-
-                // More than 9 cards, keep the default layout
-
-                cards.forEach(card => {
-
-                    card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');
-
-                    card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
-
-                });
-
-            }
-
-        }
-
-
-
-        // Call the function when the page loads
-
-        document.addEventListener('DOMContentLoaded', adjustCardLayout);
-
-
-
-        // Call the function when the page loads
-
-        document.addEventListener('DOMContentLoaded', adjustCardLayout);
-
-
-        // Get the date and time elements
-        const dateElement = document.getElementById('date');
-        const timeElement = document.getElementById('time');
-
-        // Function to update the date
-        function updateDate() {
-            const now = new Date();
-            const options = { weekday: 'long', month: 'long', day: 'numeric' };
-            const formattedDate = now.toLocaleDateString(undefined, options);
-
-            // Convert to uppercase and replace lowercase letters
-            const uppercaseDate = formattedDate.toUpperCase().replace(/[a-z]/g, function (match) {
-                return match.toUpperCase();
+        if (cardCount <= 2) {
+            // 1 card per row, centered
+            cards.forEach(card => {
+                card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
+                card.classList.add('col-lg-6', 'col-md-6');
             });
-
-            dateElement.textContent = uppercaseDate;
+        } else if (cardCount <= 4) {
+            // 2 cards per row, centered
+            cards.forEach(card => {
+                card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
+                card.classList.add('col-lg-6', 'col-md-6');
+            });
+        } else if (cardCount <= 6) {
+            // 3 cards per row
+            cards.forEach(card => {
+                card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
+                card.classList.add('col-lg-4', 'col-md-6');
+            });
+        } else if (cardCount <= 9) {
+            // 4 cards per row
+            cards.forEach(card => {
+                card.classList.remove('col-lg-6', 'col-md-6');
+                card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
+            });
+        } else {
+            // Default layout for more than 9 cards
+            cards.forEach(card => {
+                card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');
+                card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
+            });
         }
+    }
 
-        // Function to update the time
-        function updateTime() {
-            const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const formattedTime = now.toLocaleTimeString();
-            timeElement.textContent = formattedTime;
-            const head = document.getElementById('heading')
 
+    // Get the date and time elements
+    const dateElement = document.getElementById('date');
+    const heading = document.getElementById('heading');
+
+    function updateDate() {
+        const now = new Date();
+        const options = { weekday: 'long', month: 'long', day: 'numeric' };
+        const formattedDate = now.toLocaleDateString(undefined, options).toUpperCase();
+        dateElement.textContent = formattedDate;
+    }
+
+    function updateTime() {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const formattedTime = `${String(hours % 12 || 12).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
+        heading.textContent = formattedTime;
+
+    }
+
+    // Redirect after 60 seconds
+    setTimeout(() => {
+        location.href = "/vegetable/";
+    }, 60000);
     document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
- // Update content based on time
-         if ((hours >= 22 && minutes  >= 0) || (hours <= 12 && minutes >= 0))  {
-            head.textContent = "BREAKFAST / LUNCH"
-        }
-         else {
-            head.textContent = "DINNER"
-        }
+    // Update date and time on load and then every second
+    updateDate();
+    updateTime();
+    setInterval(updateDate, 1000);
+    setInterval(updateTime, 1000);
+</script>
 
-            }
-        let timePassed = 0;
-        const interval = setInterval(function () {
-            timePassed += 1000; // Increment by 1 second
-            if (timePassed >= 60000) { // Check if 1 minute has passed
-                clearInterval(interval); // Stop the interval
-                location.href = "/main/"; // Redirect
-            }
-        }, 1000); // Check every second
-        }, 60000); // refresh/redirect after 5 seconds.
-
-        // Update the date and time initially and then every second
-        updateDate();
-        updateTime();
-        setInterval(updateTime, 1000);
-
-    </script>
 
 </body>
 
