@@ -37,7 +37,7 @@ def display_menu_view(request, display_section):
 
     # Convert date string to a date object
     selected_date = datetime.now().date()
-    formatted_date = selected_date.strftime("%A %B %d")
+    formatted_date = selected_date.strftime("%A %B %d").upper()
 
     # Determine the current meal period (e.g., Breakfast or Lunch/Dinner)
 
