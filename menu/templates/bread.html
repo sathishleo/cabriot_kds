@@ -34,11 +34,9 @@
         }
         .tod{
             font-size: 1.4rem;
-            text-align:center;
         }
         .dot{
             font-size: 1.5rem;
-            text-align:center;
         }
         .cardhead{
             font-size: 2.7rem;
@@ -193,8 +191,8 @@
     </nav>
 
     <!-- Page Content -->
-<div class="px-4 mx-auto" style="max-width: 100%; padding: 0; background-color: #231F20; height: 85vh; display: flex; align-items: center;">
-    <div class="px-4 mx-auto" style="max-width: 100%; padding: 0; background-color: #231F20; height: 85vh; display: flex; align-items: center;">
+<!--<div class="px-4 mx-auto" style="max-width: 100%; padding: 0; background-color: #FFC331; height: 85vh; display: flex; align-items: center;">-->
+     <div class="px-4 mx-auto" style="max-width: 100%; padding: 0; background-color: #231F20; height: 85vh; display: flex; align-items: center;">
         <div class="row" style="margin-top: 1rem;">
             {% for item in menu_items %}
                 <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">
@@ -213,15 +211,10 @@
                                 {% endif %}
                             </h3>
                         </div>
-                        <div class="card-footer mt-auto" style="font-size: 2rem; background-color: #2ECC71; display: flex; align-items: center; padding: 1rem;">
-                            <div style="flex-grow: 1; text-align: center;">
-                                {% if item.quantity %}
-                                    <span class="cardhead">{{ item.quantity }}</span>
-                                    <span class="unit">{{ item.quantity_type }}</span>
-                                {% else %}
-                                    <span class="cardhead" style="color: #ffffff;"></span>
-                                    <span class="unit" style="color: #ffffff;"></span>
-                                {% endif %}
+                        <div style="color: #231F20; font-size:2rem;" class="card-footer">
+                            <div style="display: flex; align-items: baseline; padding-left:6rem">
+                                <span class="cardhead">{{ item.quantity|default:"&nbsp;" }}</span>
+                                <span class="unit" style=" margin-left: 10px;">{{ item.quantity_type|default:"&nbsp;" }}</span>
                             </div>
                         </div>
                     </div>
@@ -229,7 +222,7 @@
             {% endfor %}
         </div>
     </div>
-</div>
+<!--</div>-->
 <script>
     function adjustCardLayout() {
         const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
