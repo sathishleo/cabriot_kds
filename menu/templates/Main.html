@@ -646,7 +646,7 @@
 
 
                 });
-
+            document.addEventListener('DOMContentLoaded', adjustCardLayout);
             }
 
         }
@@ -658,40 +658,92 @@
         document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
 
-    // Get the date and time elements
     const dateElement = document.getElementById('date');
     const heading = document.getElementById('heading');
 
-    function updateDate() {
-        const now = new Date();
-        const options = { weekday: 'long', month: 'long', day: 'numeric' };
-        const formattedDate = now.toLocaleDateString(undefined, options).toUpperCase();
-        dateElement.textContent = formattedDate;
+    // Function to update the date and meal time
+   function updateDateAndMeal() {
+    const now = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC +5:30
+    const istNow = new Date(now.getTime() + istOffset);
+    const hour = istNow.getHours();
+    const minute = istNow.getMinutes();
+    let textContent = "";
+    let meal = "";
+    let displayDate;
+
+    // Determine meal time and update date accordingly
+    if (hour >= 22 || (hour >= 20 && minute >= 10)) {
+        // It's time for BREAKFAST / LUNCH
+        textContent = "BREAKFAST / LUNCH";
+        meal = "BL";
+        // Move to the next day for breakfast/lunch
+        istNow.setDate(istNow.getDate() + 1);
+    } else {
+        // It's time for DINNER
+        meal = "D";
+        textContent = "DINNER";
+        // Keep the current date for dinner
     }
 
+    // Calculate the display date based on the meal type
+    displayDate = istNow.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase();
+
+    // If it's dinner, reset to current date
+    if (meal === "BL") {
+        displayDate = istNow.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase();
+    } else {
+        // If it's dinner, show the current date without adjusting for the next day
+        displayDate = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase();
+    }
+
+    // Update the date element
+    dateElement.textContent = displayDate; // Set the display date
+
+    // Optional: Log meal information
+    console.log(`Current meal type: ${meal}`);
+    console.log(`Meal text content: ${textContent}`);
+    console.log(`Displayed date: ${displayDate}`);
+    }
+
+
+
+
+    // Function to update the time
     function updateTime() {
         const now = new Date();
         const hours = now.getHours();
         const minutes = now.getMinutes();
         const seconds = now.getSeconds();
         const ampm = hours >= 12 ? 'PM' : 'AM';
-        const formattedTime = `${String(hours % 12 || 12).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
-        heading.textContent = formattedTime;
 
+        // Format the time to 12-hour format
+        const formattedHours = String(hours % 12 || 12).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+
+        const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${ampm}`;
+
+        // Display the formatted time
+        heading.textContent = formattedTime;
     }
+
+    // Initial load and set interval for updates
+    document.addEventListener('DOMContentLoaded', () => {
+        adjustCardLayout(); // Assuming this function exists
+        updateTime(); // Call the function to adjust card layout
+        updateDateAndMeal(); // Call the function to update date and meal on load
+        setInterval(updateTime, 1000); // Update time every second
+        // Set the date update to every minute (or longer), as it doesn't need to update every second
+        setInterval(updateDateAndMeal, 60000); // Update every minute // Update every minute
+    });
 
     // Redirect after 60 seconds
     setTimeout(() => {
         location.href = "/main/";
+        adjustCardLayout();
     }, 60000);
-    document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
-    // Update date and time on load and then every second
-
-    updateDate();
-    updateTime();
-    setInterval(updateDate, 1000);
-    setInterval(updateTime, 1000);
 </script>
 </body>
 

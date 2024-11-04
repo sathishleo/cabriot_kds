@@ -225,80 +225,224 @@
 <!--</div>-->
 <script>
     function adjustCardLayout() {
-        const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
-        const cardCount = cards.length;
 
-        // Reset row centering
-        const row = document.querySelector('.row');
-        row.style.justifyContent = 'center';
+            const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
 
-        if (cardCount <= 2) {
-            // 1 card per row, centered
-            cards.forEach(card => {
-                card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-                card.classList.add('col-lg-6', 'col-md-6');
-            });
-        } else if (cardCount <= 4) {
-            // 2 cards per row, centered
-            cards.forEach(card => {
-                card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-                card.classList.add('col-lg-6', 'col-md-6');
-            });
-        } else if (cardCount <= 6) {
-            // 3 cards per row
-            cards.forEach(card => {
-                card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-                card.classList.add('col-lg-4', 'col-md-6');
-            });
-        } else if (cardCount <= 9) {
-            // 4 cards per row
-            cards.forEach(card => {
-                card.classList.remove('col-lg-6', 'col-md-6');
-                card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
-            });
-        } else {
-            // Default layout for more than 9 cards
-            cards.forEach(card => {
-                card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');
-                card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
-            });
+            const cardCount = cards.length;
+
+
+
+            // Reset row centering
+
+            const row = document.querySelector('.row');
+
+            if (cardCount == 1) {
+
+                row.style.justifyContent = 'center';
+
+                row.style.width = '100%';
+
+            }
+
+            else if (cardCount == 2) {
+
+                //row.style.justifyContent = 'center';
+
+                //row.style.display = 'flex';
+
+                row.style.justifyContent = 'center';
+
+                row.style.width = '100%';
+
+                cards.forEach(card => {
+
+                    card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
+
+                    card.classList.add('col-lg-4', 'col-md-6');
+
+                });
+
+            } else if (cardCount <= 4) {
+
+                row.style.display = 'flex';
+
+                row.style.justifyContent = 'center';
+
+                //row.style.justifyContent = 'center';
+
+                row.style.alignItems = 'center';
+
+                // Each row should have 2 cards and centered
+
+
+
+                row.style.marginTop = '1px';
+
+                cards.forEach(card => {
+
+                    card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
+
+                    card.classList.add('col-lg-6', 'col-md-6');
+
+
+
+                });
+
+            } else if (cardCount <= 6) {
+
+                row.style.display = 'flex';
+
+                row.style.justifyContent = 'center';
+
+                //row.style.justifyContent = 'center';
+
+                row.style.alignItems = 'center';
+
+                // Each row should have 3 cards
+
+                cards.forEach(card => {
+
+                    card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
+
+                    card.classList.add('col-lg-4', 'col-md-6');
+
+                });
+
+            } else if (cardCount <= 9) {
+
+                // Each row should have 4 cards
+
+                row.style.display = 'flex';
+
+                row.style.justifyContent = 'center';
+
+                //row.style.justifyContent = 'center';
+
+                row.style.alignItems = 'center';
+
+
+
+                cards.forEach((card, index) => {
+
+                    card.classList.remove('col-lg-6', 'col-md-6');
+
+                    card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
+
+
+
+                });
+
+            } else {
+
+                // More than 9 cards, keep the default layout
+
+                cards.forEach((card, index) => {
+
+                    card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');
+
+                    card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
+
+
+
+                });
+            document.addEventListener('DOMContentLoaded', adjustCardLayout);
+            }
+
         }
-    }
 
 
-    // Get the date and time elements
-    const heading = document.getElementById('heading');
+
+        // Call the function when the page loads
+
+        document.addEventListener('DOMContentLoaded', adjustCardLayout);
+
+
     const dateElement = document.getElementById('date');
+    const heading = document.getElementById('heading');
 
-    function updateDate() {
-        const now = new Date();
-        const options = { weekday: 'long', month: 'long', day: 'numeric' };
-        const formattedDate = now.toLocaleDateString(undefined, options).toUpperCase();
-        dateElement.textContent = formattedDate;
+    // Function to update the date and meal time
+    // Function to update the date and meal time
+   function updateDateAndMeal() {
+    const now = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC +5:30
+    const istNow = new Date(now.getTime() + istOffset);
+    const hour = istNow.getHours();
+    const minute = istNow.getMinutes();
+    let textContent = "";
+    let meal = "";
+    let displayDate;
+
+    // Determine meal time and update date accordingly
+    if (hour >= 22 || (hour >= 20 && minute >= 10)) {
+        // It's time for BREAKFAST / LUNCH
+        textContent = "BREAKFAST / LUNCH";
+        meal = "BL";
+        // Move to the next day for breakfast/lunch
+        istNow.setDate(istNow.getDate() + 1);
+    } else {
+        // It's time for DINNER
+        meal = "D";
+        textContent = "DINNER";
+        // Keep the current date for dinner
     }
 
+    // Calculate the display date based on the meal type
+    displayDate = istNow.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase();
+
+    // If it's dinner, reset to current date
+    if (meal === "BL") {
+        displayDate = istNow.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase();
+    } else {
+        // If it's dinner, show the current date without adjusting for the next day
+        displayDate = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase();
+    }
+
+    // Update the date element
+    dateElement.textContent = displayDate; // Set the display date
+
+    // Optional: Log meal information
+    console.log(`Current meal type: ${meal}`);
+    console.log(`Meal text content: ${textContent}`);
+    console.log(`Displayed date: ${displayDate}`);
+    }
+
+
+
+    // Function to update the time
     function updateTime() {
         const now = new Date();
         const hours = now.getHours();
         const minutes = now.getMinutes();
         const seconds = now.getSeconds();
         const ampm = hours >= 12 ? 'PM' : 'AM';
-        const formattedTime = `${String(hours % 12 || 12).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
-        heading.textContent = formattedTime;
 
+        // Format the time to 12-hour format
+        const formattedHours = String(hours % 12 || 12).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+
+        const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${ampm}`;
+
+        // Display the formatted time
+        heading.textContent = formattedTime;
     }
+
+    // Initial load and set interval for updates
+    document.addEventListener('DOMContentLoaded', () => {
+        adjustCardLayout(); // Assuming this function exists
+        updateTime(); // Call the function to adjust card layout
+        updateDateAndMeal(); // Call the function to update date and meal on load
+        setInterval(updateTime, 1000); // Update time every second
+        // Set the date update to every minute (or longer), as it doesn't need to update every second
+        setInterval(updateDateAndMeal, 60000); // Update every minute // Update every minute
+    });
 
     // Redirect after 60 seconds
     setTimeout(() => {
         location.href = "/bread/";
+        adjustCardLayout();
     }, 60000);
-    document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
-    // Update date and time on load and then every second
-    updateTime();
-    updateDate();
-    setInterval(updateDate, 1000);
-    setInterval(updateTime, 1000);
 </script>
 
 </body>
