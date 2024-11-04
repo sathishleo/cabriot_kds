@@ -182,10 +182,10 @@ def display_menu_view(request, display_section):
 
     # Determine the current meal period
     hour, minute = ist_now.hour, ist_now.minute
-    if (hour >= 22 and minute >= 0) or (hour >= 5 and minute >= 30 ):
+    if (hour >= 22 and minute >= 0) or (hour >= 5 and minute >= 40 ):
         text_content = "BREAKFAST / LUNCH"
         meal = "BL"
-        if hour >= 22:
+        if hour >= 22 or (hour >= 5 and minute >= 40):
             selected_date += timedelta(days=1)  # Move to the next day for late-night meals
     else:
         meal = "D"
