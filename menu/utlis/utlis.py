@@ -16,6 +16,17 @@ class Displaysection:
         else:
             return " "
 
+    @staticmethod
+    def get_template(template):
+        if Displaysection.VEGETABLE.lower() == template.lower():
+            return "display.html"
+        elif Displaysection.MAIN.lower() == template.lower():
+            return "Main.html"
+        elif Displaysection.BREAD.lower() == template.lower():
+            return "bread.html"
+        else:
+            return "welcome.html"
+
     def quantitytype_format(self, menu):
         formatted_menu = []  # Initialize an empty list to hold formatted items
         for obj in menu:
