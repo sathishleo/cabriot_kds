@@ -31,6 +31,16 @@
             height:100%;
              width:100%
         }
+        .vertical-line {
+            border-left: 1px solid white;
+            height: 50px;
+            align-self: center;
+        }
+        .navhead h3, .navhead h2 {
+            margin: 0;
+        }
+
+
         .tod{
             font-size: 1.4rem;
         }
@@ -140,36 +150,34 @@
 
 <body class="overflow-hidden">
     <!-- Navigation -->
-    <nav class="container d-flex justify-content-between navbar navbar-expand-lg navbar static-top"
-        style="background-color: #FF7B7C; height: 15vh; max-width: 100% ">
-        <a style="height: 90%; " class="navbar-brand px-4" href="#">
-            <img src="{% static 'image/cabriot_eat1.svg' %}" alt="..." >
-        </a>
-        <div class="d-flex">
-            <div class="navhead d-flex flex-column align-items-bottom ">
-                <h3 class=" dot">DATE</h3>
-                <h2 id="date" class="tod" style="color: white;"></h2>
-            </div>
-            </div>
-            <div class="vertical-line">
-            <div class="navhead d-flex flex-column align-items-bottom ">
-                <h3 class="dot">SECTION</h3>
-                <h2 class="tod" style="color: white;">{{section}}</h2>
-            </div>
-            </div>
-            <div class="vertical-line">
-                <div class="navhead d-flex flex-column align-items-bottom ">
-                    <h3 class="dot">MEAL</h3>
-                    <h2  class="tod" style="color: white;">{{meal}}</h2>
-                </div>
-            </div>
-            <div class="vertical-line">
-                <div class="navhead d-flex flex-column align-items-bottom ">
-                    <h3 class="dot">CURRENT TIME</h3>
-                    <h2 class="tod" style="color: white;" id="heading"></h2>
-                </div>
-            </div>
-    </nav>
+    <nav class="container d-flex justify-content-start navbar navbar-expand-lg navbar static-top"
+     style="background-color: #FF7B7C; height: 15vh; max-width: 100%;">
+    <a class="navbar-brand px-4" href="#" style="height: 90%;">
+        <img src="{% static 'image/cabriot_eat1.svg' %}" alt="Logo">
+    </a>
+    <div class="d-flex align-items-bottom">
+        <div class="navhead d-flex flex-column align-items-bottom mx-3">
+            <h3 class="dot">DATE</h3>
+            <h2 id="date" class="tod" style="color: white;"></h2>
+        </div>
+        <div class="vertical-line mx-3"></div>
+        <div class="navhead d-flex flex-column align-items-bottom mx-3">
+            <h3 class="dot">SECTION</h3>
+            <h2 class="tod" style="color: white;">{{ section }}</h2>
+        </div>
+        <div class="vertical-line mx-3"></div>
+        <div class="navhead d-flex flex-column align-items-bottom mx-3">
+            <h3 class="dot">MEAL</h3>
+            <h2 class="tod" style="color: white;">{{ meal }}</h2>
+        </div>
+        <div class="vertical-line mx-3"></div>
+        <div class="navhead d-flex flex-column align-items-bottom mx-3">
+            <h3 class="dot">CURRENT TIME</h3>
+            <h2 id="heading" class="tod" style="color: white;"></h2>
+        </div>
+    </div>
+</nav>
+
 
     <!-- Page Content -->
     <div class="px-4 mx-auto" style="max-width: 100%; padding: 0; background-color: #231F20; height: 85vh; display: flex; align-items: center;">
@@ -678,11 +686,11 @@
             let meal;
             let displayDate;
 
-            if ((hour <= 12 && minute >= 0) || (hour >= 22 && minute >= 20)) {
+            if ((hour >= 11 && minute >= 30) || (hour >= 21 && minute >= 30)) {
                 textContent = "BREAKFAST / LUNCH";
                 meal = "BL";
                 // Move to the next day if it's late at night
-                if (hour >= 22 && minute >= 20) {
+                if (hour >= 21 && minute >= 30) {
                     now.setDate(now.getDate() + 1);
                 }
             } else {
