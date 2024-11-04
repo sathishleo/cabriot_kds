@@ -1,7 +1,6 @@
 import json
 from datetime import datetime, timedelta
 
-import now as now
 import pytz
 from django.core.serializers import serialize
 from django.db.models import Q
