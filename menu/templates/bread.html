@@ -379,16 +379,16 @@
             let meal;
             let displayDate;
 
-            if ((hour =< 12 &&  minute >= 00) || (hour >= 22 && minute >= 20)) {
+            if ((hour <= 12 && minute >= 0) || (hour >= 22 && minute >= 20)) {
                 textContent = "BREAKFAST / LUNCH";
                 meal = "BL";
-                if ((hour =< 12 &&  minute >= 00) || (hour >= 22 && minute >= 20)) {
+                // Move to the next day if it's late at night
+                if (hour >= 22 && minute >= 20) {
                     now.setDate(now.getDate() + 1);
                 }
             } else {
                 textContent = "DINNER";
                 meal = "D";
-                now.setDate(now.getDate());
             }
 
             displayDate = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase();

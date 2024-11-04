@@ -658,8 +658,6 @@
         document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
 
-    const dateElement = document.getElementById('date');
-    const heading = document.getElementById('heading');
     function updateTime() {
         const now = new Date();
         const hours = now.getHours();
@@ -667,7 +665,7 @@
         const seconds = now.getSeconds();
         const ampm = hours >= 12 ? 'PM' : 'AM';
         const formattedTime = `${String(hours % 12 || 12).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
-        heading.textContent = formattedTime;
+        document.getElementById('heading').textContent = formattedTime;
 
     }
 
@@ -680,10 +678,11 @@
             let meal;
             let displayDate;
 
-            if ((hour =< 12 &&  minute >= 00) || (hour >= 22 && minute >= 20)) {
+            if ((hour <= 12 && minute >= 0) || (hour >= 22 && minute >= 20)) {
                 textContent = "BREAKFAST / LUNCH";
                 meal = "BL";
-                if ((hour =< 12 &&  minute >= 00) || (hour >= 22 && minute >= 20)) {
+                // Move to the next day if it's late at night
+                if (hour >= 22 && minute >= 20) {
                     now.setDate(now.getDate() + 1);
                 }
             } else {
