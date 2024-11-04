@@ -62,6 +62,16 @@
             padding: 0;
             padding-right: 4rem;
         }
+<!--        .card-footer {-->
+<!--            background-color: #FFC107; /* Adjust to your desired color */-->
+<!--            text-align: center;-->
+<!--            width: 100%;-->
+<!--            padding: 10px; /* Adjust padding as needed */-->
+<!--            font-weight: bold;-->
+<!--            border-top: 1px solid #ddd;-->
+<!--            color: white;-->
+<!--        }-->
+
 
         .vertical-line {
             border-left: 2px solid #000;
@@ -225,135 +235,70 @@
 <!--</div>-->
 <script>
      function adjustCardLayout() {
-
             const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
-
             const cardCount = cards.length;
 
-
-
             // Reset row centering
-
             const row = document.querySelector('.row');
-
             if (cardCount == 1) {
-
                 row.style.justifyContent = 'center';
-
                 row.style.width = '100%';
-
             }
-
             else if (cardCount == 2) {
-
                 //row.style.justifyContent = 'center';
-
                 //row.style.display = 'flex';
-
                 row.style.justifyContent = 'center';
-
                 row.style.width = '100%';
-
                 cards.forEach(card => {
-
                     card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-
                     card.classList.add('col-lg-4', 'col-md-6');
-
                 });
-
             } else if (cardCount <= 4) {
-
                 row.style.display = 'flex';
-
                 row.style.justifyContent = 'center';
-
                 //row.style.justifyContent = 'center';
-
                 row.style.alignItems = 'center';
-
                 // Each row should have 2 cards and centered
 
-
-
                 row.style.marginTop = '1px';
-
                 cards.forEach(card => {
-
                     card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-
                     card.classList.add('col-lg-6', 'col-md-6');
 
-
-
                 });
-
             } else if (cardCount <= 6) {
-
                 row.style.display = 'flex';
-
                 row.style.justifyContent = 'center';
-
                 //row.style.justifyContent = 'center';
-
                 row.style.alignItems = 'center';
-
                 // Each row should have 3 cards
-
                 cards.forEach(card => {
-
                     card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-
                     card.classList.add('col-lg-4', 'col-md-6');
-
                 });
-
             } else if (cardCount <= 9) {
-
                 // Each row should have 4 cards
-
                 row.style.display = 'flex';
-
                 row.style.justifyContent = 'center';
-
                 //row.style.justifyContent = 'center';
-
                 row.style.alignItems = 'center';
 
-
-
                 cards.forEach((card, index) => {
-
                     card.classList.remove('col-lg-6', 'col-md-6');
-
                     card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
 
-
-
                 });
-
             } else {
-
                 // More than 9 cards, keep the default layout
-
                 cards.forEach((card, index) => {
-
                     card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');
-
                     card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
 
-
-
                 });
-            document.addEventListener('DOMContentLoaded', adjustCardLayout);
             }
-
         }
 
-
-
         // Call the function when the page loads
-
         document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
 
@@ -370,31 +315,37 @@
 
     }
 
-    function updateMealTime() {
-            const now = new Date();
-            const hour = now.getHours();
-            const minute = now.getMinutes();
+   function updateMealTime() {
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
 
-            let textContent;
-            let meal;
-            let displayDate;
+    let textContent;
+    let meal;
+    let displayDate;
 
-            if ((hour >= 11 && minute >= 30) || (hour >= 21 && minute >= 30)) {
-                textContent = "BREAKFAST / LUNCH";
-                meal = "BL";
-                // Move to the next day if it's late at night
-                if (hour >= 21 && minute >= 30) {
-                    now.setDate(now.getDate() + 1);
-                }
-            } else {
-                textContent = "DINNER";
-                meal = "D";
-                now.setDate(now.getDate());
-            }
+    // Determine the meal based on the time
+    if ((hour === 21 && minute >= 30) || (hour >= 22) || (hour < 11) || (hour === 11 && minute <= 30)) {
+        textContent = "BREAKFAST / LUNCH";
+        meal = "BL";
 
-            displayDate = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase();
-            document.getElementById('date').textContent = displayDate;
+        // Move to the next day if it's late at night
+        if (hour >= 22 || (hour === 21 && minute >= 30)) {
+            now.setDate(now.getDate() + 1);
         }
+    } else {
+        textContent = "DINNER";
+        meal = "D";
+    }
+
+    // Format the display date to show as uppercase
+    displayDate = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase();
+
+    // Update the date and meal elements on the page
+    document.getElementById('date').textContent = displayDate;
+    document.getElementById('meal').textContent = textContent;
+    }
+
 
 
 
@@ -407,7 +358,13 @@
         // Set the date update to every minute (or longer), as it doesn't need to update every second
         setInterval(updateMealTime, 1000); // Update every minute // Update every minute
     });
-
+<!--    document.addEventListener("DOMContentLoaded", function() {-->
+<!--    const footers = document.querySelectorAll(".card-footer");-->
+<!--    footers.forEach(footer => {-->
+<!--        footer.style.width = "100%";-->
+<!--        footer.style.textAlign = "center";-->
+<!--    });-->
+<!--    });-->
     // Redirect after 60 seconds
     setTimeout(() => {
         location.href = "/bread/";

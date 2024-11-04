@@ -54,6 +54,7 @@
             padding-right: 3rem;
             padding-left: 3rem;
             margin-top: 1rem;
+
         }
         .navhead2{
             padding-right: 3rem;
@@ -156,22 +157,22 @@
         <img src="{% static 'image/cabriot_eat1.svg' %}" alt="Logo">
     </a>
     <div class="d-flex align-items-bottom">
-        <div class="navhead d-flex flex-column align-items-bottom mx-3">
+        <div class="navhead d-flex flex-column align-items-bottom">
             <h3 class="dot">DATE</h3>
             <h2 id="date" class="tod" style="color: white;"></h2>
         </div>
-        <div class="vertical-line mx-3"></div>
-        <div class="navhead d-flex flex-column align-items-bottom mx-3">
+        <div class="vertical-line "></div>
+        <div class="navhead d-flex flex-column align-items-bottom ">
             <h3 class="dot">SECTION</h3>
             <h2 class="tod" style="color: white;">{{ section }}</h2>
         </div>
-        <div class="vertical-line mx-3"></div>
-        <div class="navhead d-flex flex-column align-items-bottom mx-3">
+        <div class="vertical-line "></div>
+        <div class="navhead d-flex flex-column align-items-bottom ">
             <h3 class="dot">MEAL</h3>
             <h2 class="tod" style="color: white;">{{ meal }}</h2>
         </div>
-        <div class="vertical-line mx-3"></div>
-        <div class="navhead d-flex flex-column align-items-bottom mx-3">
+        <div class="vertical-line "></div>
+        <div class="navhead d-flex flex-column align-items-bottom ">
             <h3 class="dot">CURRENT TIME</h3>
             <h2 id="heading" class="tod" style="color: white;"></h2>
         </div>
@@ -534,132 +535,68 @@
 
 <script>
      function adjustCardLayout() {
-
             const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
-
             const cardCount = cards.length;
 
-
-
             // Reset row centering
-
             const row = document.querySelector('.row');
-
             if (cardCount == 1) {
-
                 row.style.justifyContent = 'center';
-
                 row.style.width = '100%';
-
             }
-
             else if (cardCount == 2) {
-
                 //row.style.justifyContent = 'center';
-
                 //row.style.display = 'flex';
-
                 row.style.justifyContent = 'center';
-
                 row.style.width = '100%';
-
                 cards.forEach(card => {
-
                     card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-
                     card.classList.add('col-lg-4', 'col-md-6');
-
                 });
-
             } else if (cardCount <= 4) {
-
                 row.style.display = 'flex';
-
                 row.style.justifyContent = 'center';
-
                 //row.style.justifyContent = 'center';
-
                 row.style.alignItems = 'center';
-
                 // Each row should have 2 cards and centered
 
-
-
                 row.style.marginTop = '1px';
-
                 cards.forEach(card => {
-
                     card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-
                     card.classList.add('col-lg-6', 'col-md-6');
 
-
-
                 });
-
             } else if (cardCount <= 6) {
-
                 row.style.display = 'flex';
-
                 row.style.justifyContent = 'center';
-
                 //row.style.justifyContent = 'center';
-
                 row.style.alignItems = 'center';
-
                 // Each row should have 3 cards
-
                 cards.forEach(card => {
-
                     card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-
                     card.classList.add('col-lg-4', 'col-md-6');
-
                 });
-
             } else if (cardCount <= 9) {
-
                 // Each row should have 4 cards
-
                 row.style.display = 'flex';
-
                 row.style.justifyContent = 'center';
-
                 //row.style.justifyContent = 'center';
-
                 row.style.alignItems = 'center';
 
-
-
                 cards.forEach((card, index) => {
-
                     card.classList.remove('col-lg-6', 'col-md-6');
-
                     card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
 
-
-
                 });
-
             } else {
-
                 // More than 9 cards, keep the default layout
-
                 cards.forEach((card, index) => {
-
                     card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');
-
                     card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
 
-
-
                 });
-            document.addEventListener('DOMContentLoaded', adjustCardLayout);
             }
-
         }
-
-
 
         // Call the function when the page loads
 

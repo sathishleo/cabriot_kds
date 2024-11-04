@@ -1,6 +1,7 @@
 import json
 from datetime import datetime, timedelta
 
+import now as now
 import pytz
 from django.core.serializers import serialize
 from django.db.models import Q
@@ -117,14 +118,16 @@ def display_menu_view(request, display_section):
     # Determine the current meal period
     hour, minute = ist_now.hour, ist_now.minute
     print("hour,minute",hour,minute)
-    if (hour >= 21 and minute >= 30) or (hour >= 11 and minute >= 30):
+    if (hour == 21 and minute >= 30) or (hour >= 22) or (hour < 11) or (hour == 11 and minute <= 30):
         text_content = "BREAKFAST / LUNCH"
         meal = "BL"
-        if (hour >= 21 and minute >= 30):
-            selected_date += timedelta(days=1)  # Move to the next day for late-night meals
+
+        # Move to the next day if it's late at night (after 9:30 PM)
+        if hour >= 22 or (hour == 21 and minute >= 30):
+            selected_date += timedelta(days=1)
     else:
-        meal = "D"
         text_content = "DINNER"
+        meal = "D"
 
     # Fetch display section and menu items for the selected date, section, and meal period
     ids = DailyDisplayAssignment.objects.filter(
