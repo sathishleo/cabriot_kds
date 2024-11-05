@@ -101,7 +101,70 @@ def bread_display(request):
 
 
 
+# #
+# @csrf_exempt
+# def display_menu_view(request, display_section):
+#     # Set up timezone and get the current time in IST
+#     ist = pytz.timezone("Asia/Kolkata")
+#     utc_now = datetime.now(pytz.utc)
+#     ist_now = utc_now.astimezone(ist)
+#     formatted_time = ist_now.strftime("%I:%M:%S %p")
 #
+#     # Get the current date formatted
+#     selected_date = ist_now.date()
+#     formatted_date = selected_date.strftime("%A, %B %d").upper()
+#
+#     # Determine the current meal period
+#     hour, minute = ist_now.hour, ist_now.minute
+#     print("hour,minute",hour,minute)
+#     if (hour == 21 and minute >= 30) or (hour >= 22) or (hour < 11) or (hour == 11 and minute <= 30):
+#         text_content = "BREAKFAST / LUNCH"
+#         meal = "BL"
+#
+#         # Move to the next day if it's late at night (after 9:30 PM)
+#         if hour >= 22 or (hour == 21 and minute >= 30):
+#             selected_date += timedelta(days=1)
+#     else:
+#         text_content = "DINNER"
+#         meal = "D"
+#
+#     # Fetch display section and menu items for the selected date, section, and meal period
+#     ids = DailyDisplayAssignment.objects.filter(
+#         date=selected_date,
+#         display_section__name__icontains=display_section,
+#         meal_period__icontains=meal
+#     )
+#     menu_items_qs = DailyDisplayMenuItem.objects.filter(
+#         assignment__in=ids
+#     ).select_related('menu_item')
+#
+#     # Convert `menu_items_qs` to a JSON-serializable list
+#     menu_items_json = serialize('json', menu_items_qs)
+#
+#     # Get the display section item
+#     display_cls = Displaysection()
+#     section_item = display_cls.get_displaysection(display_section)
+#     template = display_cls.get_template(display_section)
+#     context = {
+#             "menu_items":menu_items_qs,
+#             'section': section_item,
+#             'formatted_date': formatted_date,
+#             "formatted_time": formatted_time,
+#             "meal": text_content
+#         }
+#
+#
+#
+#     print(context)
+#     return render(request, template, context)
+#
+from django.core.serializers import serialize
+from django.http import JsonResponse
+from django.shortcuts import render
+from datetime import datetime, timedelta
+import pytz
+from django.views.decorators.csrf import csrf_exempt
+
 @csrf_exempt
 def display_menu_view(request, display_section):
     # Set up timezone and get the current time in IST
@@ -116,7 +179,7 @@ def display_menu_view(request, display_section):
 
     # Determine the current meal period
     hour, minute = ist_now.hour, ist_now.minute
-    print("hour,minute",hour,minute)
+    print("hour,minute", hour, minute)
     if (hour == 21 and minute >= 30) or (hour >= 22) or (hour < 11) or (hour == 11 and minute <= 30):
         text_content = "BREAKFAST / LUNCH"
         meal = "BL"
@@ -134,123 +197,63 @@ def display_menu_view(request, display_section):
         display_section__name__icontains=display_section,
         meal_period__icontains=meal
     )
+    menu_items = DailyDisplayMenuItem.objects.filter(
+        assignment__in=ids
+    ).select_related('menu_item')
     menu_items_qs = DailyDisplayMenuItem.objects.filter(
         assignment__in=ids
     ).select_related('menu_item')
 
-    # Convert `menu_items_qs` to a JSON-serializable list
+    # Convert QuerySet to JSON-serializable data
     menu_items_json = serialize('json', menu_items_qs)
 
     # Get the display section item
     display_cls = Displaysection()
     section_item = display_cls.get_displaysection(display_section)
     template = display_cls.get_template(display_section)
-    context = {
-            "menu_items":menu_items_qs,
-            'section': section_item,
-            'formatted_date': formatted_date,
-            "formatted_time": formatted_time,
-            "meal": text_content
+    menu_data = [
+        {
+            "item_name": item.menu_item.item_name,
+            "display_name": item.menu_item.display_name,
+            "quantity": item.quantity,
+            "quantity_type": item.quantity_type,
+            "image_url": item.menu_item.image.url if item.menu_item.image else None,
         }
+        for item in menu_items
+    ]
 
+    # Prepare the context
+    context = {
+        "menu_items":menu_data,
+        'section': section_item,
+        'formatted_date': formatted_date,
+        "formatted_time": formatted_time,
+        "meal": text_content
+    }
+    # # print(context)
 
+    # Check if the request is AJAX or for JSON response
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+    #     # Return JSON response for AJAX request
+        return JsonResponse({
+            "menu_items": menu_data,
+            "formatted_date": formatted_date,
+            "formatted_time": formatted_time,
+            "meal": text_content,
+            "section": section_item,
+        },safe=False)
 
-    print(context)
-    return render(request, template, context)
-#
-# from django.core.serializers import serialize
-# from django.http import JsonResponse
-# from django.shortcuts import render
-# from datetime import datetime, timedelta
-# import pytz
-# from django.views.decorators.csrf import csrf_exempt
-
-# @csrf_exempt
-# def display_menu_view(request, display_section):
-#     # Set up timezone and get the current time in IST
-#     ist = pytz.timezone("Asia/Kolkata")
-#     utc_now = datetime.now(pytz.utc)
-#     ist_now = utc_now.astimezone(ist)
-#     formatted_time = ist_now.strftime("%I:%M:%S %p")
-#
-#     # Get the current date formatted
-#     selected_date = ist_now.date()
-#     formatted_date = selected_date.strftime("%A, %B %d").upper()
-#
-#     # Determine the current meal period
-#     hour, minute = ist_now.hour, ist_now.minute
-#     if (hour >= 22 and minute >= 0) or (hour >= 5 and minute >= 40 ):
-#         text_content = "BREAKFAST / LUNCH"
-#         meal = "BL"
-#         if hour >= 22 or (hour >= 5 and minute >= 40):
-#             selected_date += timedelta(days=1)  # Move to the next day for late-night meals
-#     else:
-#         meal = "D"
-#         text_content = "DINNER"
-#
-#     # Fetch display section and menu items for the selected date, section, and meal period
-#     ids = DailyDisplayAssignment.objects.filter(
-#         date=selected_date,
-#         display_section__name__icontains=display_section,
-#         meal_period__icontains=meal
-#     )
-#     menu_items = DailyDisplayMenuItem.objects.filter(
-#         assignment__in=ids
-#     ).select_related('menu_item')
-#     menu_items_qs = DailyDisplayMenuItem.objects.filter(
-#         assignment__in=ids
-#     ).select_related('menu_item')
-#
-#     # Convert QuerySet to JSON-serializable data
-#     menu_items_json = serialize('json', menu_items_qs)
-#
-#     # Get the display section item
-#     display_cls = Displaysection()
-#     section_item = display_cls.get_displaysection(display_section)
-#     template = display_cls.get_template(display_section)
-#     menu_data = [
-#         {
-#             "item_name": item.menu_item.item_name,
-#             "display_name": item.menu_item.display_name,
-#             "quantity": item.quantity,
-#             "quantity_type": item.quantity_type,
-#             "image_url": item.menu_item.image.url if item.menu_item.image else None,
-#         }
-#         for item in menu_items
-#     ]
-#
-#     # Prepare the context
-#     context = {
-#         "menu_items":menu_data,
-#         'section': section_item,
-#         'formatted_date': formatted_date,
-#         "formatted_time": formatted_time,
-#         "meal": text_content
-#     }
-#     # # print(context)
-#
-#     # Check if the request is AJAX or for JSON response
-#     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-#     #     # Return JSON response for AJAX request
-#         return JsonResponse({
-#             "menu_items": menu_items_json,
-#             "formatted_date": formatted_date,
-#             "formatted_time": formatted_time,
-#             "meal": text_content,
-#             "section": section_item,
-#         },safe=False)
-#
-#     # Choose the correct template based on the display section for regular HTML response
-#     # template_map = {
-#     #     display_cls.BREAD.lower(): "bread.html",
-#     #     display_cls.VEGETABLE.lower(): "display.html",
-#     #     display_cls.MAIN.lower(): "Main.html"
-#     # }
-#     # template = template_map.get(display_section.lower(), "Main.html")mp
-#     # con(text=json.dumps(menu_data)
-#     # json.dumps(context, indent=4, ensure_ascii=False)
-#     # print(context)
-#     return render(request,template,context)
+    # Choose the correct template based on the display section for regular HTML response
+    # template_map = {
+    #     display_cls.BREAD.lower(): "bread.html",
+    #     display_cls.VEGETABLE.lower(): "display.html",
+    #     display_cls.MAIN.lower(): "Main.html"
+    # }
+    # template = template_map.get(display_section.lower(), "Main.html")mp
+    # con(text=json.dumps(menu_data)
+    # json.dumps(context, indent=4, ensure_ascii=False)
+    # print(context)
+    return render(request,template,context)
 
 @csrf_exempt
 def display_items_view(request, display_section):

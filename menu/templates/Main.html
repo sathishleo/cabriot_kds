@@ -24,179 +24,295 @@
     {% load static %}
     <link href="{% static 'css/style.css' %}" rel="stylesheet" />
     <style>
+
         .unit{
+
             font-size: 1.3rem;
-        }
-        .container a img{
-            height:100%;
-             width:100%
-        }
-        .vertical-line {
-            border-left: 1px solid white;
-            height: 50px;
-            align-self: center;
-        }
-        .navhead h3, .navhead h2 {
-            margin: 0;
+
         }
 
+        .container a img{
+
+            height:100%;
+
+             width:100%
+
+        }
 
         .tod{
             font-size: 1.4rem;
+
         }
         .dot{
             font-size: 1.5rem;
+
         }
+
         .cardhead{
+
             font-size: 2.7rem;
+
         }
+
         .navhead{
+
             padding-right: 3rem;
+
             padding-left: 3rem;
+
             margin-top: 1rem;
 
         }
+
         .navhead2{
+
             padding-right: 3rem;
+
             padding-left: 3rem;
+
             margin-top: 0.5rem;
-        }
-        .card-footer {
-            background-color: #FF7B7C;
-            color: white;
-            font-weight: bold;
-            border-top: 1px solid #e0e0e0;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            text-align: right;
-            padding: 0;
-            padding-right: 4rem;
+
         }
 
-        .vertical-line {
-            border-left: 2px solid #000;
-            /* Adjust the color and width */
-            height: 100px;
-            /* Adjust the height */
-            margin-left: 20px;
-            /* Adjust the margin as needed */
+        .card-footer {
+
+            background-color: #FF7B7C;
+
+            color: white;
+
+            font-weight: bold;
+
+            border-top: 1px solid #e0e0e0;
+
+            border-bottom-left-radius: 8px;
+
+            border-bottom-right-radius: 8px;
+
+            text-align: right;
+
+            padding: 0;
+
+            padding-right: 4rem;
+
         }
+
+
+
+        .vertical-line {
+
+            border-left: 2px solid #000;
+
+            /* Adjust the color and width */
+
+            height: 100px;
+
+            /* Adjust the height */
+
+            margin-left: 20px;
+
+            /* Adjust the margin as needed */
+
+        }
+
+
 
         .card-container {
+
             display: flex;
+
             flex-wrap: wrap;
+
             justify-content: space-around;
+
         }
+
+
 
         .card {
+
             min-width: 300px;
+
         }
+
+
 
         .centered {
+
             display: flex;
+
             justify-content: center;
+
             width: 100%;
+
         }
+
+
 
         .spacer {
+
             flex: 1;
+
         }
+
+
 
         .card-body {
+
             border-bottom-left-radius: 0 !important;
+
             border-bottom-right-radius: 0 !important;
+
         }
+
         @media (max-width: 1300px) and (max-height: 800px){
+
             .navhead{
+
                 padding-right: 1.5rem;
+
                 padding-left: 1.5rem;
+
                 margin-top: 0.5rem;
+
             }
+
             .navhead2{
+
                 padding-right: 1.5rem;
+
                 padding-left: 1.5rem;
+
                 margin-top: 0.5rem;
+
             }
+
             .cardhead{
+
                 font-size: 1.7rem;
+
             }
+
             .card-body{
+
                 padding: 0.5rem !important;
+
             }
+
             .tod{
+
             font-size: 1.3rem;
+
         }
+
         .dot{
+
             font-size: 1rem;
+
         }
+
         .container a img{
+
             height:90%;
+
         }
+
         .unit{
+
             font-size: 1rem;
+
         }
+
         .vertical-line {
+
             border-left: 2px solid #000;
+
             /* Adjust the color and width */
+
             height: 70px;
+
             /* Adjust the height */
+
             margin-left: 20px;
+
             /* Adjust the margin as needed */
-        }
-
 
         }
+
+        }
+
     </style>
 </head>
 
 <body class="overflow-hidden">
-    <!-- Navigation -->
-    <nav class="container d-flex justify-content-start navbar navbar-expand-lg navbar static-top"
-     style="background-color: #FF7B7C; height: 15vh; max-width: 100%;">
-    <a class="navbar-brand px-4" href="#" style="height: 90%;">
-        <img src="{% static 'image/cabriot_eat1.svg' %}" alt="Logo">
-    </a>
-    <div class="d-flex align-items-bottom">
-        <div class="navhead d-flex flex-column align-items-bottom">
-            <h3 class="dot">DATE</h3>
-            <h2 id="date" class="tod" style="color: white;"></h2>
-        </div>
-        <div class="vertical-line "></div>
-        <div class="navhead d-flex flex-column align-items-bottom ">
-            <h3 class="dot">SECTION</h3>
-            <h2 class="tod" style="color: white;">{{ section }}</h2>
-        </div>
-        <div class="vertical-line "></div>
-        <div class="navhead d-flex flex-column align-items-bottom ">
-            <h3 class="dot">MEAL</h3>
-            <h2 class="tod" style="color: white;">{{ meal }}</h2>
-        </div>
-        <div class="vertical-line "></div>
-        <div class="navhead d-flex flex-column align-items-bottom ">
-            <h3 class="dot">CURRENT TIME</h3>
-            <h2 id="heading" class="tod" style="color: white;"></h2>
-        </div>
-    </div>
-</nav>
+    <nav class="container d-flex justify-content-between navbar navbar-expand-lg navbar static-top"
+
+        style="background-color: #FF7B7C; height: 15vh; max-width: 100% ">
+
+        <a style="height: 90%; " class="navbar-brand px-4" href="#">
+
+            <img src="{% static 'image/cabriot_eat1.svg' %}" alt="...">
+
+        </a>
+
+        <div class="d-flex">
+            <div class="navhead d-flex flex-column align-items-bottom ">
+
+                <h3 class="dot">DATE</h3>
+
+                <h2 id="date" class="tod" style="color: white;"></h2>
+
+            </div>
+            </div>
+            <div class="vertical-line">
+
+            <div class="navhead d-flex flex-column align-items-bottom ">
+
+                <h3 class="dot">SECTION</h3>
+
+                <h2 class="tod" style="color: white;">{{section}}</h2>
+
+            </div>
+            </div>
+            <div class="vertical-line">
+
+            <div class="navhead d-flex flex-column align-items-bottom ">
+
+                <h3 class="dot">MEAL</h3>
+
+                <h2 class="tod" style="color: white;">{{meal}}</h2>
+
+            </div>
+            </div>
+            <div class="vertical-line">
+
+                <div class="navhead d-flex flex-column align-items-bottom ">
+
+                    <h3 class="dot">CURRENT TIME</h3>
+
+                    <h2 class="tod" style="color: white;" id="heading"></h2>
+
+                </div>
+            </div>
+    </nav>
 
 
     <!-- Page Content -->
     <div class="px-4 mx-auto" style="max-width: 100%; padding: 0; background-color: #231F20; height: 85vh; display: flex; align-items: center;">
-        <div class="row" style="margin-top: 1rem;">
+        <div class="row" style="margin-top: 1rem;" id="menu-section">
             {% for item in menu_items %}
                 <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">
                     <div class="card h-100 d-flex flex-column">
                         <div class="card-body d-flex align-items-center" style="color: white; border: 2.5px solid white; border-bottom: none; border-radius: 8px; background-color: #231F20;">
-                            {% if item.menu_item.image %}
-                                <img class="rounded-circle" src="{{ item.menu_item.image.url }}" alt="{{ item.menu_item.item_name }}" width="25%" height="auto">
+                            {% if item.image_url %}
+                                <img class="rounded-circle" src="{{ item.image_url }}" alt="{{ item.menu_item.item_name }}" width="25%" height="auto">
                             {% else %}
                                 <img class="rounded-circle" src="{% static 'image/cabriot-default1.png' %}" alt="Default Image" width="25%" height="auto">
                             {% endif %}
                             <h3 class="card-title px-3">
-                                {% if item.menu_item.display_name %}
-                                    {{ item.menu_item.display_name }}
+                                {% if item.display_name %}
+                                    {{ item.display_name }}
                                 {% else %}
-                                    {{ item.menu_item.item_name }}
+                                    {{ item.item_name }}
                                 {% endif %}
                             </h3>
                         </div>
@@ -211,330 +327,36 @@
             {% endfor %}
         </div>
     </div>
-<!--</div>&lt;!&ndash;            <div id="card2" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1 ">&ndash;&gt;-->
-
-<!--                <div class="card h-100">-->
-
-<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20"-->
-
-<!--                        class="card-body d-flex align-items-center ">-->
-
-<!--                        <img id="card-image2" class="rounded-circle " src="../assets/img/potato.webp" alt="Tomato" width="25%"-->
-
-<!--                            height="auto">-->
-
-<!--                        <h3 id="card-title2" class="card-title px-3">ഉരുളക്കിഴങ്ങ്</h3>-->
-
-<!--                    </div>-->
-
-<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
-
-<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
-
-<!--                            <span id="card-value2" class="cardhead" >10</span>-->
-
-<!--                            <span id="card-parameter2" class="unit" style=" margin-left: 10px;">Kilogram</span>-->
-
-<!--                        </div>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-
-<!--            </div>-->
-
-<!--             <div id="card1" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
-
-<!--                <div class="card h-100 ">-->
-
-<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20"-->
-
-<!--                        class="card-body d-flex align-items-center ">-->
-
-<!--                        <img id="card-image1" class="rounded-circle " src="../assets/img/onion.jpg" alt="Tomato" width="25%"-->
-
-<!--                            height="auto">-->
-
-<!--                        <h3 id="card-title1" class="card-title px-3">ഉള്ളി - ബിരിയാണി</h3>-->
-
-<!--                    </div>-->
-
-<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
-
-<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
-
-<!--                            <span id="card-value1" class="cardhead" >10</span>-->
-
-<!--                            <span id="card-parameter1" class="unit" style=" margin-left: 10px;">Kilogram</span>-->
-
-<!--                        </div>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-
-<!--            </div>-->
-
-<!--            <div id="card4" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
-
-<!--                <div class="card h-100">-->
-
-<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
-
-<!--                        <img id="card-image4" class="rounded-circle " src="../assets/img/chilly.webp" alt="Tomato" width="25%" height="auto">-->
-
-<!--                        <h3 id="card-title4" class="card-title px-3">പച്ച മുളക് </h3>-->
-
-<!--                    </div>-->
-
-<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
-
-<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
-
-<!--                            <span id="card-value4" class="cardhead" >500</span>-->
-
-<!--                            <span id="card-parameter4" class="unit" style=" margin-left: 10px;">Grams</span>-->
-
-<!--                        </div>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-
-<!--            </div> -->
-
-<!--            <div id="card5" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
-
-<!--                <div class="card h-100">-->
-
-<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
-
-<!--                        <img id="card-image5" class="rounded-circle " src="../assets/img/garlic.webp" alt="Chena" width="25%" height="auto">-->
-
-<!--                        <h3 id="card-title5" class="card-title px-3">വെളുത്തുള്ളി</h3>-->
-
-<!--                    </div>-->
-
-<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
-
-<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
-
-<!--                            <span id="card-value5" class="cardhead" >500</span>-->
-
-<!--                            <span id="card-parameter5" class="unit" style=" margin-left: 10px;">grams</span>-->
-
-<!--                        </div>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-
-<!--            </div>-->
-
-<!--            <div id="card6" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
-
-<!--                <div class="card h-100">-->
-
-<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20"class="card-body d-flex align-items-center  ">-->
-
-<!--                        <img id="card-image6" class="rounded-circle " src="../assets/img/ginger.webp" alt="Tomato" width="25%" height="auto">-->
-
-<!--                        <h3 id="card-title6" class="card-title px-3">ഇഞ്ചി</h3>-->
-
-<!--                    </div>-->
-
-<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
-
-<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
-
-<!--                            <span id="card-value6" class="cardhead" >500</span>-->
-
-<!--                            <span id="card-parameter6" class="unit" style=" margin-left: 10px;">grams</span>-->
-
-<!--                        </div>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-
-<!--            </div> -->
-<!--			<div id="card7" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
-
-<!--                <div class="card h-100">-->
-
-<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
-
-<!--                        <img id="card-image7" class="rounded-circle " src="../assets/img/" alt="Tomato" width="25%" height="auto">-->
-
-<!--                        <h3 id="card-title7" class="card-title px-3">കായ തോട്</h3>-->
-
-<!--                    </div>-->
-
-<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
-
-<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
-
-<!--                            <span id="card-value7" class="cardhead" ></span>-->
-
-<!--                            <span id="card-parameter7" class="unit" style=" margin-left: 10px;">Nos.</span>-->
-
-<!--                        </div>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-
-<!--            </div>-->
-
-<!--             <div id="card7" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
-
-<!--                <div class="card h-100">-->
-
-<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
-
-<!--                        <img id="card-image7" class="rounded-circle " src="../assets/img/" alt="Tomato" width="25%" height="auto">-->
-
-<!--                        <h3 id="card-title7" class="card-title px-3">തേങ്ങ</h3>-->
-
-<!--                    </div>-->
-
-<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
-
-<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
-
-<!--                            <span id="card-value7" class="cardhead" >25</span>-->
-
-<!--                            <span id="card-parameter7" class="unit" style=" margin-left: 10px;">Nos.</span>-->
-
-<!--                        </div>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-
-<!--            </div>-->
-<!--			-->
-<!--			<div id="card7" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
-
-<!--                <div class="card h-100">-->
-
-<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
-
-<!--                        <img id="card-image7" class="rounded-circle " src="../assets/img/pachakhaaya.jpg" alt="Tomato" width="25%" height="auto">-->
-
-<!--                        <h3 id="card-title7" class="card-title px-3">പച്ചക്കായ</h3>-->
-
-<!--                    </div>-->
-
-<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
-
-<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
-
-<!--                            <span id="card-value7" class="cardhead" ></span>-->
-
-<!--                            <span id="card-parameter7" class="unit" style=" margin-left: 10px;"></span>-->
-
-<!--                        </div>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-
-<!--            </div>-->
-<!--			-->
-<!--			<div id="card7" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
-
-<!--                <div class="card h-100">-->
-
-<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
-
-<!--                        <img id="card-image7" class="rounded-circle " src="../assets/img/chena.jpg" alt="Tomato" width="25%" height="auto">-->
-
-<!--                        <h3 id="card-title7" class="card-title px-3">ചേന</h3>-->
-
-<!--                    </div>-->
-
-<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
-
-<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
-
-<!--                            <span id="card-value7" class="cardhead" ></span>-->
-
-<!--                            <span id="card-parameter7" class="unit" style=" margin-left: 10px;"></span>-->
-
-<!--                        </div>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-
-<!--            </div>-->
-<!--			<div id="card7" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">-->
-
-<!--                <div class="card h-100">-->
-
-<!--                    <div style="color: white;border: 2.5px solid white; border-bottom:none; border-radius:8px;background-color:#231F20" class="card-body d-flex align-items-center ">-->
-
-<!--                        <img id="card-image7" class="rounded-circle " src="../assets/img/" alt="Tomato" width="25%" height="auto">-->
-
-<!--                        <h3 id="card-title7" class="card-title px-3">ചൗ ചൗ </h3>-->
-
-<!--                    </div>-->
-
-<!--                    <div style="color: #231F20; font-size:2rem;" class="card-footer">-->
-
-<!--                        <div style="display: flex; align-items: baseline; padding-left:6rem">-->
-
-<!--                            <span id="card-value7" class="cardhead" ></span>-->
-
-<!--                            <span id="card-parameter7" class="unit" style=" margin-left: 10px;"></span>-->
-
-<!--                        </div>-->
-
-<!--                    </div>-->
-
-<!--                </div>-->
-
-<!--            </div>-->
-
-<!--             -->
-
-<!--             -->
-
-<!--               -->
-
-<!--             -->
-
-<!--             -->
-
-<!--    </div>-->
-
-<!--    </div>-->
-
-<!--    &lt;!&ndash; /.row &ndash;&gt;-->
-
-
-
-<!--    &lt;!&ndash; Section Heading &ndash;&gt;-->
-
-
-
-
-
-<!--    &lt;!&ndash; Pagination &ndash;&gt;-->
-
-<!--    </div>-->
-
-
-
-    <!-- /.container -->
-
-
-
-
+<div id="menuItems" data-items="{{ menu_items|json_script }}"></div>
 
 <script>
-     function adjustCardLayout() {
+
+    const menuItemsElement = document.getElementById('menuItems');
+
+   console.log("Raw JSON:", menuItemsElement.textContent.trim());
+    const jsonString = menuItemsElement.textContent.trim();
+    let checks = jsonString; // Declare checks outside of the if block
+
+    if (jsonString.endsWith('">')) {
+        checks = jsonString.slice(0, -2); // Reassign checks if it ends with '">'
+        console.log("checks:", checks);
+    }
+
+    if (checks) {
+        try {
+            const menuItems = JSON.parse(checks);
+            console.log("Parsed JSON:", menuItems);
+
+            // Set the parsed menu items in localStorage
+            localStorage.setItem('menuItems', JSON.stringify(menuItems));
+            console.log("Menu items saved to localStorage.");
+        } catch (error) {
+            console.error("Failed to parse menu items JSON:", error);
+        }
+    }
+
+
+    function adjustCardLayout() {
             const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
             const cardCount = cards.length;
 
@@ -597,11 +419,12 @@
                 });
             }
         }
+    document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
-        // Call the function when the page loads
 
-        document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
+    // Get the date and time elements
+    const heading = document.getElementById('heading');
 
     function updateTime() {
         const now = new Date();
@@ -614,6 +437,75 @@
 
     }
 
+    // Redirect after 60 seconds
+    document.addEventListener('DOMContentLoaded', adjustCardLayout);
+
+    async function fetchMenuItems() {
+    console.log('fetchMenuItems called');
+
+    const url = "{% url 'display_menu' display_section='Main' %}";
+    const storedData = localStorage.getItem('menuItems');
+    let currentMenuItems = []; // Declare currentMenuItems once
+
+    try {
+        // Fetch data from the API
+        const response = await fetch(url, {
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        });
+
+        if (!response.ok) {
+            console.error('Error fetching data:', response.status, response.statusText);
+            return;
+        }
+
+        // Parse the JSON response
+        const data = await response.json();
+        console.log("Data from API:", data);
+
+        currentMenuItems = data.menu_items; // Assign without redeclaring
+        console.log("currentMenuItems", currentMenuItems);
+        console.log("Type of currentMenuItems:", typeof currentMenuItems);
+
+
+        if (typeof currentMenuItems === "string") {
+            try {
+                currentMenuItems = JSON.parse(currentMenuItems); // Parse the JSON string
+            } catch (error) {
+                console.error("Failed to parse menu_items:", error);
+                return; // Exit if parsing fails
+            }
+        }
+
+        // If localStorage already has data, compare it
+        if (storedData) {
+            const previousMenuItems = JSON.parse(storedData);
+            console.log("previousMenuItems",previousMenuItems)
+
+            // Compare current items with previous items
+            if (JSON.stringify(currentMenuItems) !== JSON.stringify(previousMenuItems)) {
+                // Only update localStorage if there are changes
+                localStorage.setItem('menuItems', JSON.stringify(currentMenuItems));
+                console.log('Updated menu items stored in localStorage');
+            } else {
+                console.log('No changes detected, using localStorage data');
+                currentMenuItems = previousMenuItems; // Use the data from localStorage
+            }
+        } else {
+            // If there's no previous data, store the current data
+            localStorage.setItem('menuItems', JSON.stringify(currentMenuItems));
+            console.log('Menu items stored in localStorage');
+        }
+
+        // Display the current menu items
+        console.log("-----",currentMenuItems)
+        displayMenuItems(currentMenuItems);
+
+    } catch (error) {
+        console.error('Failed to fetch menu items:', error);
+    }
+    }
     function updateMealTime() {
             const now = new Date();
             const hour = now.getHours();
@@ -624,14 +516,14 @@
             let displayDate;
 
             if ((hour >= 11 && minute >= 30) || (hour >= 21 && minute >= 30)) {
-                textContent = "BREAKFAST / LUNCH";
+<!--                textContent = "BREAKFAST / LUNCH";-->
                 meal = "BL";
                 // Move to the next day if it's late at night
                 if (hour >= 21 && minute >= 30) {
                     now.setDate(now.getDate() + 1);
                 }
             } else {
-                textContent = "DINNER";
+<!--                textContent = "DINNER";-->
                 meal = "D";
                 now.setDate(now.getDate());
             }
@@ -640,130 +532,56 @@
             document.getElementById('date').textContent = displayDate;
         }
 
+    // Function to display menu items
+    function displayMenuItems(data) {
+    const menuSection = document.getElementById('menu-section');
+    menuSection.innerHTML = ''; // Clear the existing content
 
+    data.forEach(item => {
+        const imageUrl = item.image_url ? item.image_url : '{% static "image/cabriot-default1.png" %}';
+        const displayName = item.display_name ? item.display_name : item.item_name;
+        const quantity = item.quantity ? item.quantity : "&nbsp;";
+        const quantityType = item.quantity_type ? item.quantity_type : "&nbsp;";
 
-    // Initial load and set interval for updates
-    document.addEventListener('DOMContentLoaded', () => {
-        adjustCardLayout(); // Assuming this function exists
-        updateTime(); // Call the function to adjust card layout
-        updateMealTime(); // Call the function to update date and meal on load
-        setInterval(updateTime, 1000); // Update time every second
-        // Set the date update to every minute (or longer), as it doesn't need to update every second
-        setInterval(updateMealTime, 1000); // Update every minute // Update every minute
+        const cardHtml = `
+            <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">
+                <div class="card h-100 d-flex flex-column">
+                    <div class="card-body d-flex align-items-center" style="color: white; border: 2.5px solid white; border-bottom: none; border-radius: 8px; background-color: #231F20;">
+                        <img class="rounded-circle" src="${imageUrl}" alt="${displayName}" width="25%" height="auto">
+                        <h3 class="card-title px-3">${displayName}</h3>
+                    </div>
+                    <div style="color: #231F20; font-size: 2rem;" class="card-footer">
+                        <div style="display: flex; align-items: baseline; justify-content: center;">
+                            <span class="cardhead">${quantity}</span>
+                            <span class="unit" style="margin-left: 10px;">${quantityType}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        menuSection.innerHTML += cardHtml;
     });
 
-    // Redirect after 60 seconds
-    setTimeout(() => {
-        location.href = "/main/";
-        adjustCardLayout();
+    // Ensure the layout adjusts correctly after adding the new content
+    adjustCardLayout();
+    }
+
+
+    // Load menu items on initial load and set interval for updates
+    window.addEventListener('DOMContentLoaded', () => {
+        updateMealTime();
+        updateTime(); // Initial fetch of menu items
+        setInterval(updateMealTime, 1000);
+        setInterval(updateTime, 1000);// Fetch every 10 seconds
+    });
+    setInterval(() => {
+    fetchMenuItems();
     }, 60000);
 
+    // Update date and time on load and then every second
 </script>
+
 </body>
 
 </html>
-
-
-<!-- <script>
-        function adjustCardLayout() {
-            const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
-            const cardCount = cards.length;
-
-            // Reset row centering
-            const row = document.querySelector('.row');
-            row.style.justifyContent = 'c';
-
-            if (cardCount <= 2) {
-                // Each row should have 1 card and centered
-                row.style.justifyContent = 'center';
-                cards.forEach(card => {
-                    card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-                    card.classList.add('col-lg-6', 'col-md-6');
-                });
-            } else if (cardCount <= 4) {
-                // Each row should have 2 cards and centered
-                row.style.justifyContent = 'center';
-                row.style.marginTop = '1px';;
-                cards.forEach(card => {
-                    card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-                    card.classList.add('col-lg-6', 'col-md-6');
-                });
-            } else if (cardCount <= 6) {
-                // Each row should have 3 cards
-                cards.forEach(card => {
-                    card.classList.remove('col-lg-3', 'col-md-4', 'col-sm-6');
-                    card.classList.add('col-lg-4', 'col-md-6');
-                });
-            } else if (cardCount <= 9) {
-                // Each row should have 4 cards
-                cards.forEach(card => {
-                    card.classList.remove('col-lg-6', 'col-md-6');
-                    card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
-                });
-            } else {
-                // More than 9 cards, keep the default layout
-                cards.forEach(card => {
-                    card.classList.remove('col-lg-6', 'col-md-6', 'col-lg-4');
-                    card.classList.add('col-lg-3', 'col-md-4', 'col-sm-6');
-                });
-            }
-        }
-
-        // Call the function when the page loads
-        document.addEventListener('DOMContentLoaded', adjustCardLayout);
-
-        // Call the function when the page loads
-        document.addEventListener('DOMContentLoaded', adjustCardLayout);
-        function setupObserver() {
-            const row = document.querySelector('.row');
-
-            if (row) {
-                const observer = new MutationObserver((mutationsList) => {
-                    for (const mutation of mutationsList) {
-                        if (mutation.type === 'childList') {
-                            adjustCardLayout(); // Reapply layout adjustments
-                        }
-                    }
-                });
-
-                observer.observe(row, { childList: true });
-            } else {
-                console.warn('.row element not found.');
-            }
-        }
-        document.addEventListener('DOMContentLoaded', () => {
-            adjustCardLayout();
-            setupObserver();
-        });
-
-        // Call the function when the page loads
-        document.addEventListener('DOMContentLoaded', adjustCardLayout);
-
-        // Get the date and time elements
-        const dateElement = document.getElementById('date');
-        const timeElement = document.getElementById('time');
-
-        // Function to update the date
-        function updateDate() {
-            const currentDate = new Date();
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            dateElement.textContent = currentDate.toLocaleDateString(undefined, options);
-        }
-
-        // Function to update the time
-        function updateTime() {
-            const currentTime = new Date();
-            const options = { hour: '2-digit', minute: '2-digit' };
-            timeElement.textContent = currentTime.toLocaleTimeString(undefined, options);
-        }
-
-        // Initial update
-        updateDate();
-        updateTime();
-
-        // Update the time every second
-        setInterval(updateTime, 1000);
-    </script>
-</body>
-
-</html> -->

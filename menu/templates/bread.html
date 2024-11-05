@@ -168,56 +168,106 @@
 </head>
 
 <body class="overflow-hidden">
-    <!-- Navigation -->
     <nav class="container d-flex justify-content-between navbar navbar-expand-lg navbar static-top"
+
         style="background-color: #FFC331; height: 15vh; max-width: 100% ">
+
         <a style="height: 90%; " class="navbar-brand px-4" href="#">
-            <img src="{% static 'image/cabriot_eat1.svg' %}" alt="..." >
+
+            <img src="{% static 'image/cabriot_eat1.svg' %}" alt="...">
+
         </a>
+
         <div class="d-flex">
             <div class="navhead d-flex flex-column align-items-bottom ">
+
                 <h3 class="dot">DATE</h3>
+
                 <h2 id="date" class="tod" style="color: white;"></h2>
+
             </div>
             </div>
             <div class="vertical-line">
+
             <div class="navhead d-flex flex-column align-items-bottom ">
+
                 <h3 class="dot">SECTION</h3>
+
                 <h2 class="tod" style="color: white;">{{section}}</h2>
+
             </div>
             </div>
             <div class="vertical-line">
+
             <div class="navhead d-flex flex-column align-items-bottom ">
+
                 <h3 class="dot">MEAL</h3>
+
                 <h2 class="tod" style="color: white;">{{meal}}</h2>
+
             </div>
             </div>
             <div class="vertical-line">
+
                 <div class="navhead d-flex flex-column align-items-bottom ">
+
                     <h3 class="dot">CURRENT TIME</h3>
+
                     <h2 class="tod" style="color: white;" id="heading"></h2>
+
                 </div>
             </div>
     </nav>
+    <!-- Navigation -->
+<!--    <nav class="container d-flex justify-content-between navbar navbar-expand-lg navbar static-top"-->
+<!--        style="background-color: #FFC331; height: 15vh; max-width: 100% ">-->
+<!--        <a style="height: 90%; " class="navbar-brand px-4" href="#">-->
+<!--            <img src="{% static 'image/cabriot_eat1.svg' %}" alt="..." >-->
+<!--        </a>-->
+<!--        <div class="d-flex">-->
+<!--            <div class="navhead d-flex flex-column align-items-bottom ">-->
+<!--                <h3 class="dot">DATE</h3>-->
+<!--                <h2 id="date" class="tod" style="color: white;"></h2>-->
+<!--            </div>-->
+<!--            </div>-->
+<!--            <div class="vertical-line">-->
+<!--            <div class="navhead d-flex flex-column align-items-bottom ">-->
+<!--                <h3 class="dot">SECTION</h3>-->
+<!--                <h2 class="tod" style="color: white;">{{section}}</h2>-->
+<!--            </div>-->
+<!--            </div>-->
+<!--            <div class="vertical-line">-->
+<!--            <div class="navhead d-flex flex-column align-items-bottom ">-->
+<!--                <h3 class="dot">MEAL</h3>-->
+<!--                <h2 class="tod" style="color: white;">{{meal}}</h2>-->
+<!--            </div>-->
+<!--            </div>-->
+<!--            <div class="vertical-line">-->
+<!--                <div class="navhead d-flex flex-column align-items-bottom ">-->
+<!--                    <h3 class="dot">CURRENT TIME</h3>-->
+<!--                    <h2 class="tod" style="color: white;" id="heading"></h2>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--    </nav>-->
 
     <!-- Page Content -->
 <!--<div class="px-4 mx-auto" style="max-width: 100%; padding: 0; background-color: #FFC331; height: 85vh; display: flex; align-items: center;">-->
      <div class="px-4 mx-auto" style="max-width: 100%; padding: 0; background-color: #231F20; height: 85vh; display: flex; align-items: center;">
-        <div class="row" style="margin-top: 1rem;">
+        <div class="row" style="margin-top: 1rem;" id="menu-section">
             {% for item in menu_items %}
                 <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">
                     <div class="card h-100 d-flex flex-column">
                         <div class="card-body d-flex align-items-center" style="color: white; border: 2.5px solid white; border-bottom: none; border-radius: 8px; background-color: #231F20;">
-                            {% if item.menu_item.image %}
-                                <img class="rounded-circle" src="{{ item.menu_item.image.url }}" alt="{{ item.menu_item.item_name }}" width="25%" height="auto">
+                            {% if item.image_url %}
+                                <img class="rounded-circle" src="{{ item.image_url }}" alt="{{ item.menu_item.item_name }}" width="25%" height="auto">
                             {% else %}
                                 <img class="rounded-circle" src="{% static 'image/cabriot-default1.png' %}" alt="Default Image" width="25%" height="auto">
                             {% endif %}
                             <h3 class="card-title px-3">
-                                {% if item.menu_item.display_name %}
-                                    {{ item.menu_item.display_name }}
+                                {% if item.display_name %}
+                                    {{ item.display_name }}
                                 {% else %}
-                                    {{ item.menu_item.item_name }}
+                                    {{ item.item_name }}
                                 {% endif %}
                             </h3>
                         </div>
@@ -233,8 +283,35 @@
         </div>
     </div>
 <!--</div>-->
+    <div id="menuItems" data-items="{{ menu_items|json_script }}"></div>
 <script>
-     function adjustCardLayout() {
+
+   const menuItemsElement = document.getElementById('menuItems');
+
+   console.log("Raw JSON:", menuItemsElement.textContent.trim());
+    const jsonString = menuItemsElement.textContent.trim();
+    let checks = jsonString; // Declare checks outside of the if block
+
+    if (jsonString.endsWith('">')) {
+        checks = jsonString.slice(0, -2); // Reassign checks if it ends with '">'
+        console.log("checks:", checks);
+    }
+
+    if (checks) {
+        try {
+            const menuItems = JSON.parse(checks);
+            console.log("Parsed JSON:", menuItems);
+
+            // Set the parsed menu items in localStorage
+            localStorage.setItem('menuItems', JSON.stringify(menuItems));
+            console.log("Menu items saved to localStorage.");
+        } catch (error) {
+            console.error("Failed to parse menu items JSON:", error);
+        }
+    }
+
+
+    function adjustCardLayout() {
             const cards = document.querySelectorAll('.col-lg-3, .col-md-4, .col-sm-6');
             const cardCount = cards.length;
 
@@ -297,13 +374,16 @@
                 });
             }
         }
-
-        // Call the function when the page loads
-        document.addEventListener('DOMContentLoaded', adjustCardLayout);
+    document.addEventListener('DOMContentLoaded', adjustCardLayout);
 
 
+
+    // Get the date and time elements
     const dateElement = document.getElementById('date');
     const heading = document.getElementById('heading');
+
+
+
     function updateTime() {
         const now = new Date();
         const hours = now.getHours();
@@ -315,62 +395,150 @@
 
     }
 
-   function updateMealTime() {
-    const now = new Date();
-    const hour = now.getHours();
-    const minute = now.getMinutes();
-
-    let textContent;
-    let meal;
-    let displayDate;
-
-    // Determine the meal based on the time
-    if ((hour === 21 && minute >= 30) || (hour >= 22) || (hour < 11) || (hour === 11 && minute <= 30)) {
-        textContent = "BREAKFAST / LUNCH";
-        meal = "BL";
-
-        // Move to the next day if it's late at night
-        if (hour >= 22 || (hour === 21 && minute >= 30)) {
-            now.setDate(now.getDate() + 1);
-        }
-    } else {
-        textContent = "DINNER";
-        meal = "D";
-    }
-
-    // Format the display date to show as uppercase
-    displayDate = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase();
-
-    // Update the date and meal elements on the page
-    document.getElementById('date').textContent = displayDate;
-    document.getElementById('meal').textContent = textContent;
-    }
-
-
-
-
-    // Initial load and set interval for updates
-    document.addEventListener('DOMContentLoaded', () => {
-        adjustCardLayout(); // Assuming this function exists
-        updateTime(); // Call the function to adjust card layout
-        updateMealTime(); // Call the function to update date and meal on load
-        setInterval(updateTime, 1000); // Update time every second
-        // Set the date update to every minute (or longer), as it doesn't need to update every second
-        setInterval(updateMealTime, 1000); // Update every minute // Update every minute
-    });
-<!--    document.addEventListener("DOMContentLoaded", function() {-->
-<!--    const footers = document.querySelectorAll(".card-footer");-->
-<!--    footers.forEach(footer => {-->
-<!--        footer.style.width = "100%";-->
-<!--        footer.style.textAlign = "center";-->
-<!--    });-->
-<!--    });-->
     // Redirect after 60 seconds
-    setTimeout(() => {
-        location.href = "/bread/";
-        adjustCardLayout();
+    document.addEventListener('DOMContentLoaded', adjustCardLayout);
+
+    async function fetchMenuItems() {
+    console.log('fetchMenuItems called');
+
+    const url = "{% url 'display_menu' display_section='bread' %}";
+    const storedData = localStorage.getItem('menuItems');
+    let currentMenuItems = []; // Declare currentMenuItems once
+
+    try {
+        // Fetch data from the API
+        const response = await fetch(url, {
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        });
+
+        if (!response.ok) {
+            console.error('Error fetching data:', response.status, response.statusText);
+            return;
+        }
+
+        // Parse the JSON response
+        const data = await response.json();
+        console.log("Data from API:", data);
+
+        currentMenuItems = data.menu_items; // Assign without redeclaring
+        console.log("currentMenuItems", currentMenuItems);
+        console.log("Type of currentMenuItems:", typeof currentMenuItems);
+
+
+        if (typeof currentMenuItems === "string") {
+            try {
+                currentMenuItems = JSON.parse(currentMenuItems); // Parse the JSON string
+            } catch (error) {
+                console.error("Failed to parse menu_items:", error);
+                return; // Exit if parsing fails
+            }
+        }
+
+        // If localStorage already has data, compare it
+        if (storedData) {
+            const previousMenuItems = JSON.parse(storedData);
+            console.log("previousMenuItems",previousMenuItems)
+
+            // Compare current items with previous items
+            if (JSON.stringify(currentMenuItems) !== JSON.stringify(previousMenuItems)) {
+                // Only update localStorage if there are changes
+                localStorage.setItem('menuItems', JSON.stringify(currentMenuItems));
+                console.log('Updated menu items stored in localStorage');
+            } else {
+                console.log('No changes detected, using localStorage data');
+                currentMenuItems = previousMenuItems; // Use the data from localStorage
+            }
+        } else {
+            // If there's no previous data, store the current data
+            localStorage.setItem('menuItems', JSON.stringify(currentMenuItems));
+            console.log('Menu items stored in localStorage');
+        }
+
+        // Display the current menu items
+        console.log("-----",currentMenuItems)
+        displayMenuItems(currentMenuItems);
+
+    } catch (error) {
+        console.error('Failed to fetch menu items:', error);
+    }
+    }
+    function updateMealTime() {
+            console.log("updateMealTime...");
+            const now = new Date();
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+
+            let textContent;
+            let meal;
+            let displayDate;
+
+            if ((hour >= 11 && minute >= 30) || (hour >= 21 && minute >= 30)) {
+                textContent = "BREAKFAST / LUNCH";
+                meal = "BL";
+                // Move to the next day if it's late at night
+                if (hour >= 21 && minute >= 30) {
+                    now.setDate(now.getDate() + 1);
+                }
+            } else {
+                textContent = "DINNER";
+                meal = "D";
+                now.setDate(now.getDate());
+            }
+
+            displayDate = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase();
+            document.getElementById('date').textContent = displayDate;
+        }
+
+    // Function to display menu items
+    function displayMenuItems(data) {
+    const menuSection = document.getElementById('menu-section');
+    menuSection.innerHTML = ''; // Clear the existing content
+
+    data.forEach(item => {
+        const imageUrl = item.image_url ? item.image_url : '{% static "image/cabriot-default1.png" %}';
+        const displayName = item.display_name ? item.display_name : item.item_name;
+        const quantity = item.quantity ? item.quantity : "&nbsp;";
+        const quantityType = item.quantity_type ? item.quantity_type : "&nbsp;";
+
+        const cardHtml = `
+            <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4 mt-1">
+                <div class="card h-100 d-flex flex-column">
+                    <div class="card-body d-flex align-items-center" style="color: white; border: 2.5px solid white; border-bottom: none; border-radius: 8px; background-color: #231F20;">
+                        <img class="rounded-circle" src="${imageUrl}" alt="${displayName}" width="25%" height="auto">
+                        <h3 class="card-title px-3">${displayName}</h3>
+                    </div>
+                    <div style="color: #231F20; font-size: 2rem;" class="card-footer">
+                        <div style="display: flex; align-items: baseline; justify-content: center;">
+                            <span class="cardhead">${quantity}</span>
+                            <span class="unit" style="margin-left: 10px;">${quantityType}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        menuSection.innerHTML += cardHtml;
+    });
+
+    // Ensure the layout adjusts correctly after adding the new content
+    adjustCardLayout();
+    }
+
+
+    // Load menu items on initial load and set interval for updates
+    window.addEventListener('DOMContentLoaded', () => {
+        updateMealTime();
+        updateTime(); // Initial fetch of menu items
+        setInterval(updateMealTime, 1000);
+        setInterval(updateTime, 1000);// Fetch every 10 seconds
+    });
+    setInterval(() => {
+    fetchMenuItems();
     }, 60000);
 
+    // Update date and time on load and then every second
 </script>
 
 
