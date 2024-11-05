@@ -5,6 +5,8 @@ from django.urls import path,include
 from .views import bread_display,display_menu_view,display_items_view
 
 
+
+
 urlpatterns = [
     path("",bread_display,name= 'Test'),
     path('<display_section>/',display_menu_view, name='display_menu'),
