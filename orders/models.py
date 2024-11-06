@@ -7,11 +7,12 @@ from menu.models import MenuItem
 
 class Client(models.Model):
     name = models.CharField(max_length=100)
+    client_code=models.CharField(max_length=20,null=True, blank=True)
 
     # Add any other client-specific fields
 
     def __str__(self):
-        return self.name
+        return f"{self.name}-{self.client_code}"
 
 class Order(models.Model):
     MEAL_TYPES = [
