@@ -179,7 +179,7 @@ def display_menu_view(request, display_section):
 
     # Determine the current meal period
     hour, minute = ist_now.hour, ist_now.minute
-    print("hour,minute", hour, minute)
+    # print("hour,minute", hour, minute)
     if (hour == 21 and minute >= 30) or (hour >= 22) or (hour < 11) or (hour == 11 and minute <= 30):
         text_content = "BREAKFAST / LUNCH"
         meal = "BL"

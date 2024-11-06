@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders</title>
+    <style>
+        /* Alert box styling */
+        .alert {
+            padding: 20px;
+            background-color: #f44336; /* Red background */
+            color: white;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    {% if detail %}
+        <div class="alert">{{ detail }}</div>
+    {% else %}
+        <!-- Your main content goes here -->
+    {% endif %}
+</body>
+</html>

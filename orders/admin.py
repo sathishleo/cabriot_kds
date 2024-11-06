@@ -1,11 +1,10 @@
 from django.contrib import admin
-from .models import Client, Order, OrderItem
+from .models import Client, Order, OrderItem, Shift
 from menu.models import MenuItem
-# @admin.register(Client)
+@admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ('name', 'client_code')  # Display client_code in list view
-    fields = ('name', 'client_code')  # Make client_code editable in the form view
-admin.site.register(Client, ClientAdmin)
+    list_display = ('name',)
+
 # @admin.register(MenuItem)
 # class ItemAdmin(admin.ModelAdmin):
 #     list_display = ('name', 'unit')
@@ -19,3 +18,9 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ('order_number', 'client', 'date', 'meal_type', 'order_status', 'total_pax_quantity')
     list_filter = ('meal_type', 'order_status', 'date')
     inlines = [OrderItemInline]
+
+
+@admin.register(Shift)
+class ShiftAdmin(admin.ModelAdmin):
+    list_display = ('shift_name', 'start_time', 'end_time')  # Display these fields in the list view
+    search_fields = ('shift_name',)

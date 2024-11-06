@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cabriot Eat - Orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    /* Header styling */
+    .header {
+        background-color: #f7c800;
+        color: #1b1b2f;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .header .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    .header .status {
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    /* Order card styling */
+    .order-card {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        text-align: right;
+        height: auto;
+    }
+
+    /* Badge styling */
+    .status-badge {
+        font-size: 0.85rem;
+        padding: 5px 10px;
+        color: #fff;
+        border-radius: 5px;
+    }
+    .status-badge.cooking { background-color: #ffc107; }
+    .status-badge.ready { background-color: #28a745; }
+    .status-badge.dispatched { background-color: #007bff; }
+
+    /* Responsive grid styling */
+    .order-card-container {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr); /* 6 cards per row by default */
+        gap: 10px; /* Reduced gap between grid items */
+        align-items: start;
+        grid-auto-rows: auto;
+        grid-auto-flow: dense;
+    }
+
+    /* Adjust grid for smaller screens */
+    @media (max-width: 1200px) {
+        .order-card-container {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    @media (max-width: 992px) {
+        .order-card-container {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .order-card-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .order-card-container {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">Cabriot Eat</div>
+        <div>Orders</div>
+        <div class="status">
+            <span>{{ current_date|date:"l, F d" }}</span> -
+            <span>{{ current_time|date:"H:i:s" }}</span>
+        </div>
+    </div>
+
+    <!-- Orders Grid -->
+    <div class="container my-6">
+        <div class="order-card-container">
+            {% for order in orders %}
+            <div class="order-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <h6>{{ order.client.name }}</h6>
+                    <span class="status-badge {{ order.order_status|lower }}">{{ order.order_status }}</span>
+                </div>
+                <p class="mb-1"><strong>Meal:</strong> {{ order.meal_type }}</p>
+                <p class="mb-1"><strong>Order #:</strong> {{ order.order_number }}</p>
+                <hr>
+                {% for item in order.order_items.all %}
+                <p class="mb-1">{{ item.item.item_name }} - <strong>{{ item.quantity }} {{ item.quantity_type }}</strong></p>
+                {% endfor %}
+                <hr>
+                <p><strong>COUNT:</strong> {{ order.total_pax_quantity }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <!-- JavaScript for Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -12,6 +12,8 @@ class Client(models.Model):
     # Add any other client-specific fields
 
     def __str__(self):
+        if self.client_code is None:
+            return f"{self.name}"+"-"+"-"
         return f"{self.name}-{self.client_code}"
 
 class Order(models.Model):
@@ -30,9 +32,9 @@ class Order(models.Model):
 
     date = models.DateField()
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    order_status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    order_status = models.CharField(max_length=10, choices=STATUS_CHOICES,default='Cooking')
     order_number = models.CharField(max_length=20, unique=True, editable=False)
-    meal_type = models.CharField(max_length=15, choices=MEAL_TYPES)
+    meal_type = models.CharField(max_length=15, choices=MEAL_TYPES,null=True,blank=True)
     total_pax_quantity = models.PositiveIntegerField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
@@ -59,7 +61,15 @@ class OrderItem(models.Model):
     item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)  # Reference to the existing Item model in menu app
     quantity = models.CharField(max_length=10, null=True, blank=True)
     quantity_type = models.CharField(max_length=20, choices=[
-        ('Grams', 'Grams'), ('Kilograms', 'Kilograms'), ('Numbers', 'Numbers')])
+        ('Grams', 'Grams'), ('Kilograms', 'Kilograms'), ('Numbers', 'Numbers')],null=True,blank=True)
 
     def __str__(self):
         return f"{self.quantity} {self.quantity_type} of {self.item.item_name} for {self.order}"
+
+class Shift(models.Model):
+    shift_name = models.CharField(max_length=100)  # Name of the shift (e.g., 'Morning', 'Evening', 'Night')
+    start_time = models.TimeField()  # Start time of the shift
+    end_time = models.TimeField()  # End time of the shift
+
+    def __str__(self):
+        return f"{self.shift_name}: {self.start_time} - {self.end_time}"
