@@ -1,7 +1,7 @@
 from django.db import models
  # Import the existing Item model from the menu app
 from django.utils import timezone
-
+from django.core.exceptions import ValidationError
 from menu.models import MenuItem
 
 
@@ -66,10 +66,43 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} {self.quantity_type} of {self.item.item_name} for {self.order}"
 
-class Shift(models.Model):
-    shift_name = models.CharField(max_length=100)  # Name of the shift (e.g., 'Morning', 'Evening', 'Night')
-    start_time = models.TimeField()  # Start time of the shift
-    end_time = models.TimeField()  # End time of the shift
+class Workday(models.Model):
+    date = models.DateField(unique=True)
 
     def __str__(self):
-        return f"{self.shift_name}: {self.start_time} - {self.end_time}"
+        return f"Workday on {self.date}"
+
+class UserShift(models.Model):
+    SHIFT_CHOICES = [
+        ('Breakfast', 'Breakfast'),
+        ('Lunch', 'Lunch'),
+        ('Tea & Snacks', 'Tea & Snacks'),
+        ('Dinner', 'Dinner'),
+    ]
+
+    workday = models.ForeignKey(Workday, on_delete=models.CASCADE, related_name='shifts')
+    shift_name = models.CharField(max_length=20, choices=SHIFT_CHOICES)
+    start_time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
+
+    class Meta:
+        unique_together = ('workday', 'shift_name')
+
+    def clean(self):
+        # Check for overlapping times before saving
+        existing_shifts = UserShift.objects.filter(workday=self.workday, shift_name=self.shift_name)
+
+        for shift in existing_shifts:
+            # Check if new shift times overlap with existing ones
+            if (self.start_time < shift.end_time and self.end_time > shift.start_time):
+                raise ValidationError(f"Shift time overlaps with an existing shift on {self.workday.date}.")
+
+    def save(self, *args, **kwargs):
+        # Call the clean method to validate before saving
+        self.clean()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.shift_name} Shift on {self.workday.date}"
+
+
