@@ -66,43 +66,80 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} {self.quantity_type} of {self.item.item_name} for {self.order}"
 
-class Workday(models.Model):
-    date = models.DateField(unique=True)
+# class Workday(models.Model):
+#     date = models.DateField(unique=True)
+#
+#     def __str__(self):
+#         return f"Workday on {self.date}"
+# class MealSchedule(models.Model):
+#     title = models.CharField(max_length=100)
+#
+#     def __str__(self):
+#         return self.title
+
+# class Mealtime(models.Model):
+#     Meal= [
+#         ('Breakfast', 'Breakfast'),
+#         ('Lunch', 'Lunch'),
+#         ('Tea & Snacks', 'Tea & Snacks'),
+#         ('Dinner', 'Dinner'),
+#     ]
+#     meal_schedule = models.ForeignKey(MealSchedule, on_delete=models.CASCADE, related_name='mealtimes')
+#     meal_name = models.CharField(max_length=20, choices=Meal)
+#     check_in = models.TimeField(blank=True, null=True)
+#
+#     def __str__(self):
+#         return self.meal_name
+
+
+
+from django.db import models
+from django.contrib.auth.models import User
+
+# class MealTime(models.Model): # Each user can have unique meal times
+#     breakfast_start_time = models.TimeField()
+#     breakfast_end_time = models.TimeField()
+#     lunch_start_time = models.TimeField()
+#     lunch_end_time = models.TimeField()
+#     tea_snack_start_time = models.TimeField()
+#     from django.db import models
+
+# class MealTime(models.Model):
+#     MEAL_CHOICES = [
+#         ('Breakfast', 'Breakfast'),
+#         ('Lunch', 'Lunch'),
+#         ('Tea & Snacks', 'Tea & Snacks'),
+#         ('Dinner', 'Dinner'),
+#     ]
+#
+#     name = models.CharField(max_length=20, choices=MEAL_CHOICES, unique=True)
+#     start_time = models.TimeField()
+#     end_time = models.TimeField()
+#
+#     def __str__(self):
+#         return f"{self.name} ({self.start_time} - {self.end_time})"
+
+
+from django.db import models
+
+
+class MealTimeConfig(models.Model):
+    name = models.CharField(max_length=20, default="Meal Time Config", unique=True)
 
     def __str__(self):
-        return f"Workday on {self.date}"
+        return f"{self.id}"
 
-class UserShift(models.Model):
-    SHIFT_CHOICES = [
+class MealTime(models.Model):
+    MEAL_CHOICES = [
         ('Breakfast', 'Breakfast'),
         ('Lunch', 'Lunch'),
         ('Tea & Snacks', 'Tea & Snacks'),
         ('Dinner', 'Dinner'),
     ]
-
-    workday = models.ForeignKey(Workday, on_delete=models.CASCADE, related_name='shifts')
-    shift_name = models.CharField(max_length=20, choices=SHIFT_CHOICES)
-    start_time = models.TimeField(blank=True, null=True)
-    end_time = models.TimeField(blank=True, null=True)
-
-    class Meta:
-        unique_together = ('workday', 'shift_name')
-
-    def clean(self):
-        # Check for overlapping times before saving
-        existing_shifts = UserShift.objects.filter(workday=self.workday, shift_name=self.shift_name)
-
-        for shift in existing_shifts:
-            # Check if new shift times overlap with existing ones
-            if (self.start_time < shift.end_time and self.end_time > shift.start_time):
-                raise ValidationError(f"Shift time overlaps with an existing shift on {self.workday.date}.")
-
-    def save(self, *args, **kwargs):
-        # Call the clean method to validate before saving
-        self.clean()
-        super().save(*args, **kwargs)
+    config = models.ForeignKey(MealTimeConfig, on_delete=models.CASCADE, related_name="meal_times", null=True)
+    name = models.CharField(max_length=20, choices=MEAL_CHOICES, unique=True)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
 
     def __str__(self):
-        return f"{self.shift_name} Shift on {self.workday.date}"
-
-
+        return f"{self.name} ({self.start_time} - {self.end_time})"

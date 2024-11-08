@@ -45,33 +45,28 @@
 </style>
 </head>
 <body>
-    <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary shadow-sm">
-        <div class="container">
-            <a class="navbar-brand text-black" href="#">Cabriot Eat</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Orders</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link text-black" href="#">Orders</a>
+                        <span class="nav-link text-warning">Last Updated: {{ last_updated }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link text-light">{{ current_date_time }}</span>
                     </li>
                 </ul>
-                <div class="d-flex flex-column text-black ms-3">
-                    <span>{{ current_date|date:"l, F d" }}</span>
-                    <span>{{ current_time }}</span>
-                </div>
             </div>
         </div>
     </nav>
-
-    <!-- Orders Grid -->
-
-   <div class="container my-5">
-    <div id="order-card-container" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+  <div class="container my-5">
+    <div id="order-card-container" class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for order in orders %}
-        <div class="col">
+        <div class="col-12">
             <div class="card order-card shadow-sm border-light rounded-3">
                 <div class="card-body">
                     <!-- Client name and green status badge -->
@@ -83,51 +78,83 @@
                     <p class="mb-1 text-start"><strong>Meal:</strong> {{ order.meal_type }}</p> <!-- Align meal type to start -->
                     <p class="mb-1 text-start"><strong>Order #:</strong> {{ order.order_number }}</p> <!-- Align order number to start -->
                     <hr>
-                    <!-- Loop through order items -->
-                    {% for item in order.order_items %}
-                    <p class="mb-1 text-start">
-                        <strong>{{ item.item_name }}</strong> -
-                        <span>
-                            {{ item.quantity }}
-                            {% if item.quantity_type == 'kilogram' %}
-                                Kg
-                            {% elif item.quantity_type == 'Numbers' %}
-                                Nos
-                            {% elif item.quantity_type == 'grams' %}
-                                G
-                            {% else %}
-                                {{ item.quantity_type }}
-                            {% endif %}
-                        </span>
-                    </p>
-                    {% endfor %}
-                    <!-- Order count display -->
-                    <p class="mb-1 text-white bg-dark text-center">
-                        <strong>COUNT:</strong>
-                        <span class=" text-white px-3 py-1 rounded">{{ order.count }}</span> <!-- Change bg-primary to your desired background color -->
-                    </p>
 
+                    <!-- Nested Grid for Order Items -->
+                    <div class="row mb-3">
+                        {% for item in order.order_items %}
+                        <div class="col-12 col-md-6">
+                            <p class="mb-1 text-start">
+                                <strong>{{ item.item_name }}</strong> -
+                                <span>
+                                    {{ item.quantity }}
+                                    {% if item.quantity_type == 'kilogram' %}
+                                        Kg
+                                    {% elif item.quantity_type == 'Numbers' %}
+                                        Nos
+                                    {% elif item.quantity_type == 'grams' %}
+                                        G
+                                    {% else %}
+                                        {{ item.quantity_type }}
+                                    {% endif %}
+                                </span>
+                            </p>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Order Count Display -->
+                    <div class="text-center mb-4">
+                        <p class="text-white bg-dark p-2 rounded">
+                            <strong>COUNT:</strong>
+                            <span class="text-white px-3 py-1 rounded">{{ order.count }}</span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
-    </div>
+</div>
 
 
 
 
-<!--    <div id="orders" data-items="{{ orders|json_script }}"></div>-->
+
+
+
+
 
     {% block content %}
     {% endblock %}
 
+    <div id="orders" data-orders="{{ orders|json_script }}"></div>
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     const API_URL = '/orders/view/'; // Your API endpoint
     const FETCH_INTERVAL = 3 * 60 * 1000; // 3 minutes in milliseconds
+    const menuItemsElement.getEl
+    console.log("Raw JSON:", menuItemsElement.textContent.trim());
+    const jsonString = menuItemsElement.textContent.trim();
+    let checks = jsonString; // Declare checks outside of the if block
 
+    if (jsonString.endsWith('">')) {
+        checks = jsonString.slice(0, -2); // Reassign checks if it ends with '">'
+        console.log("checks:", checks);
+    }
+
+    if (checks) {
+        try {
+            const menuItems = JSON.parse(checks);
+            console.log("Parsed JSON:", menuItems);
+
+            // Set the parsed menu items in localStorage
+            localStorage.setItem('menuItems', JSON.stringify(menuItems));
+            console.log("Menu items saved to localStorage.");
+        } catch (error) {
+            console.error("Failed to parse menu items JSON:", error);
+        }
+    }
     // Load initial orders from localStorage if available
     function loadInitialOrders() {
         const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
@@ -197,7 +224,7 @@
 
         // Display the current orders (you can replace this with your own display function)
         console.log("-----", currentOrders);
-        displayOrders(currentOrders);  // Assuming you have a function to display orders
+        updateOrderList(currentOrders);  // Assuming you have a function to display orders
 
     } catch (error) {
         console.error('Failed to fetch orders:', error);
@@ -206,32 +233,54 @@
 
 
     // Update the order list in the DOM
-    function updateOrderList(orders) {
-        const orderContainer = document.getElementById('order-card-container');
-        orderContainer.innerHTML = ''; // Clear existing orders
 
-        orders.forEach(order => {
-            const orderCard = `
-                <div class="col">
-                    <div class="order-card card shadow-sm border-light rounded-3">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <h6 class="card-title">${order.client.name}</h6>
-                                <span class="status-badge badge">${order.order_status}</span>
-                            </div>
-                            <p class="mb-1"><strong>Meal:</strong> ${order.meal_type}</p>
-                            <p class="mb-1"><strong>Order #:</strong> ${order.order_number}</p>
-                            <hr>
-                            ${order.order_items.map(item => `<p class="mb-1">${item.item_name} - <strong>${item.quantity} ${item.quantity_type}</strong></p>`).join('')}
-                            <hr>
-                            <p class="count-text"><strong>COUNT:</strong> ${order.total_pax_quantity}</p>
+    function updateOrderList(orders) {
+    const orderContainer = document.getElementById('order-card-container');
+    orderContainer.innerHTML = ''; // Clear existing orders
+
+    if (!Array.isArray(orders)) {
+        console.error("Expected an array but got:", orders);
+        return;
+    }
+
+    orders.forEach(order => {
+        const client = order.client;
+        const status = order.status;
+        const meal_type = order.meal_type;
+        const order_number = order.order_number;
+        const count = order.count;
+            <div class="col">
+                <div class="card order-card shadow-sm border-light rounded-3">
+                    <div class="card-body">
+                        <div class="d-flex bg-dark justify-content-between align-items-center mb-3">
+                            <h6 class="card-title text-white text-center mb-4">${client}</h6>
+                            <span class="badge text-bg-success align-self-stretch">${status}</span>
                         </div>
+                        <p class="mb-1 text-start"><strong>Meal:</strong> ${meal_type}</p>
+                        <p class="mb-1 text-start"><strong>Order #:</strong> ${order_number}</p>
+                        <hr>
+                        ${order.order_items.map(item =>
+                         const item_name = item.item_name;
+                         const quantity_type = order.quantity_type;
+                         const quantity = order.quantity;
+                         `
+                            <p class="mb-1 text-start">
+                                <strong>${item_name}</strong> -
+                                <span>${quantity} ${quantity_type}</span>
+                            </p>
+                        `).join('')}
+                        <p class="mb-1 text-white bg-dark text-center">
+                            <strong>COUNT:</strong>
+                            <span class=" text-white px-3 py-1 rounded">${count}</span>
+                        </p>
                     </div>
                 </div>
-            `;
-            orderContainer.insertAdjacentHTML('beforeend', orderCard);
-        });
+            </div>
+        `;
+        orderContainer.insertAdjacentHTML('beforeend', orderCard);
+    });
     }
+
 
     // Initial load and periodic updates
     loadInitialOrders(); // Load stored data first
