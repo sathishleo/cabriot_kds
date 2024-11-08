@@ -102,4 +102,4 @@ class MealTimeConfigAdmin(admin.ModelAdmin):
     inlines = [MealTimeInline]
 
 # Register MealTime if you want to edit entries individually as well
-admin.site.register(MealTime)
+# admin.site.register(MealTime)

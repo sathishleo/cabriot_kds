@@ -45,9 +45,10 @@ class Order(models.Model):
         if not self.order_number:
             date_str = timezone.now().strftime("%Y%m%d")  # e.g., "20231105"
             client_id = str(self.client.id).zfill(3)  # Pads client ID to 3 digits
+            serioal = str(self.id).zfill(3)  # Pads client ID to 3 digits
 
             # Use the primary key (ID) for order_number
-            self.order_number = f"{date_str}-{client_id}-{self.id}"
+            self.order_number = f"{date_str}-{client_id}-{serioal}"
 
             # Now save the instance again to update the order_number
             super().save(update_fields=['order_number'])
@@ -64,7 +65,11 @@ class OrderItem(models.Model):
         ('Grams', 'Grams'), ('Kilograms', 'Kilograms'), ('Numbers', 'Numbers')],null=True,blank=True)
 
     def __str__(self):
-        return f"{self.quantity} {self.quantity_type} of {self.item.item_name} for {self.order}"
+        quantity = self.quantity or ""
+        quantity_type = self.quantity_type or ""
+        item_name = self.item.item_name or ""
+        order = self.order or ""
+        return f"{quantity} {quantity_type} of {item_name} for {order}"
 
 # class Workday(models.Model):
 #     date = models.DateField(unique=True)
