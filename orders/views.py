@@ -1,3 +1,5 @@
+import json
+
 import pytz
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -58,27 +60,45 @@ def order_display(request):
 
     # If an active shift is found, retrieve and display orders
     if current_shift:
-        orders_in_current_shift = Order.objects.filter(meal_type=current_shift, date=current_date)
+        orders_in_current_shift = Order.objects.filter(meal_type=current_shift, date=current_date).values_list("id",flat=True)
+        order_object = Order.objects.filter(id__in=orders_in_current_shift).values('client__name', 'order_status', 'order_number', 'meal_type', 'total_pax_quantity','id')
+        orders_data = Order.objects.filter(meal_type=current_shift, date=current_date).values()
+        # order = Order.objects.get(id=orders_in_current_shift)
+        # print(order)
+        # print(orders_in_current_shift)
         order_items = OrderItem.objects.filter(order__in=orders_in_current_shift)
-        order_json=order_class()
-        order_value=order_json.get_orderserlizer(orders_in_current_shift)
+
+        # print(order)
+        items = list(order_items.values('id', 'order_id', 'item__item_name', 'quantity', 'quantity_type'))
+        # Serialize orders and items as JSON strings
+        # orders_json = json.dumps(list(orders_in_current_shift))  # Only use if you need order IDs as JSON
+        # order_items_json = json.dumps(list(order_items))
 
         # Set up timezone-aware display time
         ist_timezone = pytz.timezone('Asia/Kolkata')
         ist_now = now().astimezone(ist_timezone)
         current_display_time = ist_now.strftime("%I:%M %p")
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse([{
-            "orders":order_value,
+            print("_______",{
+            "orders":list(order_object),
             'current_date': ist_now.date(),
-            'current_time': current_display_time
-        }], safe=False)
+            'current_time': current_display_time,
+            "items_json":list(items)
+            })
+            return JsonResponse({
+            "orders":list(order_object),
+            'current_date': ist_now.date(),
+            'current_time': current_display_time,
+            "items_json":list(items)
+        }, safe=False)
 
         context = {
-            "orders":order_value,
+            "orders":list(order_object),
             'current_date': ist_now.date(),
-            'current_time': current_display_time
+            'current_time': current_display_time,
+            "items_json":list(items)
         }
+        print(context)
 
         return render(request, 'bootstrip.html', context)
     else:
