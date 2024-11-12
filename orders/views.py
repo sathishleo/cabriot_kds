@@ -77,7 +77,7 @@ def order_display(request):
         # Set up timezone-aware display time
         ist_timezone = pytz.timezone('Asia/Kolkata')
         ist_now = now().astimezone(ist_timezone)
-        current_display_time = ist_now.strftime("%A %I:%M:%S %p")
+        current_display_time = ist_now.strftime("%I:%M:%S %p")
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             print("_______",{
             "orders":list(order_object),
