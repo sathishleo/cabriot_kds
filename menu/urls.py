@@ -11,5 +11,6 @@ urlpatterns = [
     path("",bread_display,name= 'Test'),
     path('<display_section>/',display_menu_view, name='display_menu'),
     path('<display_section>/',display_items_view, name='items'),
+    # path('Orders',redirect, name='order'),
     # path('<display_section>/',display_menu_view, name='display_menu'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

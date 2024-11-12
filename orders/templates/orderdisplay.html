@@ -64,57 +64,84 @@
         </div>
     </nav>
   <div class="container my-5">
-    <div id="order-card-container" class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div id="masonry-container" class="row">
         {% for order in orders %}
-        <div class="col-12">
-            <div class="card order-card shadow-sm border-light rounded-3">
-                <div class="card-body">
-                    <!-- Client name and green status badge -->
-                    <div class="d-flex bg-dark justify-content-between align-items-center mb-3">
-                        <h6 class="card-title text-white text-center mb-4">{{ order.client }}</h6> <!-- Align client name to start -->
-                        <span class="badge text-bg-success align-self-stretch">{{ order.status }}</span> <!-- Green status badge -->
+            <div class="order-card col-12 col-md-6 col-lg-4 mb-4 shadow-sm border-light rounded-3">
+                <!-- Card Header -->
+                <div class="card-header d-flex justify-content-between align-items-center p-3">
+                    <div class="d-flex flex-column text-start">
+                        <h6 class="mb-0"><strong>{{ order.client__name|title }}</strong></h6>
+                        <p class="mb-1">{{ order.meal_type }}</p>
                     </div>
-                    <!-- Meal and Order number -->
-                    <p class="mb-1 text-start"><strong>Meal:</strong> {{ order.meal_type }}</p> <!-- Align meal type to start -->
-                    <p class="mb-1 text-start"><strong>Order #:</strong> {{ order.order_number }}</p> <!-- Align order number to start -->
-                    <hr>
+                    <div class="d-flex flex-column text-end">
+                        <span class="badge {% if order.order_status == 'Cooking' %}bg-success{% elif order.order_status == 'Dispatched' %}bg-danger{% else %}bg-warning{% endif %}">
+                            {{ order.order_status }}
+                        </span>
+                        <p class="mb-1"><strong>Order #:</strong> {{ order.order_number }}</p>
+                    </div>
+                </div>
 
-                    <!-- Nested Grid for Order Items -->
-                    <div class="row mb-3">
-                        {% for item in order.order_items %}
-                        <div class="col-12 col-md-6">
-                            <p class="mb-1 text-start">
-                                <strong>{{ item.item_name }}</strong> -
-                                <span>
-                                    {{ item.quantity }}
-                                    {% if item.quantity_type == 'kilogram' %}
-                                        Kg
-                                    {% elif item.quantity_type == 'Numbers' %}
-                                        Nos
-                                    {% elif item.quantity_type == 'grams' %}
-                                        G
-                                    {% else %}
-                                        {{ item.quantity_type }}
-                                    {% endif %}
-                                </span>
-                            </p>
+                <!-- Card Body -->
+                <div class="card">
+                    <div class="card-body p-2">
+                        <div class="row mb-2">
+                            <table class="table table-striped mb-0">
+                                <tbody>
+                                    {% for item in items_json %}
+                                        {% if item.order_id == order.id %}
+                                            <tr>
+                                                <td class="text-center py-0"><strong>{{ item.item__item_name }}</strong></td>
+                                                <td class="text-center py-0">
+                                                    {{ item.quantity|default:"0" }}
+                                                    {% if item.quantity_type %}
+                                                        {% if item.quantity_type == 'kilogram' %} Kg
+                                                        {% elif item.quantity_type == 'Numbers' %} Nos
+                                                        {% elif item.quantity_type == 'grams' %} G
+                                                        {% else %} {{ item.quantity_type }}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Order Count Display -->
-                    <div class="text-center mb-4">
-                        <p class="text-white bg-dark p-2 rounded">
-                            <strong>COUNT:</strong>
-                            <span class="text-white px-3 py-1 rounded">{{ order.count }}</span>
-                        </p>
+                        <div class="text-center mt-2">
+                            <p><strong>COUNT:</strong> <span>{{ order.total_pax_quantity|default:" " }}</span></p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         {% endfor %}
     </div>
 </div>
+     {% block content %}
+    {% endblock %}
+ <div id="orders" data-orders="{{ orders|json_script }}"></div>
+<div id="items" data-orders="{{ items|json_script }}"></div>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="path/to/masonry.pkgd.min.js"></script>
+<script>
+    // Ensure DOM is fully loaded before initializing Masonry
+    document.addEventListener('DOMContentLoaded', function() {
+        var grid = document.querySelector('#masonry-container');
+
+        // Check if the grid element exists
+        if (grid) {
+            var masonry = new Masonry(grid, {
+                itemSelector: '.order-card',
+                columnWidth: '.order-card', // You can use a specific class or set the grid width
+                percentPosition: true
+            });
+        } else {
+            console.error('Masonry grid not found!');
+        }
+    });
+</script>
+
 
 
 
@@ -127,166 +154,106 @@
     {% block content %}
     {% endblock %}
 
-    <div id="orders" data-orders="{{ orders|json_script }}"></div>
-    <!-- Bootstrap JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    const API_URL = '/orders/view/'; // Your API endpoint
-    const FETCH_INTERVAL = 3 * 60 * 1000; // 3 minutes in milliseconds
-    const menuItemsElement.getEl
-    console.log("Raw JSON:", menuItemsElement.textContent.trim());
-    const jsonString = menuItemsElement.textContent.trim();
-    let checks = jsonString; // Declare checks outside of the if block
+<!-- <script>-->
 
-    if (jsonString.endsWith('">')) {
-        checks = jsonString.slice(0, -2); // Reassign checks if it ends with '">'
-        console.log("checks:", checks);
-    }
+<!--   &lt;!&ndash;    const menuItemsElement = document.getElementById('orders');-->
+<!--        const jsonString = menuItemsElement?.textContent.trim() || "";-->
+<!--        let checks = jsonString;-->
 
-    if (checks) {
-        try {
-            const menuItems = JSON.parse(checks);
-            console.log("Parsed JSON:", menuItems);
+<!--        if (jsonString.endsWith('">')) {-->
+<!--            checks = jsonString.slice(0, -2);-->
+<!--        }-->
 
-            // Set the parsed menu items in localStorage
-            localStorage.setItem('menuItems', JSON.stringify(menuItems));
-            console.log("Menu items saved to localStorage.");
-        } catch (error) {
-            console.error("Failed to parse menu items JSON:", error);
-        }
-    }
-    // Load initial orders from localStorage if available
-    function loadInitialOrders() {
-        const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
-        if (storedOrders.length > 0) {
-            updateOrderList(storedOrders);
-        }
-    }
+<!--        if (checks) {-->
+<!--            try {-->
+<!--                const menuItems = JSON.parse(checks);-->
+<!--                localStorage.setItem('orders', JSON.stringify(menuItems));-->
+<!--            } catch (error) {-->
+<!--                console.error("Failed to parse menu items JSON:", error);-->
+<!--            }-->
+<!--        }-->
 
-    // Fetch new orders from the server and update if there’s a change
-    async function fetchAndUpdateOrders() {
-    console.log('fetchAndUpdateOrders called');
+<!--        const API_URL = '/orders/view/';-->
+<!--        const FETCH_INTERVAL = 1 * 60 * 1000;-->
 
-    const url = "{% url 'order_display' %}";  // Update this URL with the correct endpoint
-    const storedData = localStorage.getItem('orders');
-    let currentOrders = []; // Declare currentOrders once
+<!--        function loadInitialOrders() {-->
+<!--            const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];-->
+<!--            if (storedOrders.length > 0) {-->
+<!--                updateOrderList(storedOrders);-->
+<!--            }-->
+<!--        }-->
 
-    try {
-        // Fetch data from the API
-        const response = await fetch(url, {
-            headers: {
-                "X-Requested-With": "XMLHttpRequest"
-            }
-        });
+<!--        async function fetchAndUpdateOrders() {-->
+<!--        const url = "{% url 'orders' %}";-->
+<!--        const storedData = localStorage.getItem('orders');-->
+<!--        let currentOrders = [];-->
 
-        if (!response.ok) {
-            console.error('Error fetching orders:', response.status, response.statusText);
-            return;
-        }
+<!--        try {-->
+<!--            const response = await fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } });-->
+<!--            if (!response.ok) return console.error('Error fetching orders:', response.status, response.statusText);-->
 
-        // Parse the JSON response
-        const data = await response.json();
-        console.log("Data from API:", data);
+<!--            const data = await response.json();-->
+<!--            if (Array.isArray(data)) currentOrders = data;-->
+<!--            console.log("data",data)-->
+<!--            if (storedData) {-->
+<!--                let previousOrders = JSON.parse(storedData) || [];-->
+<!--                if (JSON.stringify(currentOrders) !== JSON.stringify(previousOrders)) {-->
+<!--                    localStorage.setItem('orders', JSON.stringify(currentOrders));-->
+<!--                } else currentOrders = previousOrders;-->
+<!--            } else localStorage.setItem('orders', JSON.stringify(currentOrders));-->
 
-        currentOrders = data; // Assuming `data` is the array of orders
-        console.log("currentOrders", currentOrders);
-        console.log("Type of currentOrders:", typeof currentOrders);
+<!--            updateOrderList(currentOrders);-->
+<!--        } catch (error) {-->
+<!--            console.error('Failed to fetch orders:', error);-->
+<!--        }-->
+<!--        }-->
 
-        // If currentOrders is a string, parse it (handle edge case)
-        if (typeof currentOrders === "string") {
-            try {
-                currentOrders = JSON.parse(currentOrders); // Parse the JSON string
-            } catch (error) {
-                console.error("Failed to parse orders:", error);
-                return; // Exit if parsing fails
-            }
-        }
+<!--        function updateOrderList(orders) {-->
+<!--        console.log("orders",orders)-->
+<!--        const orderContainer = document.getElementById('order-card-container');-->
+<!--        if (!Array.isArray(orders) || !orderContainer) return console.error("Invalid orders or container missing");-->
 
-        // If localStorage already has data, compare it
-        if (storedData) {
-            const previousOrders = JSON.parse(storedData);
-            console.log("previousOrders", previousOrders);
+<!--        let ordersHtml = '';-->
+<!--        orders.forEach(order => {-->
+<!--            const client = order.client;-->
+<!--            const status = order.status;-->
+<!--            const meal_type = order.meal_type;-->
+<!--            const order_number = order.order_number;-->
+<!--            const count = order.count;-->
+<!--            console.log(count,"count")-->
 
-            // Compare current orders with previous orders
-            if (JSON.stringify(currentOrders) !== JSON.stringify(previousOrders)) {
-                // Only update localStorage if there are changes
-                localStorage.setItem('orders', JSON.stringify(currentOrders));
-                console.log('Updated orders stored in localStorage');
-            } else {
-                console.log('No changes detected, using localStorage data');
-                currentOrders = previousOrders; // Use the data from localStorage
-            }
-        } else {
-            // If there's no previous data, store the current data
-            localStorage.setItem('orders', JSON.stringify(currentOrders));
-            console.log('Orders stored in localStorage');
-        }
+<!--            const orderItemsHtml = Array.isArray(order.order_items) ? order.order_items.map(item => `-->
+<!--                <p class="mb-1 text-start"><strong>${item.item_name || "Unknown"}</strong> - -->
+<!--                <span>${item.quantity || ""} ${item.quantity_type || ""}</span></p>-->
+<!--            `).join('') : `<p class="mb-1 text-start">No items available</p>`;-->
 
-        // Display the current orders (you can replace this with your own display function)
-        console.log("-----", currentOrders);
-        updateOrderList(currentOrders);  // Assuming you have a function to display orders
+<!--            ordersHtml += `-->
+<!--                <div class="col">-->
+<!--                    <div class="card order-card shadow-sm border-light rounded-3">-->
+<!--                        <div class="card-body">-->
+<!--                            <div class="d-flex bg-dark justify-content-between align-items-center mb-3">-->
+<!--                                <h6 class="card-title text-white text-center mb-4">${client}</h6>-->
+<!--                                <span class="badge ${status === 'Cooking' ? 'text-bg-success' : status === 'Dispatched' ? 'text-bg-danger' : 'text-bg-warning'}">${status}</span>-->
+<!--                            </div>-->
+<!--                            <p class="mb-1 text-start"><strong>Meal:</strong> ${meal_type}</p>-->
+<!--                            <p class="mb-1 text-start"><strong>Order #:</strong> ${order_number}</p>-->
+<!--                            <hr>-->
+<!--                            ${orderItemsHtml}-->
+<!--                            <p class="mb-1 text-white bg-dark text-center"><strong>COUNT:</strong> <span class="text-white px-3 py-1 rounded">${count}</span></p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            `;-->
+<!--        });-->
+<!--        orderContainer.innerHTML = ordersHtml;-->
+<!--    }-->
 
-    } catch (error) {
-        console.error('Failed to fetch orders:', error);
-    }
-    }
+<!--    // Initial load and periodic updates-->
+<!--    loadInitialOrders();-->
+<!--    fetchAndUpdateOrders();-->
+<!--setInterval(fetchAndUpdateOrders, FETCH_INTERVAL);&ndash;&gt;-->
 
-
-    // Update the order list in the DOM
-
-    function updateOrderList(orders) {
-    const orderContainer = document.getElementById('order-card-container');
-    orderContainer.innerHTML = ''; // Clear existing orders
-
-    if (!Array.isArray(orders)) {
-        console.error("Expected an array but got:", orders);
-        return;
-    }
-
-    orders.forEach(order => {
-        const client = order.client;
-        const status = order.status;
-        const meal_type = order.meal_type;
-        const order_number = order.order_number;
-        const count = order.count;
-            <div class="col">
-                <div class="card order-card shadow-sm border-light rounded-3">
-                    <div class="card-body">
-                        <div class="d-flex bg-dark justify-content-between align-items-center mb-3">
-                            <h6 class="card-title text-white text-center mb-4">${client}</h6>
-                            <span class="badge text-bg-success align-self-stretch">${status}</span>
-                        </div>
-                        <p class="mb-1 text-start"><strong>Meal:</strong> ${meal_type}</p>
-                        <p class="mb-1 text-start"><strong>Order #:</strong> ${order_number}</p>
-                        <hr>
-                        ${order.order_items.map(item =>
-                         const item_name = item.item_name;
-                         const quantity_type = order.quantity_type;
-                         const quantity = order.quantity;
-                         `
-                            <p class="mb-1 text-start">
-                                <strong>${item_name}</strong> -
-                                <span>${quantity} ${quantity_type}</span>
-                            </p>
-                        `).join('')}
-                        <p class="mb-1 text-white bg-dark text-center">
-                            <strong>COUNT:</strong>
-                            <span class=" text-white px-3 py-1 rounded">${count}</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        `;
-        orderContainer.insertAdjacentHTML('beforeend', orderCard);
-    });
-    }
-
-
-    // Initial load and periodic updates
-    loadInitialOrders(); // Load stored data first
-    fetchAndUpdateOrders(); // Fetch new data from server
-    setInterval(fetchAndUpdateOrders, FETCH_INTERVAL);
-</script>
+<!--</script>-->
 
 
 </body>

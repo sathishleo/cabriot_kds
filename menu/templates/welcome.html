@@ -75,6 +75,11 @@
         function redirect(buttonValue) {
             // Redirect to a new URL with the selected button value as a parameter
             window.location.href = `/${buttonValue}`;
+
+        }
+        function redirect_to(buttonValue) {
+            // Redirect to a new URL with the selected button value as a parameter
+            window.location.href = `/order/`;
         }
     </script>
 </head>
@@ -83,19 +88,21 @@
     <div class="left-section">
         <img src="{% static 'image/cabriot_eat_logo1.svg' %}" alt="Kitchen Logo" class="logo">
         <h1>Kitchen Display System</h1>
+
     </div>
     <div class="right-section">
         <button class="button" onclick="redirect('main')">Main</button>
         <button class="button" onclick="redirect('vegetable')">Vegetable</button>
         <button class="button" onclick="redirect('bread')">Bread</button>
-        <button class="button" onclick="redirect('Orders')">Order</button>
+        <button class="button" onclick="window.location.href='{% url 'orders:order' %}'">Orders</button>
+        <!-- For Menu app -->
+
+<!--        &lt;!&ndash; For Orders app &ndash;&gt;-->
+<!--&lt;!&ndash;        <button class="button" onclick="window.location.href='{% url 'orders:order' %}'">Orders</button>&ndash;&gt;-->
+
+<!--&lt;!&ndash;-->
+
     </div>
     </div>
 </body>
-<script>
-   function redirectToOrdersApi() {
-        Redirect the user to the specific section's URL
-        window.location.href ="/orders/"
-    }
-</script>
 </html>

@@ -3,9 +3,9 @@ from django.conf.urls.static import static
 from django.urls import path
 from . import views
 from .views import order_display
-
+app_name = 'orders'
 urlpatterns = [
-    path('', order_display, name='orders'),
+    path('order/', order_display, name='order')
 
 
 
