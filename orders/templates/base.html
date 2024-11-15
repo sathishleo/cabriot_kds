@@ -11,6 +11,47 @@
     <script src="https://unpkg.com/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script>
 </head>
 <style>
+#orders-grid {
+    column-count: 6;
+    column-gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.masonry-item {
+    display: inline-block;
+    margin-bottom: 1rem;
+    width: calc(100% / 6 - 1rem);  /* Make cards fit within the grid */
+}
+
+@media (max-width: 1200px) {
+    #orders-grid {
+        column-count: 4; /* Adjust for medium screens */
+    }
+    .masonry-item {
+        width: calc(100% / 4 - 1rem);  /* Adjust item width */
+    }
+}
+
+@media (max-width: 768px) {
+    #orders-grid {
+        column-count: 2; /* Adjust for small screens */
+    }
+    .masonry-item {
+        width: calc(100% / 2 - 1rem);  /* Adjust item width */
+    }
+}
+
+@media (max-width: 576px) {
+    #orders-grid {
+        column-count: 1; /* Single column for very small screens */
+    }
+    .masonry-item {
+        width: 100%;  /* Full width for single column */
+    }
+}
+
 .navbar-brand {
         font-size: 2rem;
         font-weight: bold;
@@ -25,9 +66,9 @@
     margin: 0;
     }
     body {
-    padding-top: 0;
-    padding-left: 0;
-    padding-right: 0;
+    padding-top: 2;
+    padding-left: 2;
+    padding-right: 2;
     }
 /* Navbar Styling */
 .navbar-brand {
@@ -39,22 +80,7 @@
     height: 56px;
     padding: 0;
 }
-#orders-grid {
-    column-count: 6; /* 6-column grid for larger screens */
-    column-gap: 1rem; /* Adjust spacing between columns */
-}
 
-.masonry-item {
-    display: inline-block;
-    margin-bottom: 1rem;
-<!--    width: 100%;-->
-}
-
-@media (max-width: 1200px) {
-    #orders-grid {
-        column-count: 4; /* Adjust for medium screens */
-    }
-}
 
 @media (max-width: 768px) {
     #orders-grid {
@@ -69,40 +95,12 @@
 }
 
 body {
-    padding-top: 0;
-    padding-left: 0;
-    padding-right: 0;
+    padding-top: 2;
+    padding-left: 2;
+    padding-right:0;
 }
 
-/* Masonry Grid: Ensure masonry layout behaves responsively */
-.masonry-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 1rem;
-}
 
-/* Ensure items stack naturally in a masonry style */
-.masonry-item {
-    break-inside: avoid;
-}
-
-@media (max-width: 992px) {
-    .masonry-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .masonry-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 576px) {
-    .masonry-grid {
-        grid-template-columns: 1fr;
-    }
-}
 .card {
     break-inside: avoid;
 }
@@ -227,23 +225,35 @@ body {
 <body>
     <!-- Navbar and other header content -->
 <!--<header>-->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top p-5">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <!-- Left Section: Logo and Title -->
-            <div class="d-flex align-items-center">
-                <img src="{% static 'image/cabriot_Orderlogo.png' %}" alt="Logo"  height="100" class="me-3">
-                <h2 class="navbar-brand mb-0 fs-1 text-white">Orders</h2>
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top p-5">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <!-- Left Section: Logo and Title -->
+        <div class="d-flex align-items-center">
+            <img src="{% static 'image/cabriot_Orderlogo.png' %}" alt="Logo" height="100" class="me-3">
+            <h2 class="navbar-brand mb-0 fs-1 text-white">Orders</h2>
+        </div>
+
+        <!-- Right Section: MEAL and Date/Time in separate divs -->
+        <div class="d-flex ms-auto">
+            <!-- MEAL Section Centered -->
+            <div class="d-flex flex-column align-items-end mx-5">
+                <h2 class="navbar-brand mb-0 fs-1 text-white">{{meal}}</h2>
             </div>
-            <!-- Right Section: Date and Last Updated Time -->
-            <div class="d-flex align-items-center ms-auto">
-              <div class="text-end text-white">
+
+            <!-- Date and Last Updated Time -->
+            <div class="d-flex flex-column align-items-end text-white">
                 <p class="mb-0"><strong>{{ current_date|date:"l, F j, Y" }}</strong></p>
                 <p id="heading" class="mb-0 fs-5"></p>
                 <small class="mb-0 fs-8">Last Updated 30 minutes ago</small>
-              </div>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
+
+
+
+
+
 <!--</header>-->
 <div class="container" id="masonry-container">
     <div class="masonry-grid" id="orders-grid">
@@ -362,7 +372,7 @@ body {
                 localStorage.setItem('items', JSON.stringify(items));
             }
 
-            initializeMasonry();
+            initializeMasonry();  // Re-initialize Masonry after loading new content
         } catch (error) {
             console.error('Error loading data:', error);
         }
@@ -387,85 +397,83 @@ body {
     }
 
     function renderOrdersAndItems(orders, items) {
-    const masonryContainer = document.getElementById('masonry-container');
-    let masonryHTML = ''; // Initialize an empty string for accumulating HTML
+        const masonryContainer = document.getElementById('masonry-container');
+        let masonryHTML = ''; // Initialize an empty string for accumulating HTML
 
-    if (Array.isArray(orders)) {
-        orders.forEach(order => {
-            const badgeClass = getBadgeClass(order.order_status);
-            const clientName = order.client__name || 'Unnamed Client';
-            const upperClientName = clientName.toUpperCase();
+        if (Array.isArray(orders)) {
+            orders.forEach(order => {
+                const badgeClass = getBadgeClass(order.order_status);
+                const clientName = order.client__name || 'Unnamed Client';
+                const upperClientName = clientName.toUpperCase();
 
-            // Header Template
-            const headerTemplate = `
-                <div class="card-header d-flex justify-content-between align-items-center p-2">
-                    <div class="text-start">
-                        <h6 class="mb-0 fw-bold text-capitalize">${upperClientName}</h6>
+                // Header Template
+                const headerTemplate = `
+                    <div class="card-header d-flex justify-content-between align-items-center p-2">
+                        <div class="text-start">
+                            <h6 class="mb-0 fw-bold text-capitalize">${upperClientName}</h6>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge custom-badge ${badgeClass}">${order.order_status}</span>
+                        </div>
                     </div>
-                    <div class="text-end">
-                        <span class="badge custom-badge ${badgeClass}">${order.order_status}</span>
-                    </div>
-                </div>
-            `;
-
-            // Body Template
-            const bodyTemplate = `
-                <div class="card-body p-2">
-                    <!-- Meal Type and Order Number -->
                     <div class="col px-2 py-1 d-flex justify-content-between align-items-center border border-light">
-                        <div class="text-start custom-medium">${order.meal_type}</div>
-                        <div class="text-end custom-small">Order #: ${order.order_number}</div>
+                            <div class="text-start custom-medium">${order.meal_type}</div>
+                            <div class="text-end custom-small">Order #: ${order.order_number}</div>
+                        </div>
+                `;
+
+                // Body Template
+                const bodyTemplate = `
+                    <div class="card-body p-2">
+                        <!-- Meal Type and Order Number -->
+
+                        <!-- Items Rows -->
+                        ${generateItemsRows(order, items)}
+
+                        <!-- Total Count -->
+                        <div class="text-center fw-bold py-1">
+                            COUNT: <span>${order.total_pax_quantity || ' '}</span>
+                        </div>
                     </div>
+                `;
 
-                    <!-- Items Rows -->
-                    ${generateItemsRows(order, items)}
+                // Function to generate item rows dynamically
+                function generateItemsRows(order, items) {
+                    let itemRowsHTML = '';
+                    items.forEach(item => {
+                        if (item.order_id === order.id) {
+                            itemRowsHTML += `
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted small">${item.item__item_name}</span>
+                                    <span class="text-muted small">${item.quantity || "0"} ${item.quantity_type || ""}</span>
+                                </div>
+                            `;
+                        }
+                    });
+                    return itemRowsHTML;
+                }
 
-                    <!-- Total Count -->
-                    <div class="text-center fw-bold py-1">
-                        COUNT: <span>${order.total_pax_quantity || ' '}</span>
+                // Complete Card Template
+                const cardTemplate = `
+                    <div class="masonry-item">
+                        <div class="card shadow-sm border-light rounded-3">
+                            ${headerTemplate}
+                            ${bodyTemplate}
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
 
-            // Function to generate item rows dynamically
-            function generateItemsRows(order, items) {
-                let itemRowsHTML = '';
-                items.forEach(item => {
-                    if (item.order_id === order.id) {
-                        itemRowsHTML += `
-                            <div class="d-flex justify-content-between mb-1">
-                                <span class="text-muted small">${item.item__item_name}</span>
-                                <span class="text-muted small">${item.quantity || "0"} ${item.quantity_type || ""}</span>
-                            </div>
-                        `;
-                    }
-                });
-                return itemRowsHTML;
-            }
+                masonryHTML += cardTemplate;
+            });
 
-            // Complete Card Template
-            const cardTemplate = `
-                <div class="masonry-item">
-                    <div class="card shadow-sm border-light rounded-3">
-                        ${headerTemplate}
-                        ${bodyTemplate}
-                    </div>
-                </div>
-            `;
+            masonryContainer.innerHTML = masonryHTML;
 
-            masonryHTML += cardTemplate;
-        });
-
-        masonryContainer.innerHTML = masonryHTML;
-
-        // Initialize Masonry grid after the content has been added
-        requestAnimationFrame(() => {
-            initializeMasonry();
-        });
+            // Initialize Masonry grid after the content has been added
+            requestAnimationFrame(() => {
+                initializeMasonry();
+            });
+        }
     }
-}
-
-
 
     function getBadgeClass(status) {
         switch (status) {
@@ -475,22 +483,15 @@ body {
             default: return 'bg-warning';
         }
     }
-
-    function generateItemsRows(order, items) {
-        const orderItems = items.filter(item => item.order_id === order.id);
-        if (orderItems.length === 0) return '<div class="text-muted small text-center">No items for this order</div>';
-        return orderItems.map(item => `
-            <div class="d-flex justify-content-between mb-1">
-                <span class="text-muted small">${item.item__item_name}</span>
-                <span class="text-muted small">${item.quantity || '0'} ${item.quantity_type || ''}</span>
-            </div>
-        `).join('');
-    }
-
     function updateTime() {
         const now = new Date();
-        const formattedTime = `${String(now.getHours() % 12 || 12).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} ${now.getHours() >= 12 ? 'PM' : 'AM'}`;
-        document.getElementById('heading').textContent = formattedTime;
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const formattedTime = `${String(hours % 12 || 12).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
+        heading.textContent = formattedTime;
+
     }
 
     updateTime();
@@ -498,6 +499,7 @@ body {
     setInterval(updateTime, 1000);
     setInterval(loadOrdersAndItems, 10000);
 });
+
 </script>
 
 
