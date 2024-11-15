@@ -18,6 +18,7 @@
     flex-wrap: wrap;
     gap: 1rem;
     height: auto;
+    width: 100%;
 }
 
 .masonry-item {
@@ -72,6 +73,7 @@
     padding-top: 0;
     padding-left: 0;
     padding-right: 0;
+    max-width: 100%;
     }
 /* Navbar Styling */
 .navbar-brand {
@@ -101,9 +103,17 @@
 .card {
     break-inside: avoid;
      height: auto;
+     max-width: 100%;
 }
 .container {
     max-width: 100%; /* Ensure the container spans full width */
+    padding-top: 1rem; /* No padding on top */
+    padding-left: 1rem; /* No padding on left */
+    padding-right: 1rem;
+}
+.container-wrapper {
+    padding: 2rem; /* Adds space around the top, left, and right */
+    max-width: 100%; /* Ensures it spans the full width */
 }
 /* Card Styling */
 ./* Custom Badge Styles */
@@ -116,11 +126,12 @@
 
 
 body {
-    padding-top: 0; /* No padding on top */
-    padding-left: 0; /* No padding on left */
-    padding-right: 0; /* No padding on right */
+<!--    padding-top: 2rem; /* No padding on top */-->
+<!--    padding-left: 2rem; /* No padding on left */-->
+<!--    padding-right: 2rem; /* No padding on right */-->
     margin: 0; /* Ensure uniform margin reset */
     background-color: #f0f4f8; /* Light gray background */
+    width: 100%;
 }
 
 .card {
@@ -215,14 +226,17 @@ body {
         <!-- Left Section: Logo and Title -->
         <div class="d-flex align-items-center">
             <img src="{% static 'image/cabriot_Orderlogo.png' %}" alt="Logo" height="100" class="me-3">
-            <h2 class="navbar-brand mb-0 fs-1 text-white">Orders</h2>
+<!--            <h2 class="navbar-brand mb-0 fs-1 text-white">{{meal}</h2>-->
         </div>
+        <div class="d-flex flex-column justify-content-start align-items-end mx-5">
+                <h2 class="navbar-brand mb-0 fs-1 text-white">{{meal}}</h2>
+            </div>
 
         <!-- Right Section: MEAL and Date/Time in separate divs -->
-        <div class="d-flex ms-auto" data-masonry='{"percentPosition": true}"' }>
+        <div class="d-flex ms-auto" data-masonry='{"percentPosition": true}"}'>
             <!-- MEAL Section Centered -->
-            <div class="d-flex flex-column align-items-end mx-5">
-                <h2 class="navbar-brand mb-0 fs-1 text-white">{{meal}}</h2>
+            <div class="d-flex flex-column justify-content-start align-items-end mx-5">
+<!--                <h2 class="navbar-brand mb-0 fs-1 text-white">{{meal}}</h2>-->
             </div>
 
             <!-- Date and Last Updated Time -->
@@ -240,8 +254,8 @@ body {
 
 
 <!--</header>-->
-<div class="container" id="masonry-container">
-    <div class="masonry-grid" id="orders-grid">
+<div class="container " id="masonry-container">
+    <div class="masonry-grid" id="orders-grid" style="max-width: 100%;">
         {% for order in orders %}
             <div class="masonry-item">
                 <div class="card h-100 shadow-sm">
@@ -488,9 +502,9 @@ body {
 
 <!--</script>-->
 <script>
-
-    document.addEventListener('DOMContentLoaded', function () {
     let lastLoadedTime = null;
+    document.addEventListener('DOMContentLoaded', function () {
+
         const masonryGrid = document.querySelector('#orders-grid');
         let masonryInstance;
 
@@ -581,6 +595,7 @@ body {
     }
     function timeSince(lastTime) {
         const currentTime = new Date();
+
         const diffInSeconds = Math.floor((currentTime - lastTime) / 1000);
         const minutes = Math.floor(diffInSeconds / 60);
         const hours = Math.floor(minutes / 60);
@@ -601,14 +616,15 @@ body {
     function displayLastLoadedTime() {
         if (lastLoadedTime) {
             const timeMessage = timeSince(lastLoadedTime);
-            document.getElementById('last-loaded').innerText = `Last seen: ${timeMessage}`;
+            document.getElementById('last-loaded').innerText = `Last Loading: ${timeMessage}`;
         }
     }
-
+        displayLastLoadedTime();
         updateTime();
         loadOrdersAndItems();
         setInterval(updateTime, 100)
-        setInterval(loadOrdersAndItems, 30000); // Refresh every 30 seconds
+        setInterval(displayLastLoadedTime, 100)
+        setInterval(loadOrdersAndItems, 180000); // Refresh every 30 seconds
     });
 </script>
 
