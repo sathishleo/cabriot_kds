@@ -11,18 +11,20 @@
     <script src="https://unpkg.com/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script>
 </head>
 <style>
-#orders-grid {
+.orders-grid {
     column-count: 6;
     column-gap: 1rem;
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+    height: auto;
 }
 
 .masonry-item {
     display: inline-block;
     margin-bottom: 1rem;
     width: calc(100% / 6 - 1rem);  /* Make cards fit within the grid */
+    height:auto;
 }
 
 @media (max-width: 1200px) {
@@ -48,7 +50,8 @@
         column-count: 1; /* Single column for very small screens */
     }
     .masonry-item {
-        width: 100%;  /* Full width for single column */
+        width: 100%;
+         /* Full width for single column */
     }
 }
 
@@ -66,9 +69,9 @@
     margin: 0;
     }
     body {
-    padding-top: 2;
-    padding-left: 2;
-    padding-right: 2;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
     }
 /* Navbar Styling */
 .navbar-brand {
@@ -94,15 +97,10 @@
     margin: 0;
 }
 
-body {
-    padding-top: 2;
-    padding-left: 2;
-    padding-right:0;
-}
-
 
 .card {
     break-inside: avoid;
+     height: auto;
 }
 .container {
     max-width: 100%; /* Ensure the container spans full width */
@@ -116,31 +114,18 @@ body {
     border-radius: 0.5rem;
 }
 
-/* Card Header and Body */
-<!--.card-header {-->
-<!--    background-color: #f8f9fa;-->
-<!--    border-bottom: none;-->
-<!--}-->
 
-<!--.card-header h6 {-->
-<!--    font-size: 0.85rem;-->
-<!--}-->
-
-<!--.card-body {-->
-<!--    font-size: 0.8rem;-->
-<!--}-->
-
-<!--.card-body .fw-bold {-->
-<!--    font-size: 0.9rem;-->
-<!--}-->
 body {
+    padding-top: 0; /* No padding on top */
+    padding-left: 0; /* No padding on left */
+    padding-right: 0; /* No padding on right */
+    margin: 0; /* Ensure uniform margin reset */
     background-color: #f0f4f8; /* Light gray background */
 }
 
 .card {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Softer shadow */
     border: none;
-    margin-bottom: 16px;
 }
 
 .card-header,
@@ -234,7 +219,7 @@ body {
         </div>
 
         <!-- Right Section: MEAL and Date/Time in separate divs -->
-        <div class="d-flex ms-auto">
+        <div class="d-flex ms-auto" data-masonry='{"percentPosition": true}"' }>
             <!-- MEAL Section Centered -->
             <div class="d-flex flex-column align-items-end mx-5">
                 <h2 class="navbar-brand mb-0 fs-1 text-white">{{meal}}</h2>
@@ -244,7 +229,7 @@ body {
             <div class="d-flex flex-column align-items-end text-white">
                 <p class="mb-0"><strong>{{ current_date|date:"l, F j, Y" }}</strong></p>
                 <p id="heading" class="mb-0 fs-5"></p>
-                <small class="mb-0 fs-8">Last Updated 30 minutes ago</small>
+                <small class="mb-0 fs-8" id="last-loaded"></small>
             </div>
         </div>
     </div>
@@ -309,6 +294,9 @@ body {
 <div id="items-data" hidden data-items="{{ items_json|json_script:'itemsData' }}'"></div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+
+
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
@@ -321,185 +309,307 @@ body {
     <footer>
         <!-- Add footer content here -->
     </footer>
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function () {-->
+<!--    const ordersDataElement = document.getElementById('orders');-->
+<!--    const itemsDataElement = document.getElementById('items-data');-->
+
+<!--    if (!ordersDataElement || !itemsDataElement) {-->
+<!--        console.error('Element with specified ID not found.');-->
+<!--        return;-->
+<!--    }-->
+
+<!--    const cleanData = (rawData) => rawData.replace(/["'>]+$/, '').trim();-->
+<!--    const orders_checks = cleanData(ordersDataElement.textContent.trim());-->
+<!--    const items_checks = cleanData(itemsDataElement.textContent.trim());-->
+
+<!--    try {-->
+<!--        const orders_Data = JSON.parse(orders_checks);-->
+<!--        const items_Data = JSON.parse(items_checks);-->
+<!--        localStorage.setItem('orders', JSON.stringify(orders_Data));-->
+<!--        localStorage.setItem('items', JSON.stringify(items_Data));-->
+<!--    } catch (error) {-->
+<!--        console.error('JSON parsing error:', error);-->
+<!--    }-->
+
+<!--    async function loadOrdersAndItems() {-->
+<!--        const url = "{% url 'orders:order' %}";-->
+<!--        const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];-->
+<!--        const storedItems = JSON.parse(localStorage.getItem('items')) || [];-->
+
+<!--        try {-->
+<!--            const response = await fetch(url, {-->
+<!--                headers: { "X-Requested-With": "XMLHttpRequest" }-->
+<!--            });-->
+
+<!--            if (!response.ok) {-->
+<!--                console.error('Error fetching data:', response.status, response.statusText);-->
+<!--                return;-->
+<!--            }-->
+
+<!--            const data = await response.json();-->
+<!--            const orders = data.orders;-->
+<!--            const items = data.items_json;-->
+
+<!--            if (JSON.stringify(orders) === JSON.stringify(storedOrders) &&-->
+<!--                JSON.stringify(items) === JSON.stringify(storedItems)) {-->
+<!--                renderOrdersAndItems(storedOrders, storedItems);-->
+<!--            } else {-->
+<!--                renderOrdersAndItems(orders, items);-->
+<!--                localStorage.setItem('orders', JSON.stringify(orders));-->
+<!--                localStorage.setItem('items', JSON.stringify(items));-->
+<!--            }-->
+
+<!--            initializeMasonry();  // Re-initialize Masonry after loading new content-->
+<!--        } catch (error) {-->
+<!--            console.error('Error loading data:', error);-->
+<!--        }-->
+<!--    }-->
+
+<!--    function initializeMasonry() {-->
+<!--        const masonryGrid = document.querySelector('#orders-grid');-->
+<!--        if (masonryGrid) {-->
+<!--            const masonryInstance = new Masonry(masonryGrid, {-->
+<!--                itemSelector: '.masonry-item',-->
+<!--                percentPosition: true,-->
+<!--                gutter: 16,-->
+<!--            });-->
+
+<!--            masonryInstance.on('layoutComplete', function () {-->
+<!--                console.log('Masonry layout completed.');-->
+<!--            });-->
+
+<!--            masonryInstance.layout();-->
+<!--        }-->
+<!--    }-->
+
+<!--    function renderOrdersAndItems(orders, items) {-->
+<!--        const masonryContainer = document.getElementById('masonry-container');-->
+<!--        let masonryHTML = ''; // Initialize an empty string for accumulating HTML-->
+
+<!--        if (Array.isArray(orders)) {-->
+<!--            orders.forEach(order => {-->
+<!--                const badgeClass = getBadgeClass(order.order_status);-->
+<!--                const clientName = order.client__name || 'Unnamed Client';-->
+<!--                const upperClientName = clientName.toUpperCase();-->
+
+<!--                // Header Template-->
+<!--                const headerTemplate = `-->
+<!--                    <div class="card-header d-flex justify-content-between align-items-center p-2">-->
+<!--                        <div class="text-start">-->
+<!--                            <h6 class="mb-0 fw-bold text-capitalize">${upperClientName}</h6>-->
+<!--                        </div>-->
+<!--                        <div class="text-end">-->
+<!--                            <span class="badge custom-badge ${badgeClass}">${order.order_status}</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col px-2 py-1 d-flex justify-content-between align-items-center border border-light">-->
+<!--                            <div class="text-start custom-medium">${order.meal_type}</div>-->
+<!--                            <div class="text-end custom-small">Order #: ${order.order_number}</div>-->
+<!--                        </div>-->
+<!--                `;-->
+
+<!--                // Body Template-->
+<!--                const bodyTemplate = `-->
+<!--                    <div class="card-body p-2">-->
+<!--                        &lt;!&ndash; Meal Type and Order Number &ndash;&gt;-->
+
+<!--                        &lt;!&ndash; Items Rows &ndash;&gt;-->
+<!--                        ${generateItemsRows(order, items)}-->
+
+<!--                        &lt;!&ndash; Total Count &ndash;&gt;-->
+<!--                        <div class="text-center fw-bold py-1">-->
+<!--                            COUNT: <span>${order.total_pax_quantity || ' '}</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                `;-->
+
+<!--                // Function to generate item rows dynamically-->
+<!--                function generateItemsRows(order, items) {-->
+<!--                    let itemRowsHTML = '';-->
+<!--                    items.forEach(item => {-->
+<!--                        if (item.order_id === order.id) {-->
+<!--                            itemRowsHTML += `-->
+<!--                                <div class="d-flex justify-content-between mb-1">-->
+<!--                                    <span class="text-muted small">${item.item__item_name}</span>-->
+<!--                                    <span class="text-muted small">${item.quantity || "0"} ${item.quantity_type || ""}</span>-->
+<!--                                </div>-->
+<!--                            `;-->
+<!--                        }-->
+<!--                    });-->
+<!--                    return itemRowsHTML;-->
+<!--                }-->
+
+<!--                // Complete Card Template-->
+<!--                const cardTemplate = `-->
+<!--                    <div class="masonry-item">-->
+<!--                        <div class="card shadow-sm border-light rounded-3">-->
+<!--                            ${headerTemplate}-->
+<!--                            ${bodyTemplate}-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                `;-->
+
+<!--                masonryHTML += cardTemplate;-->
+<!--            });-->
+
+<!--            masonryContainer.innerHTML = masonryHTML;-->
+
+<!--            // Initialize Masonry grid after the content has been added-->
+<!--            initializeMasonry();-->
+
+<!--        }-->
+<!--    }-->
+
+<!--    function getBadgeClass(status) {-->
+<!--        switch (status) {-->
+<!--            case 'Cooking': return 'bg-success';-->
+<!--            case 'Dispatched': return 'bg-primary';-->
+<!--            case 'Ready': return 'bg-info';-->
+<!--            default: return 'bg-warning';-->
+<!--        }-->
+<!--    }-->
+<!--    function updateTime() {-->
+<!--        const now = new Date();-->
+<!--        const hours = now.getHours();-->
+<!--        const minutes = now.getMinutes();-->
+<!--        const seconds = now.getSeconds();-->
+<!--        const ampm = hours >= 12 ? 'PM' : 'AM';-->
+<!--        const formattedTime = `${String(hours % 12 || 12).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;-->
+<!--        heading.textContent = formattedTime;-->
+
+<!--    }-->
+
+<!--    updateTime();-->
+<!--    loadOrdersAndItems();-->
+<!--    setInterval(updateTime, 1000);-->
+<!--    setInterval(loadOrdersAndItems, 10000);-->
+<!--});-->
+
+<!--</script>-->
 <script>
+
     document.addEventListener('DOMContentLoaded', function () {
-    const ordersDataElement = document.getElementById('orders');
-    const itemsDataElement = document.getElementById('items-data');
-
-    if (!ordersDataElement || !itemsDataElement) {
-        console.error('Element with specified ID not found.');
-        return;
-    }
-
-    const cleanData = (rawData) => rawData.replace(/["'>]+$/, '').trim();
-    const orders_checks = cleanData(ordersDataElement.textContent.trim());
-    const items_checks = cleanData(itemsDataElement.textContent.trim());
-
-    try {
-        const orders_Data = JSON.parse(orders_checks);
-        const items_Data = JSON.parse(items_checks);
-        localStorage.setItem('orders', JSON.stringify(orders_Data));
-        localStorage.setItem('items', JSON.stringify(items_Data));
-    } catch (error) {
-        console.error('JSON parsing error:', error);
-    }
-
-    async function loadOrdersAndItems() {
-        const url = "{% url 'orders:order' %}";
-        const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
-        const storedItems = JSON.parse(localStorage.getItem('items')) || [];
-
-        try {
-            const response = await fetch(url, {
-                headers: { "X-Requested-With": "XMLHttpRequest" }
-            });
-
-            if (!response.ok) {
-                console.error('Error fetching data:', response.status, response.statusText);
-                return;
-            }
-
-            const data = await response.json();
-            const orders = data.orders;
-            const items = data.items_json;
-
-            if (JSON.stringify(orders) === JSON.stringify(storedOrders) &&
-                JSON.stringify(items) === JSON.stringify(storedItems)) {
-                renderOrdersAndItems(storedOrders, storedItems);
-            } else {
-                renderOrdersAndItems(orders, items);
-                localStorage.setItem('orders', JSON.stringify(orders));
-                localStorage.setItem('items', JSON.stringify(items));
-            }
-
-            initializeMasonry();  // Re-initialize Masonry after loading new content
-        } catch (error) {
-            console.error('Error loading data:', error);
-        }
-    }
-
-    function initializeMasonry() {
+    let lastLoadedTime = null;
         const masonryGrid = document.querySelector('#orders-grid');
-        if (masonryGrid) {
-            const masonryInstance = new Masonry(masonryGrid, {
+        let masonryInstance;
+
+        function initializeMasonry() {
+            masonryInstance = new Masonry(masonryGrid, {
                 itemSelector: '.masonry-item',
-                columnWidth: '.masonry-item',
-                percentPosition: true,
-                gutter: 20,
+                percentPosition: true, // Use percentage positioning
+                gutter: 16, // Spacing between items
             });
-
-            masonryInstance.on('layoutComplete', function () {
-                console.log('Masonry layout completed.');
-            });
-
-            masonryInstance.layout();
         }
-    }
 
-    function renderOrdersAndItems(orders, items) {
-        const masonryContainer = document.getElementById('masonry-container');
-        let masonryHTML = ''; // Initialize an empty string for accumulating HTML
+        function reloadMasonry() {
+            if (masonryInstance) {
+                masonryInstance.reloadItems();
+                masonryInstance.layout(); // Re-layout the Masonry grid
+            } else {
+                initializeMasonry(); // Initialize if not already done
+            }
+        }
 
-        if (Array.isArray(orders)) {
+        function loadOrdersAndItems() {
+            const url = "{% url 'orders:order' %}";
+            fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.orders) {
+                        lastLoadedTime = new Date();
+                        renderOrders(data.orders, data.items_json);
+                        reloadMasonry(); // Reload Masonry after updating the grid
+                        displayLastLoadedTime();
+                    }
+                })
+                .catch(error => console.error('Error fetching orders:', error));
+        }
+
+        function renderOrders(orders, items) {
+            let ordersHTML = '';
             orders.forEach(order => {
                 const badgeClass = getBadgeClass(order.order_status);
-                const clientName = order.client__name || 'Unnamed Client';
-                const upperClientName = clientName.toUpperCase();
-
-                // Header Template
-                const headerTemplate = `
-                    <div class="card-header d-flex justify-content-between align-items-center p-2">
-                        <div class="text-start">
-                            <h6 class="mb-0 fw-bold text-capitalize">${upperClientName}</h6>
-                        </div>
-                        <div class="text-end">
-                            <span class="badge custom-badge ${badgeClass}">${order.order_status}</span>
-                        </div>
-                    </div>
-                    <div class="col px-2 py-1 d-flex justify-content-between align-items-center border border-light">
-                            <div class="text-start custom-medium">${order.meal_type}</div>
-                            <div class="text-end custom-small">Order #: ${order.order_number}</div>
-                        </div>
-                `;
-
-                // Body Template
-                const bodyTemplate = `
-                    <div class="card-body p-2">
-                        <!-- Meal Type and Order Number -->
-
-                        <!-- Items Rows -->
-                        ${generateItemsRows(order, items)}
-
-                        <!-- Total Count -->
-                        <div class="text-center fw-bold py-1">
-                            COUNT: <span>${order.total_pax_quantity || ' '}</span>
-                        </div>
-                    </div>
-                `;
-
-                // Function to generate item rows dynamically
-                function generateItemsRows(order, items) {
-                    let itemRowsHTML = '';
-                    items.forEach(item => {
-                        if (item.order_id === order.id) {
-                            itemRowsHTML += `
-                                <div class="d-flex justify-content-between mb-1">
-                                    <span class="text-muted small">${item.item__item_name}</span>
-                                    <span class="text-muted small">${item.quantity || "0"} ${item.quantity_type || ""}</span>
-                                </div>
-                            `;
-                        }
-                    });
-                    return itemRowsHTML;
-                }
-
-                // Complete Card Template
-                const cardTemplate = `
+                ordersHTML += `
                     <div class="masonry-item">
-                        <div class="card shadow-sm border-light rounded-3">
-                            ${headerTemplate}
-                            ${bodyTemplate}
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header d-flex justify-content-between align-items-center p-2">
+                                <h6 class="mb-0 fw-bold text-capitalize">${(order.client__name ? String(order.client__name).toUpperCase() : "UNNAMED CLIENT")}</h6>
+                                <span class="badge ${badgeClass}">${order.order_status}</span>
+                            </div>
+                            <div class="col px-2 py-1 d-flex justify-content-between align-items-center border border-light">
+                                <div class="text-start custom-medium">${order.meal_type}</div>
+                                <div class="text-end custom-small">Order #: ${order.order_number}</div>
+                            </div>
+                            <div class="card-body p-2">
+                                ${renderItems(order.id, items)}
+                                <div class="text-center fw-bold py-1">COUNT: <span>${order.total_pax_quantity || " "}</span></div>
+                            </div>
                         </div>
-                    </div>
-                `;
-
-                masonryHTML += cardTemplate;
+                    </div>`;
             });
-
-            masonryContainer.innerHTML = masonryHTML;
-
-            // Initialize Masonry grid after the content has been added
-            requestAnimationFrame(() => {
-                initializeMasonry();
-            });
+            masonryGrid.innerHTML = ordersHTML;
         }
-    }
 
-    function getBadgeClass(status) {
-        switch (status) {
-            case 'Cooking': return 'bg-success';
-            case 'Dispatched': return 'bg-primary';
-            case 'Ready': return 'bg-info';
-            default: return 'bg-warning';
+        function renderItems(orderId, items) {
+            return items
+                .filter(item => item.order_id === orderId)
+                .map(item => `
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted small">${item.item__item_name}</span>
+                        <span class="text-muted small">${item.quantity || "0"} ${item.quantity_type || ""}</span>
+                    </div>`).join('');
         }
-    }
-    function updateTime() {
+
+        function getBadgeClass(status) {
+            switch (status) {
+                case 'Cooking': return 'bg-success';
+                case 'Dispatched': return 'bg-primary';
+                case 'Ready': return 'bg-info';
+                default: return 'bg-warning';
+            }
+        }
+        function updateTime() {
         const now = new Date();
         const hours = now.getHours();
         const minutes = now.getMinutes();
         const seconds = now.getSeconds();
         const ampm = hours >= 12 ? 'PM' : 'AM';
         const formattedTime = `${String(hours % 12 || 12).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
-        heading.textContent = formattedTime;
+        document.getElementById('heading').textContent = formattedTime;
 
     }
+    function timeSince(lastTime) {
+        const currentTime = new Date();
+        const diffInSeconds = Math.floor((currentTime - lastTime) / 1000);
+        const minutes = Math.floor(diffInSeconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
 
-    updateTime();
-    loadOrdersAndItems();
-    setInterval(updateTime, 1000);
-    setInterval(loadOrdersAndItems, 10000);
-});
+        if (diffInSeconds < 60) {
+            return `${diffInSeconds} second${diffInSeconds > 1 ? 's' : ''} ago`;
+        } else if (minutes < 60) {
+            return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+        } else if (hours < 24) {
+            return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+        } else {
+            return `${days} day${days > 1 ? 's' : ''} ago`;
+        }
+    }
 
+    // Display the time when the API was last loaded
+    function displayLastLoadedTime() {
+        if (lastLoadedTime) {
+            const timeMessage = timeSince(lastLoadedTime);
+            document.getElementById('last-loaded').innerText = `Last seen: ${timeMessage}`;
+        }
+    }
+
+        updateTime();
+        loadOrdersAndItems();
+        setInterval(updateTime, 100)
+        setInterval(loadOrdersAndItems, 30000); // Refresh every 30 seconds
+    });
 </script>
 
 
