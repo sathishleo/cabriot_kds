@@ -80,12 +80,14 @@ def order_display(request):
         current_display_time = ist_now.strftime("%I:%M:%S %p")
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             print("_______",{
+                "meal":current_shift,
             "orders":list(order_object),
             'current_date': ist_now.date(),
             'current_time': current_display_time,
             "items_json":list(items)
             })
             return JsonResponse({
+                "meal":current_shift,
             "orders":list(order_object),
             'current_date': ist_now.date(),
             'current_time': current_display_time,
@@ -93,6 +95,7 @@ def order_display(request):
         }, safe=False)
 
         context = {
+            "meal":current_shift,
             "orders":list(order_object),
             'current_date': ist_now.date(),
             'current_time': current_display_time,
