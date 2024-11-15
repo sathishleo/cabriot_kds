@@ -39,6 +39,29 @@
     height: 56px;
     padding: 0;
 }
+#orders-grid {
+    column-count: 6; /* 6-column grid for larger screens */
+    column-gap: 1rem; /* Adjust spacing between columns */
+}
+
+.masonry-item {
+    display: inline-block;
+    margin-bottom: 1rem;
+<!--    width: 100%;-->
+}
+
+@media (max-width: 1200px) {
+    #orders-grid {
+        column-count: 4; /* Adjust for medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    #orders-grid {
+        column-count: 2; /* Adjust for small screens */
+    }
+}
+
 
 .container, .p-5.my-3 {
     padding: 0;
@@ -199,6 +222,7 @@ body {
 }
 
 
+
 </style>
 <body>
     <!-- Navbar and other header content -->
@@ -289,170 +313,193 @@ body {
     </footer>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const ordersDataElement = document.getElementById('orders');
-        const itemsDataElement = document.getElementById('items-data');
+    const ordersDataElement = document.getElementById('orders');
+    const itemsDataElement = document.getElementById('items-data');
 
-        if (!ordersDataElement || !itemsDataElement) {
-            console.error('Element with specified ID not found.');
-            return;
-        }
+    if (!ordersDataElement || !itemsDataElement) {
+        console.error('Element with specified ID not found.');
+        return;
+    }
 
-        const cleanData = (rawData) => rawData.replace(/["'>]+$/, '').trim();
-        const orders_checks = cleanData(ordersDataElement.textContent.trim());
-        const items_checks = cleanData(itemsDataElement.textContent.trim());
+    const cleanData = (rawData) => rawData.replace(/["'>]+$/, '').trim();
+    const orders_checks = cleanData(ordersDataElement.textContent.trim());
+    const items_checks = cleanData(itemsDataElement.textContent.trim());
+
+    try {
+        const orders_Data = JSON.parse(orders_checks);
+        const items_Data = JSON.parse(items_checks);
+        localStorage.setItem('orders', JSON.stringify(orders_Data));
+        localStorage.setItem('items', JSON.stringify(items_Data));
+    } catch (error) {
+        console.error('JSON parsing error:', error);
+    }
+
+    async function loadOrdersAndItems() {
+        const url = "{% url 'orders:order' %}";
+        const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
+        const storedItems = JSON.parse(localStorage.getItem('items')) || [];
 
         try {
-            const orders_Data = JSON.parse(orders_checks);
-            const items_Data = JSON.parse(items_checks);
-            localStorage.setItem('orders', JSON.stringify(orders_Data));
-            localStorage.setItem('items', JSON.stringify(items_Data));
+            const response = await fetch(url, {
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            });
+
+            if (!response.ok) {
+                console.error('Error fetching data:', response.status, response.statusText);
+                return;
+            }
+
+            const data = await response.json();
+            const orders = data.orders;
+            const items = data.items_json;
+
+            if (JSON.stringify(orders) === JSON.stringify(storedOrders) &&
+                JSON.stringify(items) === JSON.stringify(storedItems)) {
+                renderOrdersAndItems(storedOrders, storedItems);
+            } else {
+                renderOrdersAndItems(orders, items);
+                localStorage.setItem('orders', JSON.stringify(orders));
+                localStorage.setItem('items', JSON.stringify(items));
+            }
+
+            initializeMasonry();
         } catch (error) {
-            console.error('JSON parsing error:', error);
+            console.error('Error loading data:', error);
         }
-
-        function initializeMasonry() {
-            const masonryGrid = document.querySelector('#orders-grid');
-            if (masonryGrid) {
-                new Masonry(masonryGrid, {
-                    itemSelector: '.masonry-item',
-                    percentPosition: true,
-                    gutter: 20,
-                });
-            }
-        }
-
-        async function loadOrdersAndItems() {
-            const url = "{% url 'orders:order' %}";
-            const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
-            const storedItems = JSON.parse(localStorage.getItem('items')) || [];
-
-            try {
-                const response = await fetch(url, {
-                    headers: { "X-Requested-With": "XMLHttpRequest" }
-                });
-
-                if (!response.ok) {
-                    console.error('Error fetching data:', response.status, response.statusText);
-                    return;
-                }
-
-                const data = await response.json();
-                const orders = data.orders;
-                const items = data.items_json;
-                const masonryContainer = document.getElementById('masonry-container');
-
-                if (JSON.stringify(orders) === JSON.stringify(storedOrders) &&
-                    JSON.stringify(items) === JSON.stringify(storedItems)) {
-                    renderOrdersAndItems(storedOrders, storedItems);
-                } else {
-                    renderOrdersAndItems(orders, items);
-                    localStorage.setItem('orders', JSON.stringify(orders));
-                    localStorage.setItem('items', JSON.stringify(items));
-                }
-
-                initializeMasonry();
-            } catch (error) {
-                console.error('Error loading data:', error);
-            }
-        }
-
-        // Ensure Masonry layout initializes properly
-    function initializeMasonry() {
-    const masonryGrid = document.querySelector('#orders-grid');
-    if (masonryGrid) {
-        new Masonry(masonryGrid, {
-            itemSelector: '.masonry-item',
-            columnWidth: '.masonry-item',
-            percentPosition: true,
-            gutter: 20,
-        });
     }
-}
-    function getBadgeClass(status) {
-            switch (status) {
-                case 'Cooking': return 'bg-success';
-                case 'Dispatched': return 'bg-primary';
-                case 'Ready': return 'bg-info';
-                default: return 'bg-warning';
-            }
-        }
 
-    // Call initializeMasonry after rendering new items
-`   function renderOrdersAndItems(orders, items) {
+    function initializeMasonry() {
+        const masonryGrid = document.querySelector('#orders-grid');
+        if (masonryGrid) {
+            const masonryInstance = new Masonry(masonryGrid, {
+                itemSelector: '.masonry-item',
+                columnWidth: '.masonry-item',
+                percentPosition: true,
+                gutter: 20,
+            });
+
+            masonryInstance.on('layoutComplete', function () {
+                console.log('Masonry layout completed.');
+            });
+
+            masonryInstance.layout();
+        }
+    }
+
+    function renderOrdersAndItems(orders, items) {
     const masonryContainer = document.getElementById('masonry-container');
-    masonryContainer.innerHTML = ''; // Clear previous content
+    let masonryHTML = ''; // Initialize an empty string for accumulating HTML
 
     if (Array.isArray(orders)) {
         orders.forEach(order => {
-            const colDiv = document.createElement('div');
-            colDiv.className = 'masonry-item';
-
-            const cardDiv = document.createElement('div');
-            cardDiv.className = 'card shadow-sm border-light rounded-3';
             const badgeClass = getBadgeClass(order.order_status);
+            const clientName = order.client__name || 'Unnamed Client';
+            const upperClientName = clientName.toUpperCase();
 
-            const headerDiv = document.createElement('div');
-            headerDiv.className = 'card-header d-flex justify-content-between align-items-center p-3';
-
-            const badgeClass = getBadgeClass(order.order_status);  // Calculate badge class
-
-            headerDiv.innerHTML = `
-                <div class="text-start">
-                    <h6 class="mb-0 fw-bold">${order.client__name || 'Unnamed Client'}</h6>
-                </div>
-                <div class="text-end">
-                    <span class="badge custom-badge ${badgeClass}">${order.order_status}</span>
+            // Header Template
+            const headerTemplate = `
+                <div class="card-header d-flex justify-content-between align-items-center p-2">
+                    <div class="text-start">
+                        <h6 class="mb-0 fw-bold text-capitalize">${upperClientName}</h6>
+                    </div>
+                    <div class="text-end">
+                        <span class="badge custom-badge ${badgeClass}">${order.order_status}</span>
+                    </div>
                 </div>
             `;
 
+            // Body Template
+            const bodyTemplate = `
+                <div class="card-body p-2">
+                    <!-- Meal Type and Order Number -->
+                    <div class="col px-2 py-1 d-flex justify-content-between align-items-center border border-light">
+                        <div class="text-start custom-medium">${order.meal_type}</div>
+                        <div class="text-end custom-small">Order #: ${order.order_number}</div>
+                    </div>
 
-            const cardBodyDiv = document.createElement('div');
-            cardBodyDiv.className = 'card-body p-2';
-            cardBodyDiv.innerHTML = `
-                <div class="col px-2 py-1 d-flex justify-content-between align-items-center border border-light">
-                    <div class="text-start custom-medium">${order.meal_type}</div>
-                    <div class="text-end custom-small">Order #: ${order.order_number}</div>
+                    <!-- Items Rows -->
+                    ${generateItemsRows(order, items)}
+
+                    <!-- Total Count -->
+                    <div class="text-center fw-bold py-1">
+                        COUNT: <span>${order.total_pax_quantity || ' '}</span>
+                    </div>
                 </div>
-                ${generateItemsRows(order, items)}
-                <div class="text-center fw-bold py-2">COUNT: <span>${order.total_pax_quantity || ' '}</span></div>
             `;
 
-            cardDiv.appendChild(headerDiv);
-            cardDiv.appendChild(cardBodyDiv);
-            colDiv.appendChild(cardDiv);
-            masonryContainer.appendChild(colDiv);
+            // Function to generate item rows dynamically
+            function generateItemsRows(order, items) {
+                let itemRowsHTML = '';
+                items.forEach(item => {
+                    if (item.order_id === order.id) {
+                        itemRowsHTML += `
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted small">${item.item__item_name}</span>
+                                <span class="text-muted small">${item.quantity || "0"} ${item.quantity_type || ""}</span>
+                            </div>
+                        `;
+                    }
+                });
+                return itemRowsHTML;
+            }
+
+            // Complete Card Template
+            const cardTemplate = `
+                <div class="masonry-item">
+                    <div class="card shadow-sm border-light rounded-3">
+                        ${headerTemplate}
+                        ${bodyTemplate}
+                    </div>
+                </div>
+            `;
+
+            masonryHTML += cardTemplate;
         });
 
-        // Reinitialize Masonry after updating the container content
-        initializeMasonry();
+        masonryContainer.innerHTML = masonryHTML;
+
+        // Initialize Masonry grid after the content has been added
+        requestAnimationFrame(() => {
+            initializeMasonry();
+        });
     }
 }
 
 
 
-        function generateItemsRows(order, items) {
-            const orderItems = items.filter(item => item.order_id === order.id);
-            if (orderItems.length === 0) return '<div class="text-muted small text-center">No items for this order</div>';
-            return orderItems.map(item => `
-                <div class="d-flex justify-content-between mb-1">
-                    <span class="text-muted small">${item.item__item_name}</span>
-                    <span class="text-muted small">${item.quantity || '0'} ${item.quantity_type || ''}</span>
-                </div>
-            `).join('');
+    function getBadgeClass(status) {
+        switch (status) {
+            case 'Cooking': return 'bg-success';
+            case 'Dispatched': return 'bg-primary';
+            case 'Ready': return 'bg-info';
+            default: return 'bg-warning';
         }
+    }
 
-        function updateTime() {
-            const now = new Date();
-            const formattedTime = `${String(now.getHours() % 12 || 12).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} ${now.getHours() >= 12 ? 'PM' : 'AM'}`;
-            document.getElementById('heading').textContent = formattedTime;
-        }
+    function generateItemsRows(order, items) {
+        const orderItems = items.filter(item => item.order_id === order.id);
+        if (orderItems.length === 0) return '<div class="text-muted small text-center">No items for this order</div>';
+        return orderItems.map(item => `
+            <div class="d-flex justify-content-between mb-1">
+                <span class="text-muted small">${item.item__item_name}</span>
+                <span class="text-muted small">${item.quantity || '0'} ${item.quantity_type || ''}</span>
+            </div>
+        `).join('');
+    }
 
-        updateTime();
-        loadOrdersAndItems();
-        setInterval(updateTime, 1000);
-        setInterval(loadOrdersAndItems, 30000);
-    });
+    function updateTime() {
+        const now = new Date();
+        const formattedTime = `${String(now.getHours() % 12 || 12).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} ${now.getHours() >= 12 ? 'PM' : 'AM'}`;
+        document.getElementById('heading').textContent = formattedTime;
+    }
+
+    updateTime();
+    loadOrdersAndItems();
+    setInterval(updateTime, 1000);
+    setInterval(loadOrdersAndItems, 10000);
+});
 </script>
+
 
 
 
