@@ -8,6 +8,8 @@
     <!-- Add your CSS, Bootstrap, and other head elements here -->
     <!-- Include Masonry.js from CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
     <script src="https://unpkg.com/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script>
 </head>
 <style>
@@ -241,9 +243,17 @@ body {
 
             <!-- Date and Last Updated Time -->
             <div class="d-flex flex-column align-items-end text-white">
-                <p class="mb-0"><strong>{{ current_date|date:"l, F j, Y" }}</strong></p>
+                <p class="mb-0 fs-5"><strong>{{ current_date|date:"l, F j, Y" }}</strong></p>
                 <p id="heading" class="mb-0 fs-5"></p>
-                <small class="mb-0 fs-8" id="last-loaded"></small>
+                <div class="d-flex flex-column align-items-end">
+                    <p id="last-updated-time" class="mb-0 text-warning small d-flex align-items-center">
+                        <i class="bi bi-clock me-2"></i> <!-- Clock Icon -->
+                         <span id="last-updated"></span>
+                    </p>
+                </div>
+
+
+
             </div>
         </div>
     </div>
@@ -616,7 +626,7 @@ body {
     function displayLastLoadedTime() {
         if (lastLoadedTime) {
             const timeMessage = timeSince(lastLoadedTime);
-            document.getElementById('last-loaded').innerText = `Last Loading: ${timeMessage}`;
+            document.getElementById('last-updated').innerText = `Last updated: ${timeMessage}`;
         }
     }
         displayLastLoadedTime();
